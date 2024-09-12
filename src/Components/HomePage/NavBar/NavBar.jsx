@@ -39,7 +39,7 @@ const NavBar = () => {
                 <img
                   src={logo}
                   alt="Logo"
-                  className="w-28 h-20"
+                  className="w-28 h-24 rounded-md"
                 />
               </div>
               <div className='flex flex-col space-y-4 flex-grow '>
