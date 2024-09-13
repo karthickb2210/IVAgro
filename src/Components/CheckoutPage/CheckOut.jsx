@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import Navbar from "../HomePage/NavBar/Navbarrr"
+import NavBar from "../HomePage/NavBar/NavBar"
 import axiosInstance from '../../config/AxiosConfig';
-import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 
 const CheckOut = () => {
@@ -153,7 +152,7 @@ const CheckOut = () => {
 
   return (
     <>
-    <Navbar />
+    <NavBar />
     <div className="min-h-screen mt-16 bg-gradient-to-r from-blue-50 to-blue-200 flex items-center justify-center p-6">
       <div className="w-full max-w-4xl bg-white rounded-lg shadow-lg p-6">
         <h2 className="text-3xl font-bold text-center mb-6 text-blue-600">Checkout Your Cart</h2>

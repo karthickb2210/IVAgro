@@ -13,14 +13,11 @@ export default function Shop() {
     <>
     <NavBar />
     <div className='bod'>
-      <UserProgressContextProvider>
-      <CartContextProvider>
+     
         <Header />
         <Meals />
-        <Cart />
         <Checkout />
-      </CartContextProvider>
-    </UserProgressContextProvider>
+      
     </div>
     </>
   )

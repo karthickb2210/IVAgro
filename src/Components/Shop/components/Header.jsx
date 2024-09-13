@@ -18,7 +18,7 @@ export default function Header() {
   }
 
   return (
-    <header id="main-header" className='mt-12'>
+    <header id="main-header" className='mt-32'>
       <div id="title">
         {/* <img src={logoImg} alt="A restaurant" />
         <h1 className=' text-2xl text-black'>Iron valley Agronomy</h1> */}

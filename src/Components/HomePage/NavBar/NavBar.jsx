@@ -1,14 +1,62 @@
-import React, { useState } from 'react';
+import React, { useContext, useState,useEffect } from 'react';
 import {Link} from "react-router-dom"
 import { FaFacebook, FaInstagram, FaWhatsapp, FaUser, FaShoppingCart } from 'react-icons/fa';
 import logo from "/logo.png"
+import UserProgressContext from '../../Shop/store/UserProgressContext';
+import CartContext from '../../Shop/store/CartContext';
 const NavBar = () => {
     const [store,SetStore] = useState(false)
     const [service,setService] = useState(false);
     const[brands,setBrands] = useState(false);
     const [about,setAbout] = useState(false);
+    const cartCtx = useContext(CartContext);
+    const userProgressCtx = useContext(UserProgressContext)
+    const handleShowCart = ()=>{
+      userProgressCtx.showCart();
+    }
+
+    //scroll feature function
+    const [isVisible, setIsVisible] = useState(true);
+  const [scrollY, setScrollY] = useState(0);
+  const [scrolling, setScrolling] = useState(false);
+
+  // Detect scrolling
+  const handleScroll = () => {
+    const currentScrollY = window.scrollY;
+
+    if (currentScrollY > scrollY) {
+      setIsVisible(false); // Hide navbar while scrolling down
+    } else {
+      setIsVisible(true);  // Show navbar when scrolling up
+    }
+
+    setScrolling(true);    // Mark scrolling as true
+    setScrollY(currentScrollY);
+  };
+
+  useEffect(() => {
+    // Add scroll event listener
+    window.addEventListener('scroll', handleScroll);
+
+    // Show the navbar when scrolling stops (with a delay)
+    const scrollTimeout = setTimeout(() => {
+      setScrolling(false); // Set scrolling to false after the delay
+      setIsVisible(true);  // Show the navbar after scroll stops
+    }, 500);  // 500ms delay to detect stop
+
+    // Clean up event listener and timeout
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      clearTimeout(scrollTimeout);
+    };
+  }, [scrollY]);
+
+
+
+
   return (
-    <header className="shadow-md fixed top-0 w-full z-10">
+    <header className={`shadow-md fixed top-0 w-full z-10 transition-transform duration-500 ${
+        scrolling ? '-translate-y-full' : 'translate-y-0'}`}>
       {/* Top bar */}
       <div className="bg-green-600 text-white py-2">
         <div className="max-w-7xl mx-auto px-4 flex justify-between items-center">
@@ -111,10 +159,11 @@ const NavBar = () => {
 
               <div className="flex items-center space-x-6">
                 <FaUser className="text-gray-600 cursor-pointer w-6 h-6 hover:text-black transition duration-300 ease-in-out" />
-                <div className="relative">
-                  <FaShoppingCart className="text-gray-600 h-6 w-6 cursor-pointer hover:text-black transition duration-300 ease-in-out" />
+                
+                <div className="relative" >
+                  <FaShoppingCart onClick={handleShowCart} className="text-gray-600 h-6 w-6 cursor-pointer hover:text-black transition duration-300 ease-in-out" />
                   <span className="absolute bottom-3 left-4 inline-flex items-center justify-center p-2 text-xs font-bold leading-none text-white bg-orange-500 rounded-full">
-                    0
+                    {cartCtx.items.length}
                   </span>
                 </div>
               </div>

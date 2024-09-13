@@ -9,7 +9,7 @@ import CartItem from './CartItem.jsx';
 import { Link, useNavigate } from 'react-router-dom';
 
 export default function Cart() {
-  const navigate =useNavigate()
+  // const navigate =useNavigate()
   const cartCtx = useContext(CartContext);
   const userProgressCtx = useContext(UserProgressContext);
 
@@ -23,10 +23,7 @@ export default function Cart() {
   }
 
   function handleGoToCheckout() {
-    localStorage.setItem("cart",JSON.stringify(cartCtx.items))
-    const car = JSON.parse(localStorage.getItem("cart"))
-    console.log(car)
-    navigate("/cart/checkout")
+    // navigate("/cart/checkout")
     // userProgressCtx.showCheckout();
   }
 
@@ -55,9 +52,11 @@ export default function Cart() {
         <Button textOnly onClick={handleCloseCart}>
           Close
         </Button>
-        {cartCtx.items.length > 0 && (  
-          <Button onClick={handleGoToCheckout}>Go to Checkout</Button>
-          )}
+       
+        {cartCtx.items.length > 0 && (   
+<a href='/cart/checkout'>          <Button onClick={handleGoToCheckout}>Go to Checkout</Button>
+</a>       )}
+          
       </p>
     </Modal>
   );
