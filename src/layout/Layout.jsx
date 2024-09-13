@@ -7,6 +7,7 @@ import CheckOut from '../Components/CheckoutPage/CheckOut.jsx'
 import RentTowerPage from '../Components/TowerRent/RentTowerPage.jsx'
 import SubscriptionPage from '../Components/Subscriptions/SubscriptionPage.jsx'
 import PaymentPage from '../Components/PaymentPage/PaymentPage.jsx'
+import DashBoard from '../Components/Shop/components/Profile/DashBoard.jsx'
 
 export default function Layout() {
   return (
@@ -22,6 +23,7 @@ export default function Layout() {
                 <Route path='/towerRent' element={<RentTowerPage />}></Route>
                 <Route path='/subscription' element={<SubscriptionPage />}></Route>
                 <Route path='/pay' element={<PaymentPage />}></Route>
+                <Route path='/dash' element={<DashBoard />}></Route>
             </Routes>
             
         </BrowserRouter>
