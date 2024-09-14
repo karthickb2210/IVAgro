@@ -9,6 +9,7 @@ const CheckOut = () => {
   const navigate = useNavigate();
   useEffect(() => {
     const cart = JSON.parse(localStorage.getItem('cart'));
+    console.log(cart)
     setCartItems(cart || []);
   }, []);
 
@@ -166,14 +167,17 @@ const CheckOut = () => {
                 cartItems.map((item) => (
                   <div
                     key={item.id}
-                    className="flex justify-between items-center bg-white p-3 rounded-lg shadow-sm"
+                    className="grid justify-items-stretch grid-flow-col   bg-white p-3 rounded-lg shadow-sm"
                   >
-                    <div className="flex flex-col">
+                  <img className='h-16 w-16 rounded-xl '  src={item.image} alt='product image' />
+                  <div className=' justify-self-start content-center'>
+                    <div className="flex flex-col ">
                       <h4 className="font-medium text-gray-800">{item.name}</h4>
                       <span className="text-sm text-gray-500">Quantity: {item.quantity}</span>
                       <span className="text-sm text-gray-500">Weight: {item.grams} grams</span>
                     </div>
-                    <span className="text-lg font-semibold text-gray-700">
+                    </div>
+                    <span className="text-lg font-semibold text-gray-700 justify-self-end  content-center">
                       ₹{(item.price * item.quantity).toFixed(2)}
                     </span>
                   </div>
