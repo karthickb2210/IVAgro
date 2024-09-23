@@ -167,7 +167,7 @@ const CheckOut = () => {
                 cartItems.map((item) => (
                   <div
                     key={item.id}
-                    className="grid justify-items-stretch grid-flow-col   bg-white p-3 rounded-lg shadow-sm"
+                    className="grid justify-items-stretch grid-flow-col bg-white p-3 rounded-lg shadow-sm"
                   >
                   <img className='h-16 w-16 rounded-xl '  src={item.image} alt='product image' />
                   <div className=' justify-self-start content-center'>

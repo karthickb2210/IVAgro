@@ -28,7 +28,7 @@ const NavBar = () => {
   };
 
   //scroll feature function
-  const [isVisible, setIsVisible] = useState(true);
+  const [isVisible, setIsVisible] = useState(false);
   const [scrollY, setScrollY] = useState(0);
   const [scrolling, setScrolling] = useState(false);
 
@@ -37,9 +37,9 @@ const NavBar = () => {
     const currentScrollY = window.scrollY;
 
     if (currentScrollY > scrollY) {
-      setIsVisible(false); // Hide navbar while scrolling down
+      setIsVisible(true); // Hide navbar while scrolling down
     } else {
-      setIsVisible(true); // Show navbar when scrolling up
+      setIsVisible(false); // Show navbar when scrolling up
     }
 
     setScrolling(true); // Mark scrolling as true
@@ -91,7 +91,7 @@ const NavBar = () => {
   return (
     <header
       className={`shadow-md fixed top-0 w-full z-10 transition-transform duration-500 ${
-        scrolling ? "-translate-y-full" : "translate-y-0"
+        isVisible && scrolling ? "-translate-y-full" : "translate-y-0"
       }`}
     >
       {/* Top bar */}
@@ -255,7 +255,7 @@ const NavBar = () => {
                         Our Story
                       </a>
                       <a
-                        href="#"
+                        href="/product"
                         className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-all duration-200"
                       >
                         Products

@@ -8,6 +8,9 @@ import RentTowerPage from '../Components/TowerRent/RentTowerPage.jsx'
 import SubscriptionPage from '../Components/Subscriptions/SubscriptionPage.jsx'
 import PaymentPage from '../Components/PaymentPage/PaymentPage.jsx'
 import DashBoard from '../Components/Shop/components/Profile/DashBoard.jsx'
+import OurProductsPage from '../Components/OurProducts/OurProductsPage.jsx'
+import Recipe from '../Components/OurProducts/Recipes/Recipe.jsx'
+import BabySpinachPage from '../Components/OurProducts/Properties/BabySpinachPage.jsx'
 
 export default function Layout() {
   return (
@@ -24,6 +27,9 @@ export default function Layout() {
                 <Route path='/subscription' element={<SubscriptionPage />}></Route>
                 <Route path='/pay' element={<PaymentPage />}></Route>
                 <Route path='/dash' element={<DashBoard />}></Route>
+                <Route path='/product' element={<OurProductsPage />}></Route>
+                <Route path='/recipe' element={<Recipe />}></Route>
+                <Route path='/babySpinach' element={<BabySpinachPage />}></Route>
             </Routes>
             
         </BrowserRouter>
