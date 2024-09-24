@@ -12,7 +12,7 @@ export default function MealItem({ meal }) {
     cartCtx.addItem({ ...meal, grams,price });
     setShowGramSelector(false);
     toast.success("Item added to cart", {
-      position: "top-right",
+      position: "bottom-right",
       autoClose: 1000,
       hideProgressBar: false,
       closeOnClick: true,
@@ -32,8 +32,9 @@ export default function MealItem({ meal }) {
             <p className="meal-item-price">
              starts at ₹ {meal.price[0]}
             </p>
+            {!showGramSelector && 
             <p className="meal-item-description">{meal.description}</p>
-          </div>
+            }</div>
           <p className="meal-item-actions">
             {showGramSelector ? (
               <GramSelector
@@ -42,7 +43,7 @@ export default function MealItem({ meal }) {
                 onCancel={() => setShowGramSelector(false)}
               />
             ) : (
-              <div className=' flex items-center justify-center space-x-4 rounded-lg'>
+              <div className='flex items-center justify-center space-x-4 rounded-lg'>
               <Button onClick={() => setShowGramSelector(true)}>
                 Add to Cart
               </Button>
