@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom';
 const CheckOut = () => {
   const [cartItems, setCartItems] = useState([]);
   const navigate = useNavigate();
+  const [guest,setGuest] = useState(false);
   useEffect(() => {
     const cart = JSON.parse(localStorage.getItem('cart'));
     console.log(cart)
@@ -186,8 +187,14 @@ const CheckOut = () => {
                 <p className="text-center text-gray-500">Your cart is empty.</p>
               )}
             </div>
-            {cartItems.length > 0 && (
+            
+          </div>
+
+          {/* User Details Form */}
+          <div className="bg-gray-100 p-4 rounded-lg shadow-md relative">
+          {cartItems.length > 0 && (
               <>
+              <h1 className='text-xl font-semibold mb-4 text-gray-700'>Cart Value</h1>
                 <hr className="my-4" />
                 <div className="flex justify-between text-lg font-semibold text-gray-700">
                   <span>Subtotal</span>
@@ -213,10 +220,11 @@ const CheckOut = () => {
                 </div>
               </>
             )}
-          </div>
-
-          {/* User Details Form */}
-          <div className="bg-gray-100 p-4 rounded-lg shadow-md relative">
+            <div className='flex items-center justify-center my-12 space-x-10'>
+            <button className='bg-blue-500 px-4 text-white py-2 rounded-lg font-semibold hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition duration-200'>Login</button>
+            <button className='bg-blue-500 px-4 text-white py-2 rounded-lg font-semibold hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition duration-200'>Check out as guest</button>
+            </div>
+            {guest && <>
             <h3 className="text-xl font-semibold mb-4 text-gray-700">Shipping Information</h3>
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
@@ -386,6 +394,7 @@ const CheckOut = () => {
                 </p>
               )}
             </form>
+            </>}
           </div>
         </div>
       </div>

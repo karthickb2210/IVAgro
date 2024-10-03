@@ -30,7 +30,8 @@ export default function MealItem({ meal }) {
           <div>
             <h3>{meal.name}</h3>
             <p className="meal-item-price">
-             starts at ₹ {meal.price[0]}
+              Call for Price
+             {/* starts at ₹ {meal.price[0]} */}
             </p>
             {!showGramSelector && 
             <p className="meal-item-description">{meal.description}</p>
