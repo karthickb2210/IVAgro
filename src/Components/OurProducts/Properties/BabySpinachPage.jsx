@@ -1,6 +1,9 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import NavBar from '../../HomePage/NavBar/NavBar';
+import img1 from "../img/babys1.jpg"
+import img2 from "../img/babys2.jpg"
+import img3 from "../img/babys3.jpg"
 
 const BabySpinachPage = () => {
   return (
@@ -30,9 +33,9 @@ const BabySpinachPage = () => {
       {/* Image Section */}
       <section className="flex justify-center mb-12">
         <motion.img 
-          src="https://via.placeholder.com/300" 
+          src={img1} 
           alt="Baby Spinach" 
-          className=" rounded-xl shadow-xl hover:scale-105 transition-transform"
+          className="h-[300px] w-[400px] rounded-xl shadow-xl hover:scale-105 transition-transform"
           initial={{ scale: 0.9, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           transition={{ duration: 0.8 }}
@@ -63,9 +66,9 @@ const BabySpinachPage = () => {
           </motion.ul>
         </div>
         <motion.img 
-          src="https://via.placeholder.com/200" 
+          src={img2}
           alt="Nutritional properties of Baby Spinach"
-          className="rounded-xl shadow-lg hover:scale-105 transition-transform"
+          className="h-[200px] w-[200px] rounded-xl shadow-lg hover:scale-105 transition-transform"
           initial={{ opacity: 0, y: 100 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
@@ -75,9 +78,9 @@ const BabySpinachPage = () => {
       {/* Features Section */}
       <section className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center mb-16">
         <motion.img 
-          src="https://via.placeholder.com/200" 
+          src={img3}
           alt="Features of Baby Spinach"
-          className="rounded-xl shadow-lg hover:scale-105 transition-transform"
+          className=" h-[200px] w-[200px] rounded-xl shadow-lg hover:scale-105 transition-transform"
           initial={{ opacity: 0, x: -100 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.8 }}
