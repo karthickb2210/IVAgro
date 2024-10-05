@@ -7,6 +7,9 @@ import CartContext from "../../Shop/store/CartContext";
 import { useDispatch, useSelector } from "react-redux";
 import { login } from "../../../features/User";
 import Topbar from "./Topbar";
+import axios from "axios";
+import axiosInstance from "../../../config/AxiosConfig";
+import { toast } from "react-toastify";
 
 const NavBar = () => {
   const user = useSelector((state) => state.user.value);
@@ -42,6 +45,12 @@ const NavBar = () => {
   };
 
   useEffect(() => {
+    if(localStorage.getItem("name")){
+      dispatch(login({
+        name : localStorage.getItem("name"),
+        pass : localStorage.getItem("pass")
+      }))
+    }
     // Add scroll event listener
     window.addEventListener("scroll", handleScroll);
 
@@ -62,16 +71,35 @@ const NavBar = () => {
   const navigate = useNavigate();
   const [name, setName] = useState();
   const [pass, setPass] = useState();
+  
   const dispatch = useDispatch();
 
+  
+
   const handleLogin = () => {
-    dispatch(
-      login({
-        name: name,
-        pass: pass,
-      })
-    );
-    navigate("/dash");
+    const cred = {
+        name : name,
+        pass : pass
+    }
+    axiosInstance.post("/checkUser",cred).then((res)=>{
+      if(res.data.flag){
+        dispatch(
+          login({
+            name: name,
+            pass: pass,
+          })
+        )
+        localStorage.setItem("name",name);
+        localStorage.setItem("pass",pass)
+        navigate("/dash");
+      }else{
+        toast.warn("Incorrect Username or password");
+      }
+    }).catch((err)=>{
+      console.log(err)
+    })
+   
+     
   };
 
   const handleLogout = () => {
@@ -81,6 +109,8 @@ const NavBar = () => {
         pass: "",
       })
     );
+    localStorage.removeItem("name");
+    localStorage.removeItem("pass")
     navigate("/");
   };
 
@@ -128,12 +158,11 @@ const NavBar = () => {
                 onMouseEnter={() => SetStore(true)}
                 onMouseLeave={() => SetStore(false)}
               >
-                <a
-                  href="#"
+                <div
                   className="hover:text-black transition duration-300"
                 >
                   Store
-                </a>
+                </div>
                 {store && (
                   <div className="absolute bg-white shadow-lg rounded-md w-40">
                     <Link
@@ -142,12 +171,12 @@ const NavBar = () => {
                     >
                       Leafy Greens
                     </Link>
-                    <a
-                      href="#"
+                    <Link
+                      to="/macro-greens"
                       className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                     >
                       Macro Greens
-                    </a>
+                    </Link>
                   </div>
                 )}
               </div>
@@ -156,12 +185,11 @@ const NavBar = () => {
                 onMouseEnter={() => setService(true)}
                 onMouseLeave={() => setService(false)}
               >
-                <a
-                  href="#"
+                <div
                   className="hover:text-black transition duration-300"
                 >
                   Services
-                </a>
+                </div>
                 {service && (
                   <div className="absolute bg-white shadow-lg rounded-md w-40">
                     <Link
@@ -170,12 +198,12 @@ const NavBar = () => {
                     >
                       Tower Lease
                     </Link>
-                    <a
-                      href="#"
+                    <Link
+                      to="/edu-work"
                       className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                     >
                       Educational Workshops
-                    </a>
+                    </Link>
                     <Link
                       to="/farm"
                       className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
@@ -197,26 +225,26 @@ const NavBar = () => {
                 onMouseEnter={() => setBrands(true)}
                 onMouseLeave={() => setBrands(false)}
               >
-                <a
+                <div
                   href="#"
                   className="hover:text-black transition duration-300"
                 >
                   Our Brands
-                </a>
+                </div>
                 {brands && (
                   <div className="absolute bg-white shadow-lg rounded-md w-40">
-                    <a
-                      href="#"
+                    <Link
+                      to="/green-muscle"
                       className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                     >
                       Green Muscle
-                    </a>
-                    <a
-                      href="#"
+                    </Link>
+                    <Link
+                      to="/divine-cotyledons"
                       className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                     >
                       Divine Cotyledons
-                    </a>
+                    </Link>
                   </div>
                 )}
               </div>
@@ -226,26 +254,26 @@ const NavBar = () => {
                 onMouseEnter={() => setAbout(true)}
                 onMouseLeave={() => setAbout(false)}
               >
-                <a
-                  href="#"
+                <Link
+                to="/about-us"
                   className="hover:text-black transition duration-300"
                 >
                   About us
-                </a>
+                </Link>
                 {about && (
                   <div className="absolute bg-white shadow-lg rounded-md w-40">
-                    <a
-                      href="#"
+                    <Link
+                      to="/ourStory"
                       className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                     >
                       Our Story
-                    </a>
-                    <a
-                      href="/product"
+                    </Link>
+                    <Link
+                      to="/product"
                       className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                     >
                       Products
-                    </a>
+                    </Link>
                   </div>
                 )}
               </div>
@@ -296,7 +324,7 @@ const NavBar = () => {
                       >
                         Login
                       </button>
-                      <div>credentials -- Name: test , pass: 123</div>
+                      {/* <div>credentials -- Name: test , pass: 123</div> */}
                     </>
                   )}
                   {user.name && user.name.length > 2 ? (

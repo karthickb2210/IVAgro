@@ -11,6 +11,7 @@ import DashBoard from '../Components/Shop/components/Profile/DashBoard.jsx'
 import OurProductsPage from '../Components/OurProducts/OurProductsPage.jsx'
 import Recipe from '../Components/OurProducts/Recipes/Recipe.jsx'
 import BabySpinachPage from '../Components/OurProducts/Properties/BabySpinachPage.jsx'
+import NotFoundPage from '../Components/HomePage/NotFoundPage/NotFoundPage.jsx'
 
 export default function Layout() {
   return (
@@ -30,12 +31,13 @@ export default function Layout() {
                 <Route path='/product' element={<OurProductsPage />}></Route>
                 <Route path='/recipe' element={<Recipe />}></Route>
                 <Route path='/babySpinach' element={<BabySpinachPage />}></Route>
+                <Route path='*' element={<NotFoundPage />}></Route>
             </Routes>
             
         </BrowserRouter>
-        <footer className="py-2 bg-gray-800 text-white text-center">
+        {/* <footer className="py-2 bg-gray-800 text-white text-center">
         <p>© 2024 IronValley Agronomy - All rights reserved</p>
-      </footer>
+      </footer> */}
     </>
   )
 }
