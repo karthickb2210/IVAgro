@@ -189,7 +189,7 @@ const SubscriptionPage = () => {
             <img src={product.image} alt={product.name} className="w-full h-40 object-cover rounded-md mb-4" />
             <h2 className="text-2xl font-semibold mb-2">{product.name}</h2>
             <p className="mb-4">{product.description}</p>
-            <p className="font-bold mb-4">₹ {product.price[0]}</p>
+            {/* <p className="font-bold mb-4">₹ {product.price[0]}</p> */}
             <button
               onClick={() => handleSubscribeClick(product)}
               className="bg-yellow-500 text-white py-2 px-4 rounded hover:bg-yellow-600 transition"

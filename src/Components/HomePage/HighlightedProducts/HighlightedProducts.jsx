@@ -84,7 +84,7 @@ const HighlightedProducts = () => {
             <div className="p-4">
               <h3 className="text-xl font-bold text-gray-800 mb-2">{product.name}</h3>
               <div className="text-gray-600 mb-4">
-                <p className="text-lg font-semibold text-gray-800 mb-1">₹{product.price}</p>
+                {/* <p className="text-lg font-semibold text-gray-800 mb-1">₹{product.price}</p> */}
                 <p>{product.description}</p>
               </div>
               <div className="mt-4 flex justify-between">
