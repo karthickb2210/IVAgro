@@ -102,8 +102,9 @@ const SubscriptionPage = () => {
     const productToAdd = products.find((product) => product.id === productId);
 
     if (
-      productToAdd &&
-      !subscriptionBox.some((item) => item.product.id === productId)
+      productToAdd 
+      // &&
+      // !subscriptionBox.some((item) => item.product.id === productId)
     ) {
       setSelectedProduct(productToAdd);
       openQuantityModal(); // Ask for quantity
@@ -251,14 +252,18 @@ const SubscriptionPage = () => {
                 </div>
 
                 {/* Right Side: Product Icons */}
-                <div className="w-1/2 p-4 bg-white grid grid-cols-2 gap-4">
-                  {products
-                    .filter(
+
+                {/* filter option for right box */}
+                {/* .filter(
                       (product) =>
                         !subscriptionBox.some(
                           (item) => item.product.id === product.id
                         )
-                    )
+                    ) */}
+
+                <div className="w-1/2 p-4 bg-white grid grid-cols-2 gap-4">
+                  {products
+                    
                     .map((product, index) => (
                       <div
                         key={index}
