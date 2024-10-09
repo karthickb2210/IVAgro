@@ -13,6 +13,7 @@ import Recipe from '../Components/OurProducts/Recipes/Recipe.jsx'
 import BabySpinachPage from '../Components/OurProducts/Properties/BabySpinachPage.jsx'
 import NotFoundPage from '../Components/HomePage/NotFoundPage/NotFoundPage.jsx'
 import SubscriptionCheckOut from '../Components/Subscriptions/SubscriptionCheckOut.jsx'
+import LoginSignup from '../Components/RegisterPage/LoginSignup.jsx'
 
 export default function Layout() {
   return (
@@ -33,6 +34,7 @@ export default function Layout() {
                 <Route path='/recipe' element={<Recipe />}></Route>
                 <Route path='/babySpinach' element={<BabySpinachPage />}></Route>
                 <Route path='/subscription-checkout' element={<SubscriptionCheckOut />}></Route>
+                <Route path='/register' element={<LoginSignup />}></Route>
                 <Route path='*' element={<NotFoundPage />}></Route>
             </Routes>
             

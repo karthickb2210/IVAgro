@@ -116,7 +116,7 @@ const SubscriptionPage = () => {
   };
 
   const handleAddToSubscriptionBox = (quantity) => {
-    if(currBoxSize-quantity<=0){
+    if(currBoxSize-quantity<0){
       toast.warn("Oops!! Your box has no empty space")
       return;
     }
