@@ -100,7 +100,6 @@ const SubscriptionPage = () => {
     event.preventDefault();
     const productId = event.dataTransfer.getData("productId");
     const productToAdd = products.find((product) => product.id === productId);
-
     if (
       productToAdd 
       // &&
@@ -128,12 +127,10 @@ const SubscriptionPage = () => {
     closeQuantityModal();
   };
 
-  const handleRemoveFromSubscriptionBox = (productId) => {
-    const value = subscriptionBox.find((item)=> item.product.id===productId)
+  const handleRemoveFromSubscriptionBox = (productId,quantity) => {
+    const value = subscriptionBox.find((item)=> item.product.id===productId && item.quantity===quantity)
     setCurrBoxSize(currBoxSize+value.quantity)
-    setSubscriptionBox(
-      subscriptionBox.filter((item) => item.product.id !== productId)
-    );
+    setSubscriptionBox(subscriptionBox.filter((item) => !(item.product.id===productId && item.quantity===quantity) ));
   };
 
   return (
@@ -226,7 +223,7 @@ const SubscriptionPage = () => {
                             <button
                               className="text-red-500 mt-2 text-center"
                               onClick={() =>
-                                handleRemoveFromSubscriptionBox(item.product.id)
+                                handleRemoveFromSubscriptionBox(item.product.id,item.quantity)
                               }
                             >
                               Remove
