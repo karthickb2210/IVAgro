@@ -6,6 +6,7 @@ import { toast } from 'react-toastify';
 import { useDispatch, useSelector } from "react-redux";
 import axiosInstance from '../../config/AxiosConfig';
 import { useNavigate } from 'react-router-dom';
+import LeavesLoader from '../Loader/PlantLoader';
 
 
 const LoginSignup = () => {
@@ -13,6 +14,7 @@ const LoginSignup = () => {
   const [loginData, setLoginData] = useState({ name: '', pass: '' });
   const [signupData, setSignupData] = useState({ username: '', mail: '', mobileNumber: '', password: '' });
   const user = useSelector((state) => state.user.value);
+  const [isLoading,setIsLoading] = useState(false)
 
   const toggleForm = () => {
     setIsLogin(!isLogin);
@@ -33,6 +35,7 @@ const LoginSignup = () => {
 
 
   const handleLoginSubmit = (e) => {
+    setIsLoading(true)
     e.preventDefault();
     axiosInstance.post("/checkUser",loginData).then((res)=>{
       if(res.data.flag){
@@ -44,28 +47,40 @@ const LoginSignup = () => {
           })
         )
         localStorage.setItem("name",loginData.name);
-        localStorage.setItem("pass",loginData.pass)
+        localStorage.setItem("pass",loginData.pass);
+        setIsLoading(false)
         navigate("/dash")
       }else{
         toast.warn("Incorrect Username or password");
+        setIsLoading(false)
       }
-    }).catch((err)=>{
+    }
+  ).catch((err)=>{
       console.log(err)
+      setIsLoading(false)
     })
+    
   };
 
   const handleSignupSubmit = (e) => {
+    setIsLoading(true)
     e.preventDefault();
     axiosInstance.post("/register",signupData).then((res)=>{
       console.log(res.data)
+      setIsLoading(false)
     }).catch((err)=>{
       console.log(err)
+      setIsLoading(false)
     })
+    
   };
 
   return (
     <>
     <NavBar />
+    { isLoading ? <>
+      <LeavesLoader />
+    </>: 
     <div className="flex mt-32 justify-center items-center min-h-screen bg-green-50">
       <div className="bg-white shadow-lg rounded-lg p-8 max-w-md w-full overflow-hidden relative">
         {/* Add some decorative plant illustrations */}
@@ -193,7 +208,9 @@ const LoginSignup = () => {
         </AnimatePresence>
       </div>
     </div>
+    }
     </>
+  
   );
 };
 

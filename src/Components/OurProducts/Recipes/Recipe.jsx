@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 
-const Recipe = () => {
+const Recipe = ({data}) => {
   const [activeTab, setActiveTab] = useState("ingredients");
+  console.log(data)
 
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-100 px-4 md:px-0">
@@ -11,28 +12,27 @@ const Recipe = () => {
         <div className="md:flex">
           <div className="relative p-4 w-full md:w-1/2">
             <motion.img
-              src="https://via.placeholder.com/500" // Replace with actual image URL
+              src={data.image} // Replace with actual image URL
               alt="Shakshuka With Feta"
               className="rounded-lg w-full h-full object-cover transform hover:scale-105 transition-transform duration-300 ease-in-out"
             />
-            <div className="absolute top-4 left-4 text-white text-center">
+            <div className="absolute top-8 left-6 text-white text-center">
               <motion.div
                 whileHover={{ scale: 1.1 }}
-                className="bg-yellow-400 p-2 rounded-full mb-2"
+                className="bg-yellow-400 p-1 px-2 rounded-full mb-2"
               >
-                <span className="block text-lg font-bold">50</span>
-                <span>MINS</span>
+                <span className="block text-lg font-bold">{data.time} mins</span>
               </motion.div>
               <motion.div
                 whileHover={{ scale: 1.1 }}
-                className="bg-yellow-400 p-2 rounded-full"
+                className="bg-yellow-400 p-1 px-2 rounded-full"
               >
-                <span className="block text-lg font-bold">4</span>
-                <span>SERVINGS</span>
+                <span className="block text-lg font-bold">{data.servings} Servings</span>
+                <span></span>
               </motion.div>
             </div>
-            <h2 className="absolute bottom-4 left-4 text-white text-2xl font-bold">
-              Shakshuka With Feta
+            <h2 className="absolute bottom-5 bg-black left-6 text-white bg-opacity-45 px-6 rounded-2xl text-2xl font-bold">
+              {data.name}
             </h2>
             {/* <p className="absolute bottom-1 left-4 text-white text-sm">
               Lorem ipsum dolor sit amet, consectetur adipiscing elit.
@@ -73,24 +73,25 @@ const Recipe = () => {
               className="mt-4"
             >
               {activeTab === "ingredients" && (
-                <div>
-                  <p>1. Ingredient 1</p>
-                  <p>2. Ingredient 2</p>
-                  <p>3. Ingredient 3</p>
-                  <p>4. Ingredient 4</p>
-                </div>
-              )}
-              {activeTab === "preparation" && (
-                <div>
-                  <h3 className="font-bold text-lg">Step 1</h3>
-                  <p>Heat oven to 375 degrees.</p>
-                  <h3 className="font-bold text-lg mt-4">Step 2</h3>
-                  <p>
-                    Heat oil in a large skillet over medium-low heat. Add onion
-                    and bell pepper. Cook until soft, about 20 minutes.
-                  </p>
-                </div>
-              )}
+  <div className="flex flex-col  justify-center gap-4 my-6">
+    {data.ingredients.map((item, index) => (
+      <div key={index} className="bg-gray-100 rounded-lg shadow-lg p-2 min-w-[120px] text-center hover:scale-105 transition-transform duration-300">
+        <p className="text-sm text-start font-medium text-gray-800">● {item}</p>
+      </div>
+    ))}
+  </div>
+)}
+{activeTab === "preparation" && (
+        <div>
+        {data.steps.map((item, index) => (
+  <div key={index} className="mb-2 p-1 border-l-4 border-green-500 bg-gray-50 rounded-md">
+    <p className=" hover:scale-105 transition duration-300 text-sm ml-2 font-semibold text-gray-800">{index + 1}. {item}</p>
+  </div>
+))}
+
+
+        </div>
+      )}
             </motion.div>
           </div>
         </div>
