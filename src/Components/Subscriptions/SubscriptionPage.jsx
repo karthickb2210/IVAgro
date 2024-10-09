@@ -1,16 +1,35 @@
 import React, { useState } from "react";
 import NavBar from "../HomePage/NavBar/NavBar";
 import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
 const SubscriptionPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [subscriptionBox, setSubscriptionBox] = useState([]); // Products in the subscription box
   const [quantityModalOpen, setQuantityModalOpen] = useState(false);
-  const [quantity, setQuantity] = useState(250);
+  const [subtype, setSubtype] = useState(false);
+  
+  const [currBoxSize,setCurrBoxSize] = useState(0);
 
-  const handleCheckout = () =>{
-    sessionStorage.setItem('subbox', JSON.stringify(subscriptionBox));
+  const [subscriptionType, setSubscriptionType] = useState('');
+  const subscriptiontypes = ['Weekly', 'Bi-Weekly', 'Fort-Nightly','Monthly'];
+
+  const [boxSize,setBoxSize] = useState('')
+  const boxSizes = [100,250,500];
+
+  const handleSelectBoxSize = (value) =>{
+    setBoxSize(value)
+    setCurrBoxSize(value)
   }
+
+  const handleSelect = (value) => {
+    setSubscriptionType(value);
+  };
+
+  const handleCheckout = () => {
+    sessionStorage.setItem("boxsize",boxSize);
+    sessionStorage.setItem("subbox", JSON.stringify(subscriptionBox));
+  };
 
   const products = [
     {
@@ -64,6 +83,7 @@ const SubscriptionPage = () => {
     setIsModalOpen(false);
   };
 
+
   const openQuantityModal = () => {
     setQuantityModalOpen(true);
   };
@@ -95,6 +115,11 @@ const SubscriptionPage = () => {
   };
 
   const handleAddToSubscriptionBox = (quantity) => {
+    if(currBoxSize-quantity<=0){
+      toast.warn("Oops!! Your box has no empty space")
+      return;
+    }
+    setCurrBoxSize(currBoxSize-quantity)
     setSubscriptionBox([
       ...subscriptionBox,
       { product: selectedProduct, quantity },
@@ -103,6 +128,8 @@ const SubscriptionPage = () => {
   };
 
   const handleRemoveFromSubscriptionBox = (productId) => {
+    const value = subscriptionBox.find((item)=> item.product.id===productId)
+    setCurrBoxSize(currBoxSize+value.quantity)
     setSubscriptionBox(
       subscriptionBox.filter((item) => item.product.id !== productId)
     );
@@ -123,7 +150,7 @@ const SubscriptionPage = () => {
             your kitchen!
           </p>
           <button
-            onClick={() => openModal(products[0])}
+            onClick={() => setSubtype(true)}
             className="bg-yellow-500 justify-center items-center py-2 px-6 text-lg rounded hover:bg-yellow-600 transition"
           >
             Subscribe Now
@@ -143,7 +170,10 @@ const SubscriptionPage = () => {
               <p className="mb-4">{product.description}</p>
               <button
                 className="bg-yellow-500 text-white py-2 px-4 rounded hover:bg-yellow-600 transition"
-                onClick={() => openModal(product)}
+                onClick={
+                  () => setSubtype(true)
+                  // () => openModal(product)
+                }
               >
                 Subscribe Now
               </button>
@@ -174,13 +204,14 @@ const SubscriptionPage = () => {
                 >
                   <div className="flex flex-col h-full">
                     <h3 className="text-xl font-bold mb-4">Subscription Box</h3>
+                    <h2 className="text-md mb-4">Current Space in box -  <b>{currBoxSize} grams </b></h2>
                     {subscriptionBox.length === 0 ? (
                       <p>
                         Please drag and put the items you want to subscribe in
-                        this box
+                        this box in assorted way
                       </p>
                     ) : (
-                      <div className="grid grid-cols-3 gap-2 flex">
+                      <div className="grid grid-cols-3 gap-2">
                         {subscriptionBox.map((item, index) => (
                           <div key={index} className="border p-2 rounded">
                             <img
@@ -206,10 +237,13 @@ const SubscriptionPage = () => {
                     {/* Checkout Button */}
                     {subscriptionBox.length > 0 && (
                       <div className="mt-4">
-                      <Link to={`/subscription-checkout`}>
-                        <button onClick={handleCheckout} className="bg-green-500 text-white py-2 px-6 rounded hover:bg-green-600 transition">
-                          Checkout
-                        </button>
+                        <Link to={`/subscription-checkout`}>
+                          <button
+                            onClick={handleCheckout}
+                            className="bg-green-500 text-white py-2 px-6 rounded hover:bg-green-600 transition"
+                          >
+                            Checkout
+                          </button>
                         </Link>
                       </div>
                     )}
@@ -256,22 +290,121 @@ const SubscriptionPage = () => {
                 Select Quantity for {selectedProduct.name}
               </h3>
               <div className="flex justify-around">
+              <div className="flex flex-col space-y-4">
                 <button
                   className="bg-green-400 hover:bg-green-700 text-white py-2 px-4 rounded"
-                  onClick={() => handleAddToSubscriptionBox(250)}
+                  onClick={() => handleAddToSubscriptionBox(30)}
                 >
-                  250g
+                  30g
                 </button>
                 <button
                   className="bg-green-400 hover:bg-green-700 text-white py-2 px-4 rounded"
-                  onClick={() => handleAddToSubscriptionBox(500)}
+                  onClick={() => handleAddToSubscriptionBox(40)}
                 >
-                  500g
+                  40g
                 </button>
+                <button
+                  className="bg-green-400 hover:bg-green-700 text-white py-2 px-4 rounded"
+                  onClick={() => handleAddToSubscriptionBox(50)}
+                >
+                  50g
+                </button>
+                <button
+                  className="bg-green-400 hover:bg-green-700 text-white py-2 px-4 rounded"
+                  onClick={() => handleAddToSubscriptionBox(60)}
+                >
+                  60g
+                </button>
+                </div>
+                <div className="flex flex-col space-y-4">
+                <button
+                  className="bg-green-400 hover:bg-green-700 text-white py-2 px-4 rounded"
+                  onClick={() => handleAddToSubscriptionBox(70)}
+                >
+                  70g
+                </button>
+                <button
+                  className="bg-green-400 hover:bg-green-700 text-white py-2 px-4 rounded"
+                  onClick={() => handleAddToSubscriptionBox(80)}
+                >
+                  80g
+                </button>
+                <button
+                  className="bg-green-400 hover:bg-green-700 text-white py-2 px-4 rounded"
+                  onClick={() => handleAddToSubscriptionBox(90)}
+                >
+                  90g
+                </button>
+                <button
+                  className="bg-green-400 hover:bg-green-700 text-white py-2 px-4 rounded"
+                  onClick={() => handleAddToSubscriptionBox(100)}
+                >
+                  100g
+                </button>
+                </div>
               </div>
               <button
                 className="mt-4 justify-center items-center bg-gray-500 text-white py-2 px-4 rounded"
                 onClick={closeQuantityModal}
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        )}
+
+        {subtype && (
+          <div className="fixed z-40 inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+            <div className="bg-white flex flex-col p-6 rounded-lg">
+              <h3 className="text-xl font-semibold mb-4">
+                Select the subscription type
+              </h3>
+              <div className="flex justify-around space-x-8">
+              {subscriptiontypes.map((substype) => (
+        <div
+          key={subtype}
+          onClick={() => handleSelect(substype)}
+          className={`cursor-pointer p-3 border border-black rounded-lg transition-all duration-400 ${
+            subscriptionType === substype ? 'bg-green-400 text-white' : 'bg-white text-black'
+          }`}
+        >
+          {substype}
+        </div>
+      ))}
+              </div>
+
+              <div className="my-6">
+                <h3 className="text-xl font-semibold mb-4">
+                  Select the Size of the Box
+                </h3>
+                <div className="flex justify-around space-x-8">
+                {boxSizes.map((size) => (
+        <div
+          key={size}
+          onClick={() => handleSelectBoxSize(size)}
+          className={`cursor-pointer p-4 border border-black rounded-lg transition-all duration-200 ${
+            boxSize === size ? 'bg-green-400 text-white' : 'bg-white text-black'
+          }`}
+        >
+          {size} grams
+        </div>
+      ))}
+                </div>
+              </div>
+              {boxSize && subscriptionType && 
+              <button
+                className="mt-4 justify-center items-center bg-green-400 text-white py-2 px-4 rounded"
+                onClick={()=>{
+                  setSubtype(false)
+                  setIsModalOpen(true)
+                }}
+              >
+                Proceed
+              </button>
+              }
+              <button
+                className="mt-4 justify-center items-center bg-gray-500 text-white py-2 px-4 rounded"
+                onClick={()=>setSubtype(false)}
               >
                 Cancel
               </button>

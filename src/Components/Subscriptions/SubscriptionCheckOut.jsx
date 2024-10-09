@@ -18,7 +18,7 @@ const SubscriptionCheckOut= () => {
     }
   }, []);
 
-  const prices = [299,399];
+  const prices = [199,299,399];
 
   const [userDetails, setUserDetails] = useState({
     name: '',
@@ -103,11 +103,17 @@ const SubscriptionCheckOut= () => {
   //   },2000);
   //   // Add logic to handle order placement
   // };
+  
+  const boxSize = sessionStorage.getItem("boxsize");
 
-  const totalAmount = cartItems.reduce(
-    (totalPrice, item) => totalPrice + (item.quantity==250 ? 299 : 399 ) ,
-    0
-  );
+  let totalAmount = 0;
+  if(boxSize==100){
+    totalAmount = prices[0];
+  }else if(boxSize==250){
+    totalAmount = prices[1];
+  }else{
+    totalAmount = prices[2];
+  }
 
   // Calculate shipping charge
   const shippingCharge = totalAmount < 500 ? 0 : 0;
@@ -180,12 +186,12 @@ const SubscriptionCheckOut= () => {
                   <div className=' justify-self-start content-center'>
                     <div className="flex flex-col ">
                       <h4 className="font-medium text-gray-800">{item.product.name}</h4>
-                      <span className="text-sm text-gray-500">Weight: {item.quantity}</span>
+                      {/* <span className="text-sm text-gray-500">Weight: {item.quantity}</span> */}
                       <span className="text-sm text-gray-500">Package: weekly </span>
                     </div>
                     </div>
-                    <span className="text-lg font-semibold text-gray-700 justify-self-end  content-center">
-                    ₹ { item.quantity==250 ? prices[0] : prices[1] }  
+                    <span className="text-md font-semibold text-gray-700 justify-self-end  content-center">
+                     { item.quantity } grams  
                     </span>
                   </div>
                 ))

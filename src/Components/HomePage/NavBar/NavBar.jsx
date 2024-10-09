@@ -45,11 +45,11 @@ const NavBar = () => {
   };
 
   useEffect(() => {
-    axiosInstance.get("/testMessage").then((res)=>{
-      console.log(res)
-    }).catch((err)=>{
-      console.log(err)
-    })
+    // axiosInstance.get("/testMessage").then((res)=>{
+    //   console.log(res)
+    // }).catch((err)=>{
+    //   console.log(err)
+    // })
     if(localStorage.getItem("name")){
       dispatch(login({
         name : localStorage.getItem("name"),
