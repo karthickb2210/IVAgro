@@ -3,7 +3,7 @@ import {FaInstagram,FaWhatsapp,FaFacebook} from "react-icons/fa"
 export default function Topbar() {
   return (
     <>
-      <div className="bg-green-600 text-white py-2">
+      <div className="bg-teal-950 text-white py-2">
         <div className="max-w-7xl mx-auto px-4 flex justify-between items-center">
 
 

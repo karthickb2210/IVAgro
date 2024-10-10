@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import NavBar from "../HomePage/NavBar/NavBar";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
+import products from "./Products"
+
 const SubscriptionPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
@@ -31,48 +33,7 @@ const SubscriptionPage = () => {
     sessionStorage.setItem("subbox", JSON.stringify(subscriptionBox));
   };
 
-  const products = [
-    {
-      id: "m1",
-      name: "Baby Spinach",
-      description:
-        "Baby Spinach is high in vitamin K which serves several function in your body but it is best known for its role in blood clotting.",
-      image:
-        "https://t3.ftcdn.net/jpg/08/07/98/62/240_F_807986222_KjBaQUDhq5lvjb4FI3mU4Y7ViaHcTTeN.jpg",
-    },
-    {
-      id: "m5",
-      name: "Lettuce",
-      description:
-        "Lettuce is an excellent source of beta carotene (Vitamin A) which is needed for healthy skin, bones and eyes.",
-      image:
-        "https://t4.ftcdn.net/jpg/02/80/03/99/240_F_280039907_Ny5g14FK1JQU59POwyU5eJj8ZaQNjmQw.jpg",
-    },
-    {
-      id: "m7",
-      name: "Pak Choi",
-      description:
-        "It's full of cancer fighting compounds such as vitamin C and vitamin E, beta-carotene, folate and selenium.",
-      image:
-        "https://t3.ftcdn.net/jpg/03/92/37/26/240_F_392372698_06CR5RnRAQLHY7uzkqS9G6bfDeDPuuzk.jpg",
-    },
-    {
-      id: "m8",
-      name: "Kale",
-      description:
-        "It is a nutrition superstar due to the amounts of vitamin A, B6, C, K, folate, fiber, carotenoids, and manganese it contains.",
-      image:
-        "https://t3.ftcdn.net/jpg/02/30/97/16/240_F_230971608_hsf90qBGPcmUuv3m0LkWPAuI5i5PnQmL.jpg",
-    },
-    {
-      id: "m9",
-      name: "Basil",
-      description:
-        "It provides some macronutrients such as calcium and vitamin K, as well as a range of antioxidants.",
-      image:
-        "https://t3.ftcdn.net/jpg/01/48/71/76/240_F_148717694_VUiPGqDdJ6gOuHKDr6hAvAmI5qdpKZef.jpg",
-    },
-  ];
+  
 
   const openModal = (product) => {
     setSelectedProduct(product);
@@ -138,7 +99,7 @@ const SubscriptionPage = () => {
       <NavBar />
       <div className=" bg-white text-black p-6 mt-36">
         {/* Hero Section */}
-        <section className="bg-green-500 text-white p-10 mb-10 rounded-lg text-center">
+        <section className="bg-teal-950 text-white p-10 mb-10 rounded-lg text-center">
           <h1 className="text-5xl font-bold mb-4">
             Fresh Herbs Delivered to Your Doorstep
           </h1>
@@ -149,7 +110,7 @@ const SubscriptionPage = () => {
           </p>
           <button
             onClick={() => setSubtype(true)}
-            className="bg-yellow-500 justify-center items-center py-2 px-6 text-lg rounded hover:bg-yellow-600 transition"
+            className="bg-amber-500 justify-center items-center py-2 px-6 text-lg rounded hover:bg-amber-700 transition"
           >
             Subscribe Now
           </button>
@@ -158,16 +119,16 @@ const SubscriptionPage = () => {
         {/* Products Section */}
         <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-10">
           {products.map((product, index) => (
-            <div key={index} className="bg-green-100 p-6 rounded-lg shadow-md">
+            <div key={index} className="bg-amber-100 p-6 rounded-lg shadow-md">
               <img
                 src={product.image}
                 alt={product.name}
-                className="w-full h-40 object-cover rounded-md mb-4"
+                className="w-full h-48  object-cover rounded-md mb-4"
               />
               <h2 className="text-2xl font-semibold mb-2">{product.name}</h2>
               <p className="mb-4">{product.description}</p>
               <button
-                className="bg-yellow-500 text-white py-2 px-4 rounded hover:bg-yellow-600 transition"
+                className="bg-amber-500 text-white py-2 px-4 rounded hover:bg-amber-700 transition"
                 onClick={
                   () => setSubtype(true)
                   // () => openModal(product)
@@ -238,7 +199,7 @@ const SubscriptionPage = () => {
                         <Link to={`/subscription-checkout`}>
                           <button
                             onClick={handleCheckout}
-                            className="bg-green-500 text-white py-2 px-6 rounded hover:bg-green-600 transition"
+                            className="bg-teal-950 text-white py-2 px-6 rounded hover:bg-teal-600 transition"
                           >
                             Checkout
                           </button>
@@ -294,25 +255,25 @@ const SubscriptionPage = () => {
               <div className="flex justify-around">
               <div className="flex flex-col space-y-4">
                 <button
-                  className="bg-green-400 hover:bg-green-700 text-white py-2 px-4 rounded"
+                  className="bg-teal-950 hover:bg-teal-700 text-white py-2 px-4 rounded"
                   onClick={() => handleAddToSubscriptionBox(30)}
                 >
                   30g
                 </button>
                 <button
-                  className="bg-green-400 hover:bg-green-700 text-white py-2 px-4 rounded"
+                  className="bg-teal-950 hover:bg-teal-700 text-white py-2 px-4 rounded"
                   onClick={() => handleAddToSubscriptionBox(40)}
                 >
                   40g
                 </button>
                 <button
-                  className="bg-green-400 hover:bg-green-700 text-white py-2 px-4 rounded"
+                  className="bg-teal-950 hover:bg-teal-700 text-white py-2 px-4 rounded"
                   onClick={() => handleAddToSubscriptionBox(50)}
                 >
                   50g
                 </button>
                 <button
-                  className="bg-green-400 hover:bg-green-700 text-white py-2 px-4 rounded"
+                  className="bg-teal-950 hover:bg-teal-700 text-white py-2 px-4 rounded"
                   onClick={() => handleAddToSubscriptionBox(60)}
                 >
                   60g
@@ -320,25 +281,25 @@ const SubscriptionPage = () => {
                 </div>
                 <div className="flex flex-col space-y-4">
                 <button
-                  className="bg-green-400 hover:bg-green-700 text-white py-2 px-4 rounded"
+                  className="bg-teal-950 hover:bg-teal-700 text-white py-2 px-4 rounded"
                   onClick={() => handleAddToSubscriptionBox(70)}
                 >
                   70g
                 </button>
                 <button
-                  className="bg-green-400 hover:bg-green-700 text-white py-2 px-4 rounded"
+                  className="bg-teal-950 hover:bg-teal-700 text-white py-2 px-4 rounded"
                   onClick={() => handleAddToSubscriptionBox(80)}
                 >
                   80g
                 </button>
                 <button
-                  className="bg-green-400 hover:bg-green-700 text-white py-2 px-4 rounded"
+                  className="bg-teal-950 hover:bg-teal-700 text-white py-2 px-4 rounded"
                   onClick={() => handleAddToSubscriptionBox(90)}
                 >
                   90g
                 </button>
                 <button
-                  className="bg-green-400 hover:bg-green-700 text-white py-2 px-4 rounded"
+                  className="bg-teal-950 hover:bg-teal-700 text-white py-2 px-4 rounded"
                   onClick={() => handleAddToSubscriptionBox(100)}
                 >
                   100g
@@ -346,7 +307,7 @@ const SubscriptionPage = () => {
                 </div>
               </div>
               <button
-                className="mt-4 justify-center items-center bg-gray-500 text-white py-2 px-4 rounded"
+                className="mt-4 justify-center items-center bg-red-500 text-white py-2 px-4 rounded"
                 onClick={closeQuantityModal}
               >
                 Cancel
@@ -367,7 +328,7 @@ const SubscriptionPage = () => {
           key={subtype}
           onClick={() => handleSelect(substype)}
           className={`cursor-pointer p-3 border border-black rounded-lg transition-all duration-400 ${
-            subscriptionType === substype ? 'bg-green-400 text-white' : 'bg-white text-black'
+            subscriptionType === substype ? 'bg-teal-950 text-white' : 'bg-white text-black'
           }`}
         >
           {substype}
@@ -385,7 +346,7 @@ const SubscriptionPage = () => {
           key={size}
           onClick={() => handleSelectBoxSize(size)}
           className={`cursor-pointer p-4 border border-black rounded-lg transition-all duration-200 ${
-            boxSize === size ? 'bg-green-400 text-white' : 'bg-white text-black'
+            boxSize === size ? 'bg-teal-950 text-white' : 'bg-white text-black'
           }`}
         >
           {size} grams
@@ -395,7 +356,7 @@ const SubscriptionPage = () => {
               </div>
               {boxSize && subscriptionType && 
               <button
-                className="mt-4 justify-center items-center bg-green-400 text-white py-2 px-4 rounded"
+                className="mt-4 justify-center items-center bg-teal-950 text-white py-2 px-4 rounded"
                 onClick={()=>{
                   setSubtype(false)
                   setIsModalOpen(true)
@@ -405,7 +366,7 @@ const SubscriptionPage = () => {
               </button>
               }
               <button
-                className="mt-4 justify-center items-center bg-gray-500 text-white py-2 px-4 rounded"
+                className="mt-4 justify-center items-center bg-red-500 text-white py-2 px-4 rounded"
                 onClick={()=>setSubtype(false)}
               >
                 Cancel

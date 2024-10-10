@@ -13,6 +13,11 @@ import { toast } from "react-toastify";
 
 const NavBar = () => {
   const user = useSelector((state) => state.user.value);
+  const [isStoreOpen, setIsStoreOpen] = useState(false);
+  const [isServicesOpen, setIsServicesOpen] = useState(false);
+  const [isBrandsOpen, setIsBrandsOpen] = useState(false);
+  const [isAboutOpen, setIsAboutOpen] = useState(false);
+
   const [store, SetStore] = useState(false);
   const [service, setService] = useState(false);
   const [brands, setBrands] = useState(false);
@@ -50,11 +55,13 @@ const NavBar = () => {
     // }).catch((err)=>{
     //   console.log(err)
     // })
-    if(localStorage.getItem("name")){
-      dispatch(login({
-        name : localStorage.getItem("name"),
-        pass : localStorage.getItem("pass")
-      }))
+    if (localStorage.getItem("name")) {
+      dispatch(
+        login({
+          name: localStorage.getItem("name"),
+          pass: localStorage.getItem("pass"),
+        })
+      );
     }
     // Add scroll event listener
     window.addEventListener("scroll", handleScroll);
@@ -76,35 +83,34 @@ const NavBar = () => {
   const navigate = useNavigate();
   const [name, setName] = useState();
   const [pass, setPass] = useState();
-  
-  const dispatch = useDispatch();
 
-  
+  const dispatch = useDispatch();
 
   const handleLogin = () => {
     const cred = {
-        name : name,
-        pass : pass
-    }
-    axiosInstance.post("/checkUser",cred).then((res)=>{
-      if(res.data.flag){
-        dispatch(
-          login({
-            name: name,
-            pass: pass,
-          })
-        )
-        localStorage.setItem("name",name);
-        localStorage.setItem("pass",pass)
-        navigate("/dash");
-      }else{
-        toast.warn("Incorrect Username or password");
-      }
-    }).catch((err)=>{
-      console.log(err)
-    })
-   
-     
+      name: name,
+      pass: pass,
+    };
+    axiosInstance
+      .post("/checkUser", cred)
+      .then((res) => {
+        if (res.data.flag) {
+          dispatch(
+            login({
+              name: name,
+              pass: pass,
+            })
+          );
+          localStorage.setItem("name", name);
+          localStorage.setItem("pass", pass);
+          navigate("/dash");
+        } else {
+          toast.warn("Incorrect Username or password");
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   const handleLogout = () => {
@@ -115,7 +121,7 @@ const NavBar = () => {
       })
     );
     localStorage.removeItem("name");
-    localStorage.removeItem("pass")
+    localStorage.removeItem("pass");
     navigate("/");
   };
 
@@ -133,8 +139,8 @@ const NavBar = () => {
         <div className="w-full mx-auto px-4 flex items-center justify-between">
           {/* Logo */}
           <div className="flex items-center space-x-4">
-          <Link to={`/`}>
-            <img src={logo} alt="Logo" className="w-16 h-26 rounded-md" />
+            <Link to={`/`}>
+              <img src={logo} alt="Logo" className="w-16 h-26 rounded-md" />
             </Link>
           </div>
           <div className="flex flex-col justify-center items-center space-y-4 flex-grow ">
@@ -165,9 +171,7 @@ const NavBar = () => {
                 onMouseEnter={() => SetStore(true)}
                 onMouseLeave={() => SetStore(false)}
               >
-                <div
-                  className="hover:text-black transition duration-300"
-                >
+                <div className="hover:text-black transition duration-300">
                   Store
                 </div>
                 {store && (
@@ -192,9 +196,7 @@ const NavBar = () => {
                 onMouseEnter={() => setService(true)}
                 onMouseLeave={() => setService(false)}
               >
-                <div
-                  className="hover:text-black transition duration-300"
-                >
+                <div className="hover:text-black transition duration-300">
                   Services
                 </div>
                 {service && (
@@ -232,10 +234,7 @@ const NavBar = () => {
                 onMouseEnter={() => setBrands(true)}
                 onMouseLeave={() => setBrands(false)}
               >
-                <div
-                  href="#"
-                  className="hover:text-black transition duration-300"
-                >
+                <div className="hover:text-black transition duration-300">
                   Our Brands
                 </div>
                 {brands && (
@@ -262,7 +261,7 @@ const NavBar = () => {
                 onMouseLeave={() => setAbout(false)}
               >
                 <Link
-                to="/about-us"
+                  to="/about-us"
                   className="hover:text-black transition duration-300"
                 >
                   About us
@@ -342,10 +341,10 @@ const NavBar = () => {
                       Logout
                     </button>
                   ) : (
-                    <Link to='/register'>
-                    <button className="w-full bg-gray-300 text-gray-700 py-2 rounded-md mt-2 hover:bg-gray-400">
-                      New User
-                    </button>
+                    <Link to="/register">
+                      <button className="w-full bg-gray-300 text-gray-700 py-2 rounded-md mt-2 hover:bg-gray-400">
+                        New User
+                      </button>
                     </Link>
                   )}
                 </div>
@@ -365,28 +364,132 @@ const NavBar = () => {
         </div>
 
         {/* Mobile menu items */}
-        {isMobileMenuOpen && (
-          <div className="lg:hidden mt-4 space-y-4">
-            <Link to="/" className="block text-center text-gray-600">
-              Home
-            </Link>
-            <Link to="/store" className="block text-center text-gray-600">
-              Store
-            </Link>
-            <Link to="/towerRent" className="block text-center text-gray-600">
-              Services
-            </Link>
-            <Link to="/product" className="block text-center text-gray-600">
-              Products
-            </Link>
-            <Link
-              to="/subscription"
-              className="block text-center text-gray-600"
+         {isMobileMenuOpen && (
+        <div className="lg:hidden mt-4 space-y-4">
+          {/* Home */}
+          <Link to="/" className="block text-center text-gray-600">
+            Home
+          </Link>
+
+          {/* Store Menu */}
+          <div className="block text-center text-gray-600">
+            <p
+              className="cursor-pointer"
+              onClick={() => setIsStoreOpen(!isStoreOpen)}
             >
-              Subscription
-            </Link>
+              Store
+            </p>
+            {isStoreOpen && (
+              <div className="space-y-2 pl-4 bg-gray-100">
+                <Link
+                  to="/store"
+                  className="block text-gray-500 py-2"
+                >
+                  Leafy Greens
+                </Link>
+                <Link
+                  to="/macro-greens"
+                  className="block text-gray-500 py-2"
+                >
+                  Macro Greens
+                </Link>
+              </div>
+            )}
           </div>
-        )}
+
+          {/* Services Menu */}
+          <div className="block text-center text-gray-600">
+            <p
+              className="cursor-pointer"
+              onClick={() => setIsServicesOpen(!isServicesOpen)}
+            >
+              Services
+            </p>
+            {isServicesOpen && (
+              <div className="space-y-2 pl-4 bg-gray-100">
+                <Link
+                  to="/towerRent"
+                  className="block text-gray-500 py-2"
+                >
+                  Tower Lease
+                </Link>
+                <Link
+                  to="/edu-work"
+                  className="block text-gray-500 py-2"
+                >
+                  Educational Workshops
+                </Link>
+                <Link
+                  to="/farm"
+                  className="block text-gray-500 py-2"
+                >
+                  Farm House
+                </Link>
+                <Link
+                  to="/subscription"
+                  className="block text-gray-500 py-2"
+                >
+                  Subscription
+                </Link>
+              </div>
+            )}
+          </div>
+
+          {/* Our Brands Menu */}
+          <div className="block text-center text-gray-600">
+            <p
+              className="cursor-pointer"
+              onClick={() => setIsBrandsOpen(!isBrandsOpen)}
+            >
+              Our Brands
+            </p>
+            {isBrandsOpen && (
+              <div className="space-y-2 pl-4 bg-gray-100">
+                <Link
+                  to="/green-muscle"
+                  className="block text-gray-500 py-2"
+                >
+                  Green Muscle
+                </Link>
+                <Link
+                  to="/divine-cotyledons"
+                  className="block text-gray-500 py-2"
+                >
+                  Divine Cotyledons
+                </Link>
+              </div>
+            )}
+          </div>
+
+          {/* About Us Menu */}
+          <div className="block text-center text-gray-600">
+            <p
+              className="cursor-pointer"
+              onClick={() => setIsAboutOpen(!isAboutOpen)}
+            >
+              About Us
+            </p>
+            {isAboutOpen && (
+              <div className="space-y-2 pl-4 bg-gray-100">
+                <Link to="/our-story" className="block text-gray-500 py-2">
+                  Our Story
+                </Link>
+                <Link to="/product" className="block text-center text-gray-600">
+            Products
+          </Link>
+              </div>
+            )}
+          </div>
+
+          {/* Products */}
+         
+
+          {/* Subscription */}
+         
+        </div>
+      )}
+
+
       </nav>
     </header>
   );
