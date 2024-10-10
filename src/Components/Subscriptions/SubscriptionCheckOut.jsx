@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import NavBar from "../HomePage/NavBar/NavBar"
 import axiosInstance from '../../config/AxiosConfig';
+import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
 
 
 const SubscriptionCheckOut= () => {
@@ -89,10 +91,6 @@ const SubscriptionCheckOut= () => {
     setAddressSuggestions([]);
   };
 
-  const [amount, setAmount] = useState(0);
-
-  
-
   // const handleSubmit = (e) => {
   //   e.preventDefault();
   //   console.log('Order Placed:', userDetails);
@@ -119,6 +117,8 @@ const SubscriptionCheckOut= () => {
   const shippingCharge = totalAmount < 500 ? 0 : 0;
   const finalAmount = totalAmount + shippingCharge;
 
+  const navigate = useNavigate();
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -135,20 +135,48 @@ const SubscriptionCheckOut= () => {
         image: 'https://your-logo-url.com/logo.png',
         order_id: data.id,
         handler: function (response) {
-          alert("Payment ID: " + response.razorpay_payment_id);
-          alert("Order ID: " + response.razorpay_order_id);
-          alert("Signature: " + response.razorpay_signature);
+
+          const razorpay_creds = {
+            "razor_pay_order_id" : response.razorpay_order_id,
+             "razorpay_payment_id" : response.razorpay_payment_id,
+            "razorpay_signature" : response.razorpay_signature
+          }
 
           // Verify the payment on the backend
-          axiosInstance.post('/verify-payment', {
-            razorpay_order_id: response.razorpay_order_id,
-            razorpay_payment_id: response.razorpay_payment_id,
-            razorpay_signature: response.razorpay_signature,
-          }).then((res) => {
-            alert('Payment verified successfully');
+          axiosInstance.post('/verify-payment', razorpay_creds).then((res) => {
+            if(res.data){
+              var stockDeductions = {
+                "babySpinachQuantityDetections" : 0,
+                "pakChoiQuantityDetections" : 0,
+                "basilQuantityDetections" :0,
+                "kaleQuantityDetections" :0,
+                "lettuceQuantityDetections":0
+              }
+              cartItems.map((item)=>{
+                if(item.product.id==="m1"){
+                  stockDeductions.babySpinachQuantityDetections+=item.quantity
+                }else if(item.product.id==="m7"){
+                  stockDeductions.pakChoiQuantityDetections+=item.quantity
+                }else if(item.product.id==="m8"){
+                  stockDeductions.kaleQuantityDetections+=item.quantity
+                }else if(item.product.id==="m5"){
+                  stockDeductions.lettuceQuantityDetections+=item.quantity
+                }else{
+                  stockDeductions.basilQuantityDetections+=item.quantity
+                }
+              })
+              console.log(stockDeductions)
+              axiosInstance.post("/updateStocks",stockDeductions).then((res)=>{
+                console.log(res)
+                toast.success("Subscription added succesfully");
+                navigate("/")
+              }).catch((err)=>{
+                console.log(err)
+              })
+            }
           }).catch((err) => {
             console.log(err)
-            alert('Payment verification failed');
+            alert(err);
           });
         },
         theme: {

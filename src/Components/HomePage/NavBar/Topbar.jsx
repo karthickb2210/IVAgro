@@ -15,9 +15,9 @@ export default function Topbar() {
           </div>
           {/* Current location and contact */}
           <div className="text-sm flex items-center space-x-4">
-            <span>ironvalleyagronomy@gmail.com</span>
+            <span>info@ironvalleyagro.in</span>
             <span>|</span>
-            <span>+91-9884404963</span>
+            <span>+91-8754461696</span>
           </div>
         </div>
       </div>
