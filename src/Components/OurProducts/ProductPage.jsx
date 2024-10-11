@@ -5,7 +5,7 @@ export default function ProductPage() {
     const Productdata = [
         {
             "id": "m1",
-            "name": "Baby Spinach",
+            "name": "Baby_Spinach",
             "price": [
                "8.99",
             "16.99",

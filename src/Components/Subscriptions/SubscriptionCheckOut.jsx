@@ -173,6 +173,27 @@ const SubscriptionCheckOut= () => {
               }).catch((err)=>{
                 console.log(err)
               })
+              var subscriptionDetails = [];
+              cartItems.forEach((item)=>{
+                const obj = {
+                  "product_name" : item.product.name,
+                  "quantity" : item.quantity 
+                }
+                subscriptionDetails.push(obj)
+              })
+              console.log(subscriptionDetails)
+              const subscription = {
+                "mail" : localStorage.getItem("name"),
+                "orderId" : response.razorpay_order_id,
+                "paymentId" : response.razorpay_payment_id,
+               "signature" : response.razorpay_signature,
+               "subscriptionDetails" : subscriptionDetails
+              }
+              axiosInstance.post("/addSubscription",subscription).then((res)=>{
+                console.log(res)
+              }).catch((err)=>{
+                console.log(err)
+              })
             }
           }).catch((err) => {
             console.log(err)

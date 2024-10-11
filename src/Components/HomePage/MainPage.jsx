@@ -21,7 +21,7 @@ export default function MainPage() {
     <div className=' sm:invisible xl:visible md:visible'>
     <Process />
     </div>
-    <Footer />
+  
     </>
   )
 }

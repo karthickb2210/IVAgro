@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import NavBar from "../../HomePage/NavBar/NavBar";
 import Recipe from "./Recipe";
-import recipes from "./Products/BabySpinach"
+import recipes from "./Products/BabySpinach";
+
 export default function RecipePage() {
-  
   const [selectedRecipe, setSelectedRecipe] = useState(recipes[0]);
   return (
-    <div>
+    <>
       <NavBar />
       <div className="mt-36 flex">
         {/* Left side: list of recipe names with new design */}
@@ -18,8 +18,8 @@ export default function RecipePage() {
               className={`cursor-pointer p-4 rounded-lg transition duration-200 ease-in-out
                 ${
                   selectedRecipe.id === recipe.id
-                    ? "bg-green-500 text-white"
-                    : "bg-white hover:bg-blue-100"
+                    ? "bg-teal-950 text-white"
+                    : "bg-white hover:bg-teal-800"
                 }
               `}
               onClick={() => setSelectedRecipe(recipe)}
@@ -34,6 +34,6 @@ export default function RecipePage() {
           <Recipe data={selectedRecipe} />
         </div>
       </div>
-    </div>
+    </>
   );
 }

@@ -30,6 +30,16 @@ const recipes = [
       "Serve immediately",
     ],
     image: bakedeggs,
+    nutrients : 
+      [
+        { name: "Calories", value: "152.5 kcal" },
+        { name: "Protein", value: "12.2 g" },
+        { name: "Fat", value: "9.3 g" },
+        { name: "Carbs", value: "7.9 g" },
+        { name: "Fiber", value: "3.7 g" },
+        {name:"Sugar",value:"0.7 g"},
+        {name:"Sodium",value:"244 mg"}
+      ]
   },
   {
     id: 2,
@@ -62,6 +72,15 @@ const recipes = [
       "Serve with a satisfyingly hefty grating of cheese",
     ],
     image: garlicnoodles,
+    nutrients : 
+      [
+        { name: "Calories", value: "250 kcal" },
+        { name: "Protein", value: "12 g" },
+        { name: "Fat", value: "10 g" },
+        { name: "Carbs", value: "45 g" },
+        { name: "Fiber", value: "6 g" },
+        {name:"Sugar",value:"3 g"},
+      ]
   },
   {
     id: 3,
@@ -89,6 +108,15 @@ const recipes = [
       "Bake for 12 minutes and let cool completely before serving",
     ],
     image: spinachmuffin,
+    nutrients : 
+      [
+        { name: "Calories", value: "200 kcal" },
+        { name: "Protein", value: "7 g" },
+        { name: "Fat", value: "10 g" },
+        { name: "Carbs", value: "25 g" },
+        { name: "Fiber", value: "3 g" },
+        {name:"Sugar",value:"7 g"},
+      ]
   },
   {
     id: 4,
@@ -126,6 +154,15 @@ const recipes = [
       "Start with 1/4 tsp, adding more as needed until the flavors pop",
     ],
     image: creamedspinach,
+    nutrients : 
+      [
+        { name: "Calories", value: "139.2 kcal" },
+        { name: "Protein", value: "2.6 g" },
+        { name: "Fat", value: "9.2 g" },
+        { name: "Carbs", value: "12.1 g" },
+        { name: "Fiber", value: "2.9 g" },
+        {name:"Sodium",value:"510 mg"}
+      ]
   },
   {
     id: 5,
@@ -173,6 +210,16 @@ const recipes = [
       " Uncover the lid and add the pan-fried paneer to the spinach sauce. Turn off the heat. Serve the palak paneer with basmati rice",
     ],
     image: palakpanner,
+    nutrients : 
+      [
+        { name: "Calories", value: "392 kcal" },
+        { name: "Protein", value: "13.9 g" },
+        { name: "Fat", value: "34.2 g" },
+        { name: "Carbs", value: "9.1 g" },
+        { name: "Fiber", value: "3.3 g" },
+        {name:"Sugar",value:"4.2 g"},
+        {name:"Sodium",value:"1066 mg"}
+      ]
   },
 ];
 
