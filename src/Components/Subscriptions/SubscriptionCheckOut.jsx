@@ -4,6 +4,7 @@ import NavBar from "../HomePage/NavBar/NavBar"
 import axiosInstance from '../../config/AxiosConfig';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
+import LeavesLoader from '../Loader/PlantLoader';
 
 
 const SubscriptionCheckOut= () => {
@@ -34,6 +35,7 @@ const SubscriptionCheckOut= () => {
   });
 
   const [loading, setLoading] = useState(false);
+  const [isLoading,setIsLoading] = useState(false);
   const [addressSuggestions, setAddressSuggestions] = useState([]);
   const [error, setError] = useState('');
 
@@ -143,6 +145,7 @@ const SubscriptionCheckOut= () => {
           }
 
           // Verify the payment on the backend
+          setIsLoading(true)
           axiosInstance.post('/verify-payment', razorpay_creds).then((res) => {
             if(res.data){
               var stockDeductions = {
@@ -191,13 +194,13 @@ const SubscriptionCheckOut= () => {
               }
               axiosInstance.post("/addSubscription",subscription).then((res)=>{
                 console.log(res)
+                setIsLoading(false)
               }).catch((err)=>{
                 console.log(err)
               })
             }
           }).catch((err) => {
             console.log(err)
-            alert(err);
           });
         },
         theme: {
@@ -216,6 +219,7 @@ const SubscriptionCheckOut= () => {
   return (
     <>
     <NavBar />
+    { isLoading ? <LeavesLoader />  : 
     <div className="min-h-screen mt-28 bg-gradient-to-r from-blue-50 to-blue-200 flex items-center justify-center p-6">
       <div className="w-full max-w-4xl bg-white rounded-lg shadow-lg p-6">
         <h2 className="text-3xl font-bold text-center mb-6 text-blue-600">Checkout Your Subscription Box</h2>
@@ -468,7 +472,9 @@ const SubscriptionCheckOut= () => {
           </div>
         </div>
       </div>
-    </div></>
+    </div>
+    }
+    </>
   );
 };
 

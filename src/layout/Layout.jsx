@@ -13,13 +13,14 @@ import BabySpinachPage from '../Components/OurProducts/Properties/BabySpinachPag
 import NotFoundPage from '../Components/HomePage/NotFoundPage/NotFoundPage.jsx'
 import SubscriptionCheckOut from '../Components/Subscriptions/SubscriptionCheckOut.jsx'
 import LoginSignup from '../Components/RegisterPage/LoginSignup.jsx'
-import RecipePage from '../Components/OurProducts/Recipes/RecipePage.jsx'
 import StockDisplay from '../Components/Stocks/StockDisplay.jsx'
 import ArugulaPage from '../Components/OurProducts/Properties/ArugulaPage.jsx'
 import PakChoiPage from '../Components/OurProducts/Properties/PakChoiPage.jsx'
 import KalePage from '../Components/OurProducts/Properties/KalePage.jsx'
 import BasilPage from '../Components/OurProducts/Properties/BasilPage.jsx'
 import Footer from '../Components/HomePage/Footer/Footer.jsx'
+import SpinachRecipePage from '../Components/OurProducts/Recipes/SpinachRecipePage.jsx'
+import KaleRecipePage from '../Components/OurProducts/Recipes/KaleRecipePage.jsx'
 
 export default function Layout() {
   return (
@@ -41,7 +42,8 @@ export default function Layout() {
                 <Route path='/Pak Choi' element={<PakChoiPage />}></Route>
                 <Route path='/Kale' element={<KalePage />}></Route>
                 <Route path='/basil' element={<BasilPage />}></Route>
-                <Route path='/recipe/Baby_Spinach' element={<RecipePage />}></Route>
+                <Route path='/recipe/Baby_Spinach' element={<SpinachRecipePage />}></Route>
+                <Route path="/recipe/Kale" element={<KaleRecipePage />}></Route>
                 <Route path='/Baby_Spinach' element={<BabySpinachPage />}></Route>
                 <Route path='/subscription-checkout' element={<SubscriptionCheckOut />}></Route>
                 <Route path='/register' element={<LoginSignup />}></Route>

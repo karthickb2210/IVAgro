@@ -3,7 +3,7 @@ import NavBar from "../../HomePage/NavBar/NavBar";
 import Recipe from "./Recipe";
 import recipes from "./Products/BabySpinach";
 
-export default function RecipePage() {
+export default function SpinachRecipePage() {
   const [selectedRecipe, setSelectedRecipe] = useState(recipes[0]);
   return (
     <>
