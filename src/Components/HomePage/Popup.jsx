@@ -2,14 +2,19 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 const Popup = () => {
-  const [isOpen, setIsOpen] = useState(true);
-
+  const [isOpen, setIsOpen] = useState(false);
+  
   useEffect(() => {
-    setIsOpen(true);
+    if(sessionStorage.getItem("popcount")){
+      setIsOpen(false)
+    }else{
+      setIsOpen(true)
+    }
   }, []);
 
   const handleClose = () => {
     setIsOpen(false);
+    sessionStorage.setItem("popcount",1)
   };
 
   return (

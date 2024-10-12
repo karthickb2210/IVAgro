@@ -105,6 +105,7 @@ const SubscriptionCheckOut= () => {
   // };
   
   const boxSize = sessionStorage.getItem("boxsize");
+  const subscriptionType = sessionStorage.getItem("subscriptionType")
 
   let totalAmount = 0;
   if(boxSize==100){
@@ -184,13 +185,14 @@ const SubscriptionCheckOut= () => {
                 }
                 subscriptionDetails.push(obj)
               })
-              console.log(subscriptionDetails)
               const subscription = {
                 "mail" : localStorage.getItem("name"),
                 "orderId" : response.razorpay_order_id,
                 "paymentId" : response.razorpay_payment_id,
                "signature" : response.razorpay_signature,
-               "subscriptionDetails" : subscriptionDetails
+               "subscriptionDetails" : subscriptionDetails,
+               "subscriptionType" : subscriptionType,
+               "boxSize" : boxSize
               }
               axiosInstance.post("/addSubscription",subscription).then((res)=>{
                 console.log(res)

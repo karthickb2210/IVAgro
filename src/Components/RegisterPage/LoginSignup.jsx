@@ -66,11 +66,24 @@ const LoginSignup = () => {
     setIsLoading(true)
     e.preventDefault();
     axiosInstance.post("/register",signupData).then((res)=>{
+      
+      if(res.data.statusCode===99){
+        toast.warn("Email already registered");
+        setIsLoading(false)
+        return;
+      }
+      if(res.data.statusCode===11){
+        toast.warn("Mobile Number already registered");
+        setIsLoading(false);
+        return;
+      }
       console.log(res.data)
       setIsLoading(false)
+      setIsLogin(!isLogin);
     }).catch((err)=>{
       console.log(err)
       setIsLoading(false)
+      setIsLogin(!isLogin);
     })
     
   };

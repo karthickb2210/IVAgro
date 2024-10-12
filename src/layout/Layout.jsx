@@ -21,6 +21,7 @@ import BasilPage from '../Components/OurProducts/Properties/BasilPage.jsx'
 import Footer from '../Components/HomePage/Footer/Footer.jsx'
 import SpinachRecipePage from '../Components/OurProducts/Recipes/SpinachRecipePage.jsx'
 import KaleRecipePage from '../Components/OurProducts/Recipes/KaleRecipePage.jsx'
+import Dashboard from '../Components/Dashboard/Dashboard.jsx'
 
 export default function Layout() {
   return (
@@ -36,7 +37,7 @@ export default function Layout() {
                 <Route path='/towerRent' element={<RentTowerPage />}></Route>
                 <Route path='/subscription' element={<SubscriptionPage />}></Route>
                 <Route path='/pay' element={<PaymentPage />}></Route>
-                <Route path='/dash' element={<DashBoard />}></Route>
+                <Route path='/dash' element={<Dashboard />}></Route>
                 <Route path='/product' element={<OurProductsPage />}></Route>
                 <Route path='/Arugula' element={<ArugulaPage />}></Route>
                 <Route path='/Pak Choi' element={<PakChoiPage />}></Route>

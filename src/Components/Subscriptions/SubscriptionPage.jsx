@@ -30,6 +30,7 @@ const SubscriptionPage = () => {
 
   const handleCheckout = () => {
     sessionStorage.setItem("boxsize",boxSize);
+    sessionStorage.setItem("subscriptionType",subscriptionType);
     sessionStorage.setItem("subbox", JSON.stringify(subscriptionBox));
   };
 
