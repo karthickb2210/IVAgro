@@ -1,11 +1,16 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect,useContext } from 'react';
 import axios from 'axios';
 import NavBar from "../HomePage/NavBar/NavBar"
 import axiosInstance from '../../config/AxiosConfig';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import CartContext from '../Shop/store/CartContext';
+import LeavesLoader from '../Loader/PlantLoader';
 
 const CheckOut = () => {
+  const cartCtx = useContext(CartContext);
   const [cartItems, setCartItems] = useState([]);
+  const [isLoading,setIsLoading] = useState(false)
   const navigate = useNavigate();
   const [guest,setGuest] = useState(false);
   useEffect(() => {
@@ -123,20 +128,77 @@ const CheckOut = () => {
         image: 'https://your-logo-url.com/logo.png',
         order_id: data.id,
         handler: function (response) {
-          alert("Payment ID: " + response.razorpay_payment_id);
-          alert("Order ID: " + response.razorpay_order_id);
-          alert("Signature: " + response.razorpay_signature);
+          
+          const razorpay_creds = {
+            "razor_pay_order_id" : response.razorpay_order_id,
+             "razorpay_payment_id" : response.razorpay_payment_id,
+            "razorpay_signature" : response.razorpay_signature
+          }
 
           // Verify the payment on the backend
-          axiosInstance.post('/verify-payment', {
-            razorpay_order_id: response.razorpay_order_id,
-            razorpay_payment_id: response.razorpay_payment_id,
-            razorpay_signature: response.razorpay_signature,
-          }).then((res) => {
-            alert('Payment verified successfully');
+          axiosInstance.post('/verify-payment',razorpay_creds).then((res) => {
+
+            if(res.data){
+              setIsLoading(true)
+              var stockDeductions = {
+                "babySpinachQuantityDetections" : 0,
+                "pakChoiQuantityDetections" : 0,
+                "basilQuantityDetections" :0,
+                "kaleQuantityDetections" :0,
+                "lettuceQuantityDetections":0
+              }
+              console.log(cartItems)
+              cartItems.map((item)=>{
+                if(item.id==="m1"){
+                  stockDeductions.babySpinachQuantityDetections+=item.grams
+                }else if(item.id==="m7"){
+                  stockDeductions.pakChoiQuantityDetections+=item.grams
+                }else if(item.id==="m8"){
+                  stockDeductions.kaleQuantityDetections+=item.grams
+                }else if(item.id==="m5"){
+                  stockDeductions.lettuceQuantityDetections+=item.grams
+                }else{
+                  stockDeductions.basilQuantityDetections+=item.grams
+                }
+              })
+              console.log(stockDeductions)
+              axiosInstance.post("/updateStocks",stockDeductions).then((res)=>{
+                console.log(res)
+              }).catch((err)=>{
+                console.log(err)
+              })
+              
+              var orderDetails = [];
+              cartItems.map((item)=>{
+                const tempOrder = {
+                  "itemName" : item.name,
+                  "itemQuantity" : item.quantity,
+                  "itemGrams" : item.grams
+                }
+                orderDetails.push(tempOrder)
+              })
+              const order = {
+                "email" : localStorage.getItem("name"),
+                "orderDetails" : orderDetails,
+                "paymentId" : response.razorpay_payment_id,
+                "amountPaid" : (finalAmount.toFixed(2))
+              }
+              axiosInstance.post("/addOrder",order).then((res)=>{
+                if(res.data.statusCode===200)
+                toast.success("Order placed successfully")
+              else
+              toast.warn("Problem occured while placing order")
+            cartCtx.clearCart();
+            setIsLoading(false)
+            navigate("/")
+              }).catch((err)=>{
+                console.log(err)
+              })
+
+
+            }
           }).catch((err) => {
-            console.log(err)
-            alert('Payment verification failed');
+            toast.error("Payment Failed")
           });
         },
         theme: {
@@ -154,7 +216,9 @@ const CheckOut = () => {
 
   return (
     <>
+    
     <NavBar />
+    {isLoading ? <LeavesLoader /> :
     <div className="min-h-screen mt-16 bg-gradient-to-r from-blue-50 to-blue-200 flex items-center justify-center p-6">
       <div className="w-full max-w-4xl bg-white rounded-lg shadow-lg p-6">
         <h2 className="text-3xl font-bold text-center mb-6 text-blue-600">Checkout Your Cart</h2>
@@ -221,8 +285,17 @@ const CheckOut = () => {
               </>
             )}
             <div className='flex items-center justify-center my-12 space-x-10'>
-            <button className='bg-blue-500 px-4 text-white py-2 rounded-lg font-semibold hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition duration-200'>Login</button>
-            <button className='bg-blue-500 px-4 text-white py-2 rounded-lg font-semibold hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition duration-200'>Check out as guest</button>
+            {/* <button className='bg-blue-500 px-4 text-white py-2 rounded-lg font-semibold hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition duration-200'>Login</button>
+            <button className='bg-blue-500 px-4 text-white py-2 rounded-lg font-semibold hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition duration-200'>Check out as guest</button> */}
+            
+            <button
+                type="submit"
+                className="w-full bg-blue-500 text-white py-2 rounded-lg font-semibold hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition duration-200"
+                onClick={handleSubmit}
+                disabled={cartItems.length === 0}
+              >
+                Proceed To Pay
+              </button>
             </div>
             {guest && <>
             <h3 className="text-xl font-semibold mb-4 text-gray-700">Shipping Information</h3>
@@ -398,7 +471,9 @@ const CheckOut = () => {
           </div>
         </div>
       </div>
-    </div></>
+    </div>
+    }
+    </>
   );
 };
 

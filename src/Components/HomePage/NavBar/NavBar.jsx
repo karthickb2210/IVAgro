@@ -50,11 +50,6 @@ const NavBar = () => {
   };
 
   useEffect(() => {
-    // axiosInstance.get("/testMessage").then((res)=>{
-    //   console.log(res)
-    // }).catch((err)=>{
-    //   console.log(err)
-    // })
     if (localStorage.getItem("name")) {
       dispatch(
         login({
@@ -353,7 +348,7 @@ const NavBar = () => {
 
             <div className="relative">
               <FaShoppingCart
-                //onClick={handleShowCart}
+                onClick={handleShowCart}
                 className="text-gray-600 h-6 w-6 cursor-pointer hover:text-black transition duration-300"
               />
               <span className="absolute bottom-3 left-4 inline-flex items-center justify-center p-2 text-xs font-bold leading-none text-white bg-orange-500 rounded-full">

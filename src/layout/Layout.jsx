@@ -21,6 +21,7 @@ import Footer from "../Components/HomePage/Footer/Footer.jsx";
 import SpinachRecipePage from "../Components/OurProducts/Recipes/SpinachRecipePage.jsx";
 import KaleRecipePage from "../Components/OurProducts/Recipes/KaleRecipePage.jsx";
 import Dashboard from "../Components/Dashboard/Dashboard.jsx";
+import AdminDashboard from "../Components/Admin/AdminDashboard.jsx";
 
 export default function Layout() {
   return (
@@ -52,6 +53,7 @@ export default function Layout() {
           ></Route>
           <Route path="/register" element={<LoginSignup />}></Route>
           <Route path="/stocks" element={<StockDisplay />}></Route>
+          <Route path="/api/admin" element={<AdminDashboard />}></Route>
           <Route path="*" element={<NotFoundPage />}></Route>
         </Routes>
       </BrowserRouter>

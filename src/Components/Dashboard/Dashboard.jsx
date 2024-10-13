@@ -14,6 +14,7 @@ function Dashboard() {
   const [activeTab, setActiveTab] = useState("profile");
   const [profileDetails, setprofileDetails] = useState();
   const [subscriptionDetails, setSubscriptionDetails] = useState();
+  const [orderDetails,setOrderDetails] = useState();
 
   useEffect(() => {
     const name = localStorage.getItem("name");
@@ -22,6 +23,7 @@ function Dashboard() {
       .then((res) => {
         setprofileDetails(res.data.data.profileDetails);
         setSubscriptionDetails(res.data.data.subscriptionDetails);
+        setOrderDetails(res.data.data.orderDetails);
       })
       .catch((err) => {
         console.log(err);
@@ -107,7 +109,7 @@ function Dashboard() {
             {activeTab === "subscriptions" && (
               <Subscriptions subscriptionDetails={subscriptionDetails} />
             )}
-            {activeTab === "orders" && <Orders />}
+            {activeTab === "orders" && <Orders orderDetails={orderDetails}/>}
             {activeTab === "settings" && <Settings />}
           </div>
         )}
@@ -213,39 +215,54 @@ const Subscriptions = ({ subscriptionDetails }) => (
   </div>
 );
 
-const Orders = () => (
-  <div className="bg-white p-6 shadow-md rounded-lg">
-    <h2 className="text-3xl font-semibold mb-6 text-green-700">🛒 Orders</h2>
-    <table className="w-full text-left">
-      <thead>
-        <tr className="bg-green-100 text-green-600">
-          <th className="p-2">Order ID</th>
-          <th className="p-2">Date</th>
-          <th className="p-2">Status</th>
-          <th className="p-2">Total</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td className="p-2">98765</td>
-          <td className="p-2">October 1, 2024</td>
-          <td className="p-2 text-green-500">Shipped</td>
-          <td className="p-2">$49.99</td>
-        </tr>
-        <tr>
-          <td className="p-2">87654</td>
-          <td className="p-2">September 22, 2024</td>
-          <td className="p-2 text-green-500">Delivered</td>
-          <td className="p-2">$89.99</td>
-        </tr>
-        <tr>
-          <td className="p-2">76543</td>
-          <td className="p-2">September 10, 2024</td>
-          <td className="p-2 text-green-500">Delivered</td>
-          <td className="p-2">$39.99</td>
-        </tr>
-      </tbody>
-    </table>
+const Orders = ({orderDetails}) => (
+  <div className="bg-white p-8 shadow-lg rounded-lg">
+  {!orderDetails[0] ? 
+   <h2 className="text-3xl font-semibold mb-8 text-green-700 text-center">
+      🌱 You have no order history....
+    </h2>
+ : 
+    <h2 className="text-3xl font-semibold mb-8 text-green-700 text-center">
+      🌱 Orders
+    </h2>
+}
+    {orderDetails.map((order, index) => (
+      <div
+        key={order.orderId}
+        className="mb-6 p-6 bg-gray-50 rounded-lg shadow-sm transition-shadow hover:shadow-md"
+      >
+        <h3 className="text-green-700 text-2xl font-bold mb-4 flex justify-between items-center">
+          Order {index+1}
+          <span className="text-lg font-medium text-green-600">
+            {order.paymentId}
+          </span>
+        </h3>
+
+        <div className="border-t border-green-200 pt-4">
+          <ul className="list-disc list-inside">
+            {order.orderDetails.map((detail, idx) => (
+              <li key={idx} className="text-green-600 text-lg mb-2">
+                <strong>{detail.itemName}</strong> - Quantity:{" "}
+                {detail.itemGrams} grams
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <div className="mt-4 border-t border-green-200 pt-4">
+          <p className="text-gray-700 mb-1">
+            <strong>Order on:</strong>{" "}
+            {order.createdAt.substring(0, 10)}
+          </p>
+           <p className="text-gray-700 mb-1">
+            <strong>Delivery Status :</strong> {order.isDelivered ? "Delivered" : "Not Delivered"}
+          </p>
+          {/*<p className="text-gray-700 mb-1">
+            <strong>Signature:</strong> {subscription.signature}
+          </p> */}
+        </div>
+      </div>
+    ))}
   </div>
 );
 
