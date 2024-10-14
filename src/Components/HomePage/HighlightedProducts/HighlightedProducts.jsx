@@ -48,7 +48,7 @@ const HighlightedProducts = () => {
     <>
     <div className="flex justify-center w-full rounded space-x-8 my-10">
       {products1.map((product) => (
-        <div key={product.id} className="flex mt-16 flex-col items-center  bg-white rounded-lg p-4 w-80">
+        <div key={product.id} className="flex mt-6 flex-col items-center  bg-white rounded-lg p-4 w-80">
         <div className='w-[212px] hover:scale-105 transition duration-700 h-[212px] flex items-center justify-center rounded-full shadow-xl '>
           <img
             src={product.imageUrl}
