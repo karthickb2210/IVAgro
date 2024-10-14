@@ -15,7 +15,7 @@ export default function Footer() {
                 <input
                   id="email"
                   type="text"
-                  class="px-4 py-2 border rounded-md bg-gray-900 text-gray-300 border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:outline-none focus:ring focus:ring-opacity-40 focus:ring-blue-300"
+                  class="px-4 py-2 border rounded-md bg-gray-900 text-gray-300 border-gray-600 focus:border-blue-300 focus:outline-none focus:ring focus:ring-opacity-40 focus:ring-blue-300"
                   placeholder="Email Address"
                 />
 
@@ -26,26 +26,26 @@ export default function Footer() {
             </div>
 
             <div>
-              <p class="font-semibold text-gray-800 dark:text-white">
+              <p class="font-semibold text-white">
                 Quick Link
               </p>
 
               <div class="flex flex-col items-start mt-5 space-y-2">
                 <a
                   href="#"
-                  class="text-gray-600 transition-colors duration-300 dark:text-gray-300 dark:hover:text-blue-400 hover:underline hover:text-blue-500"
+                  class="transition-colors duration-300 text-gray-300 hover:text-blue-400 hover:underline"
                 >
                   Home
                 </a>
                 <a
                   href="#"
-                  class="text-gray-600 transition-colors duration-300 dark:text-gray-300 dark:hover:text-blue-400 hover:underline hover:text-blue-500"
+                  class=" transition-colors duration-300 text-gray-300 hover:text-blue-400 hover:underline"
                 >
                   Farm
                 </a>
                 <a
                   href="#"
-                  class="text-gray-600 transition-colors duration-300 dark:text-gray-300 dark:hover:text-blue-400 hover:underline hover:text-blue-500"
+                  class="transition-colors duration-300 text-gray-300 hover:text-blue-400 hover:underline"
                 >
                   Contact
                 </a>
@@ -53,18 +53,18 @@ export default function Footer() {
             </div>
 
             <div>
-              <p class="font-semibold text-gray-800 dark:text-white">Brands</p>
+              <p class="font-semibold text-white">Brands</p>
 
               <div class="flex flex-col items-start mt-5 space-y-2">
                 <a
                   href="#"
-                  class="text-gray-600 transition-colors duration-300 dark:text-gray-300 dark:hover:text-blue-400 hover:underline hover:text-blue-500"
+                  class=" transition-colors duration-300 text-gray-300 hover:underline hover:text-blue-500"
                 >
                   Green Muscle{" "}
                 </a>
                 <a
                   href="#"
-                  class="text-gray-600 transition-colors duration-300 dark:text-gray-300 dark:hover:text-blue-400 hover:underline hover:text-blue-500"
+                  class=" transition-colors duration-300 text-gray-300 hover:text-blue-400 hover:underline "
                 >
                   Divine Cotyledons
                 </a>
@@ -72,7 +72,7 @@ export default function Footer() {
             </div>
           </div>
 
-          <hr class="my-2 border-gray-200 md:my-4 dark:border-gray-700" />
+          <hr class="my-2 md:my-4 border-gray-700" />
 
           <div class="flex items-center justify-between">
             <a href="#" className=" flex flex-row">
@@ -95,7 +95,7 @@ export default function Footer() {
             <div class="flex -mx-2">
               <a
                 href="#"
-                class="mx-2 text-gray-600 transition-colors duration-300 dark:text-gray-300 hover:text-blue-500 dark:hover:text-blue-400"
+                class="mx-2  transition-colors duration-300 text-gray-300  hover:text-blue-400"
                 aria-label="Reddit"
               >
                 <svg
@@ -110,7 +110,7 @@ export default function Footer() {
 
               <a
                 href="#"
-                class="mx-2 text-gray-600 transition-colors duration-300 dark:text-gray-300 hover:text-blue-500 dark:hover:text-blue-400"
+                class="mx-2  transition-colors duration-300 dark:text-gray-300 hover:text-blue-400"
                 aria-label="Facebook"
               >
                 <svg
@@ -125,7 +125,7 @@ export default function Footer() {
 
               <a
                 href="#"
-                class="mx-2 text-gray-600 transition-colors duration-300 dark:text-gray-300 hover:text-blue-500 dark:hover:text-blue-400"
+                class="mx-2  transition-colors duration-300 text-gray-300 hover:text-blue-400"
                 aria-label="Github"
               >
                 <svg

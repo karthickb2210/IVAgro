@@ -44,14 +44,14 @@ const Carousel = () => {
       if (!isHovered) {
         nextSlide();
       }
-    }, 1500);
+    }, 2500);
 
     return () => clearInterval(interval);
   }, [isHovered]);
 
   return (
     <div
-      className="relative mt-36 mx-4 h-[500px] overflow-hidden"
+      className="relative min-h-screen mb-16 mt-36 mx-4 overflow-hidden"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
@@ -77,8 +77,19 @@ const Carousel = () => {
                 {slide.buttonText}
               </a>
             </div>
+            <div className="absolute bottom-1 left-1/2 transform -translate-x-1/2 flex space-x-2">
+        {slides.map((_, index) => (
+          <div
+            key={index}
+            className={`h-2 w-2 rounded-full ${
+              index === currentIndex ? "bg-white" : "bg-gray-400"
+            }`}
+          ></div>
+        ))}
+      </div>
           </div>
         ))}
+        
       </div>
 
       {/* Previous and Next buttons */}
@@ -96,16 +107,7 @@ const Carousel = () => {
       </button>
 
       {/* Slide Indicators */}
-      <div className="absolute bottom-1 left-1/2 transform -translate-x-1/2 flex space-x-2">
-        {slides.map((_, index) => (
-          <div
-            key={index}
-            className={`h-2 w-2 rounded-full ${
-              index === currentIndex ? "bg-white" : "bg-gray-400"
-            }`}
-          ></div>
-        ))}
-      </div>
+      
     </div>
   );
 };

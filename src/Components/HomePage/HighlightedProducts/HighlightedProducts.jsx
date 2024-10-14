@@ -58,7 +58,7 @@ const HighlightedProducts = () => {
           </div>
           <h3 className="text-xl font-semibold mt-3">{product.name}</h3>
           <Link to={`/store`}>
-          <button className="bg-black hover:text-gray-400 text-white px-8 py-2 mt-4 rounded-3xl hover:bg-gray-800">
+          <button className="bg-black hover:text-white text-white px-8 py-2 mt-4 rounded-3xl hover:bg-gray-800">
             Shop Now
           </button>
           </Link>
@@ -68,7 +68,7 @@ const HighlightedProducts = () => {
     <div className="flex justify-center w-full rounded space-x-8 my-10">
       {products2.map((product) => (
         <div key={product.id} className="flex flex-col items-center  bg-white rounded-lg p-4 w-80">
-        <div className='w-[212px] hover:scale-105 transition duration-800  h-[212px] flex items-center justify-center rounded-full shadow-xl'>
+        <div className='w-[212px] hover:scale-105 transition duration-700  h-[212px] flex items-center justify-center rounded-full shadow-xl'>
           <img
             src={product.imageUrl}
             alt={product.altText}
@@ -77,7 +77,7 @@ const HighlightedProducts = () => {
           </div>
           <h3 className="text-xl font-semibold mt-3">{product.name}</h3>
           <Link to={`/store`}>
-          <button className="bg-black hover:text-gray-400 text-white px-8 py-2 mt-4 rounded-3xl hover:bg-gray-800">
+          <button className="bg-black hover:text-white text-white px-8 py-2 mt-4 rounded-3xl hover:bg-gray-800">
             Shop Now
           </button>
           </Link>
