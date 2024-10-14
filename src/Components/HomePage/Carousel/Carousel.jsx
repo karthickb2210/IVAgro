@@ -1,132 +1,111 @@
-import React, { useState, useEffect } from "react";
-import { FaArrowRight, FaArrowLeft } from "react-icons/fa";
-import car1 from "/car1.png"
-import car2 from "/car2.png"
+import React, { useEffect, useState } from "react";
+import car1 from  "/car1.jpg"
+import car2 from "/car2.jpg"
 import car3 from "/car3.jpg"
-import { Link } from "react-router-dom";
-
-
 const Carousel = () => {
-  const [currentSlide, setCurrentSlide] = useState(0);
+  const slides = [
+    {
+      id: 1,
+      image: car1, // Replace with actual image URL
+      title: "Farm to Fork",
+      description: "We promise to deliver the products from farm to your fork on the same day",
+      buttonText: "Visit Our Farm",
+      buttonLink: "/farm",
+    },
+    {
+      id: 2,
+      image: car2, // Replace with actual image URL
+      title: "B2B Hub / WareHouse",
+      description: "The product undergoes a minimum of 10+ points before it reaches your plate",
+      buttonText: "View Process",
+      buttonLink: "#",
+    },
+    {
+      id: 3,
+      image: car3, // Replace with actual image URL
+      title: "Our Brands",
+      description: "We have two major brands namely Divine Cotyledons and Green Muscle.",
+      buttonText: "Explore Brands",
+      buttonLink: "#",
+    },
+  ];
 
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentSlide((prev) => (prev === 2 ? 0 : prev + 1));
-    }, 3000);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [isHovered, setIsHovered] = useState(false);
 
-    return () => clearInterval(timer);
-  }, [currentSlide]);
-
+  // Function to move to the next slide
   const nextSlide = () => {
-    setCurrentSlide((prev) => (prev === 2 ? 0 : prev + 1));
+    setCurrentIndex((prevIndex) => (prevIndex === slides.length - 1 ? 0 : prevIndex + 1));
   };
 
-  const prevSlide = () => {
-    setCurrentSlide((prev) => (prev === 0 ? 2 : prev - 1));
-  };
+  // Auto slide every 3 seconds
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (!isHovered) {
+        nextSlide();
+      }
+    }, 1500);
+
+    return () => clearInterval(interval);
+  }, [isHovered]);
 
   return (
-    <div className="relative h-[500px] w-auto my-28 mx-12">
-      <div className="absolute inset-0 overflow-hidden">
-
-        {/* Slide 1 */}
-        <div
-          className={`absolute inset-0 transition-all duration-700 ease-in-out transform ${
-            currentSlide === 0
-              ? "translate-x-0 opacity-100"
-              : "translate-x-full opacity-0"
-          }`}
-          style={{
-            backgroundImage:
-              `url(${car1})`,
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-          }}
-        >
-          <div className="flex flex-col items-center justify-end h-full bg-black bg-opacity-50 text-white p-6">
-            <h2 className="md:text-2xl mb-4 text-wrap sm:text-xl mx-20 text-center">
-              Fresh Plants Delivered to your home
-            </h2>
-            <Link to={`/store`}>
-            <button
-              className="px-4 py-2 bg-blue-500 text-white rounded-lg"
-            >
-              Order Now
-            </button>
-            </Link>
+    <div
+      className="relative mt-36 mx-4 h-[500px] overflow-hidden"
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
+      {/* Slide Container */}
+      <div
+        className="flex transition-transform duration-700 ease-in-out"
+        style={{ transform: `translateX(-${currentIndex * 100}%)` }}
+      >
+        {slides.map((slide, index) => (
+          <div
+            key={slide.id}
+            className="w-full flex-shrink-0 relative h-[500px] bg-cover bg-center"
+            style={{ backgroundImage: `url(${slide.image})` }}
+          >
+            {/* Text and Button */}
+            <div className="absolute bottom-0 w-full text-center inline-block bg-black bg-opacity-40 rounded-3xl py-1 text-white px-4">
+              <h2 className="text-3xl    font-bold">{slide.title}</h2>
+              <p className="text-lg mt-2">{slide.description}</p>
+              <a
+                href={slide.buttonLink}
+                className="mt-4 mb-4 inline-block bg-teal-950 hover:bg-blue-900 text-white font-semibold py-2 px-6 rounded-full transition-colors duration-300"
+              >
+                {slide.buttonText}
+              </a>
+            </div>
           </div>
-        </div>
-
-        {/* Slide 2 */}
-        <div
-          className={`absolute inset-0 transition-all duration-700 ease-in-out transform ${
-            currentSlide === 1
-              ? "translate-x-0 opacity-100"
-              : "translate-x-full opacity-0"
-          }`}
-          style={{
-            backgroundImage:
-`url(${car2})`,
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-          }}
-        >
-          <div className="flex flex-col items-center justify-end h-full bg-black bg-opacity-50 text-white p-6">
-            <h2 className="md:text-2xl sm:text-xl mb-4 text-wrap mx-20 text-center">
-              We sell a wide range of aeroponics based plants which is grown in
-              our farm.
-            </h2>
-            <Link to={`/farm`}>
-            <button
-              className="px-4 py-2 bg-blue-500 text-white rounded-lg"
-            >
-              Visit our Farm
-            </button>
-            </Link>
-          </div>
-        </div>
-
-        {/* Slide 3 */}
-        <div
-          className={`absolute inset-0 transition-all duration-700 ease-in-out transform ${
-            currentSlide === 2
-              ? "translate-x-0 opacity-100"
-              : "translate-x-full opacity-0"
-          }`}
-          style={{
-            backgroundImage:
-`url(${car3})`,            backgroundSize: "cover",
-            backgroundPosition: "center",
-          }}
-        >
-          <div className="flex flex-col items-center justify-end h-full bg-black bg-opacity-50 text-white p-6">
-            <h2 className="md:text-2xl sm:text-xl  mb-4 text-wrap mx-20 text-center">
-              Buy a Rental Tower and Grow as you wish for a year
-            </h2>
-            <Link to={`/towerRent`}>
-            <button
-              className="px-4 py-2 bg-blue-500 text-white rounded-lg"
-            >
-              Rent Now
-            </button>
-            </Link>
-          </div>
-        </div>
+        ))}
       </div>
 
+      {/* Previous and Next buttons */}
       <button
-        className="absolute top-1/2 transform -translate-y-1/2 left-4 text-black p-3 rounded-full"
-        onClick={prevSlide}
+        className="absolute left-2 top-1/2 transform -translate-y-1/2 text-white bg-black bg-opacity-50 py-6 px-2 rounded-full hover:bg-opacity-80"
+        onClick={() => setCurrentIndex(currentIndex === 0 ? slides.length - 1 : currentIndex - 1)}
       >
-        <FaArrowLeft size={30} />
+        &#10094;
       </button>
-
       <button
-        className="absolute top-1/2 transform -translate-y-1/2 right-4 text-black p-3 rounded-full"
+        className="absolute right-2 top-1/2 transform -translate-y-1/2 text-white bg-black bg-opacity-50 py-6 px-2 rounded-full hover:bg-opacity-80"
         onClick={nextSlide}
       >
-        <FaArrowRight size={30} />
+        &#10095;
       </button>
+
+      {/* Slide Indicators */}
+      <div className="absolute bottom-1 left-1/2 transform -translate-x-1/2 flex space-x-2">
+        {slides.map((_, index) => (
+          <div
+            key={index}
+            className={`h-2 w-2 rounded-full ${
+              index === currentIndex ? "bg-white" : "bg-gray-400"
+            }`}
+          ></div>
+        ))}
+      </div>
     </div>
   );
 };

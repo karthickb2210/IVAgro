@@ -66,7 +66,7 @@ export default function Footer() {
                   href="#"
                   class="text-gray-600 transition-colors duration-300 dark:text-gray-300 dark:hover:text-blue-400 hover:underline hover:text-blue-500"
                 >
-                  Devine Cotyledons
+                  Divine Cotyledons
                 </a>
               </div>
             </div>

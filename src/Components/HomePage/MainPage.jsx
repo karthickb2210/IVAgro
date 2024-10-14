@@ -18,9 +18,9 @@ export default function MainPage() {
     {/* <AeroponicsFarming /> */}
     <HighlightedProducts />
     <Featured />
-    <div className=' sm:invisible xl:visible md:visible'>
+    {/* <div className=' sm:invisible xl:visible md:visible'>
     <Process />
-    </div>
+    </div> */}
   
     </>
   )

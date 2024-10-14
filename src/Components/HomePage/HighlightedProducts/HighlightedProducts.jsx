@@ -1,113 +1,90 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-const HighlightedProducts = () => {
-  const products = [
-    {
-      name: 'Spinach',
-      image: 'https://t4.ftcdn.net/jpg/07/45/22/71/240_F_745227148_RA6rb43X0AHq9EKIdLgKuY4Lxsbr24li.jpg',
-      price: '29.99',
-      description: 'The Airgarden aeroponic system is very well-suited to growing spinach',
-      availability: true,
-    },
-    {
-      name: 'Basil Leaves',
-      image: 'https://t3.ftcdn.net/jpg/08/09/10/68/240_F_809106884_efqSsfr2f30nmTxLxFeDseRtkK3ujdEE.jpg',
-      price: '49.99',
-      description: 'Another amazing product with great features.',
-      availability: true,
-    },
-    {
-      name: 'Lettuce',
-      image: 'https://t4.ftcdn.net/jpg/05/52/00/83/240_F_552008369_c0LKehAUf6fZwZVTHCBYTr7jFOrEG3aL.jpg',
-      price: '19.99',
-      description: 'Affordable product with top-notch quality.',
-      availability: true,
-    },
-  ];
+const products1 = [
+  {
+    id: 1,
+    name: 'Baby Spinach',
+    imageUrl: 'https://t4.ftcdn.net/jpg/06/31/51/51/240_F_631515120_xZVJHLQ7G6HfTgeK2eMwBlJXvBfK6QTO.jpg', // Replace with actual image URL
+    altText: 'Baby Spinach',
+  },
+  {
+    id: 2,
+    name: 'Kale',
+    imageUrl: 'https://t3.ftcdn.net/jpg/04/30/77/28/240_F_430772833_4Po12niEIOxEXe9ulmlRUM2Z5VVsq7nk.jpg', // Replace with actual image URL
+    altText: 'Kale',
+  },
+  {
+    id: 3,
+    name: 'Basil',
+    imageUrl: 'https://t4.ftcdn.net/jpg/08/70/22/97/240_F_870229787_4j7LsGpWJjAYSRfsEymBfUijSUFCh94l.jpg', // Replace with actual image URL
+    altText: 'Basil',
+  },
+];
 
+const products2 = [
+  {
+    id: 1,
+    name: 'Arugula',
+    imageUrl: 'https://t3.ftcdn.net/jpg/05/61/80/16/240_F_561801605_BXZylBtM4OSmbIRuVZRX32aQdn7guWV2.jpg', // Replace with actual image URL
+    altText: 'Arugula',
+  },
+  {
+    id: 2,
+    name: 'Pak Choi',
+    imageUrl: 'https://t3.ftcdn.net/jpg/01/30/06/18/240_F_130061886_qchDVRKIl40W4c8V6ePygqcgqOPF4Lpl.jpg', // Replace with actual image URL
+    altText: 'Pak Choi',
+  },
+  {
+    id: 3,
+    name: 'Lettuce',
+    imageUrl: 'https://t3.ftcdn.net/jpg/01/03/07/26/240_F_103072613_toV709NM95mGl0ZclCXX7tSPuGnRptkY.jpg', // Replace with actual image URL
+    altText: 'Lettuce',
+  },
+];
+
+const HighlightedProducts = () => {
   return (
-    <div className="max-w-7xl py-12 px-4 mx-16 sm:px-6 lg:px-8">
-      <h2 className="text-3xl capitalize text-center mb-12 font-semibold text-gray-900 ">TOP SELLING PRODUCTS</h2>
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {products.map((product, index) => (
-          <div
-            key={index}
-            className="bg-white border-[3px] border-green-500 rounded-lg shadow-sm overflow-hidden relative transform transition-all duration-300 hover:shadow-md hover:scale-105 max-w-xs mx-auto"
-          >
-            <div className="relative overflow-hidden">
-              <img
-                src={product.image}
-                alt={product.name}
-                className="w-full h-48 object-cover transform hover:scale-110 hover:translate-y-2 transition-transform duration-300"
-              />
-              <span
-                className={`absolute top-2 left-2 px-2 py-1 text-sm font-semibold rounded ${
-                  product.availability ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
-                }`}
-              >
-                {product.availability ? (
-                  <span className="flex items-center">
-                    <svg
-                      className="w-4 h-4 mr-1"
-                      fill="currentColor"
-                      viewBox="0 0 20 20"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        fillRule="evenodd"
-                        d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.707a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                        clipRule="evenodd"
-                      />
-                    </svg>
-                    In Stock
-                  </span>
-                ) : (
-                  <span className="flex items-center">
-                    <svg
-                      className="w-4 h-4 mr-1"
-                      fill="currentColor"
-                      viewBox="0 0 20 20"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        fillRule="evenodd"
-                        d="M10 18a8 8 0 100-16 8 8 0 000 16zm4-10a1 1 0 00-1-1H7a1 1 0 000 2h6a1 1 0 001-1z"
-                        clipRule="evenodd"
-                      />
-                    </svg>
-                    Out of Stock
-                  </span>
-                )}
-              </span>
-            </div>
-            <div className="p-4">
-              <h3 className="text-xl font-bold text-gray-800 mb-2">{product.name}</h3>
-              <div className="text-gray-600 mb-4">
-                {/* <p className="text-lg font-semibold text-gray-800 mb-1">₹{product.price}</p> */}
-                <p>{product.description}</p>
-              </div>
-              <div className="mt-4 flex justify-between">
-              <Link to={`/store`}>
-                <button className="bg-gradient-to-r from-blue-500 to-blue-700 text-white px-4 py-2 rounded-lg flex items-center hover:from-blue-600 hover:to-blue-800 transition-all duration-300">
-                  <svg
-                    className="w-5 h-5 mr-2"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path d="M3 3a1 1 0 011-1h2a1 1 0 011 1v1h8V3a1 1 0 011-1h2a1 1 0 011 1v1h-1.586l1.293 1.293a1 1 0 01-.293.707L17 7v8a1 1 0 01-1 1H4a1 1 0 01-1-1V7L1.293 5.293a1 1 0 01-.293-.707L2 4H1V3zM4 8v7h10V8H4zm2 5a1 1 0 112 0 1 1 0 01-2 0zm6 0a1 1 0 112 0 1 1 0 01-2 0z" />
-                  </svg>
-                  Visit our store
-                </button></Link>
-                
-                
-              </div>
-            </div>
+    <>
+    <div className="flex justify-center w-full rounded space-x-8 my-10">
+      {products1.map((product) => (
+        <div key={product.id} className="flex mt-16 flex-col items-center  bg-white rounded-lg p-4 w-80">
+        <div className='w-[212px] hover:scale-105 transition duration-700 h-[212px] flex items-center justify-center rounded-full shadow-xl '>
+          <img
+            src={product.imageUrl}
+            alt={product.altText}
+            className=" w-[208px] h-[208px] rounded-full object-cover"
+          />
           </div>
-        ))}
-      </div>
+          <h3 className="text-xl font-semibold mt-3">{product.name}</h3>
+          <Link to={`/store`}>
+          <button className="bg-black hover:text-gray-400 text-white px-8 py-2 mt-4 rounded-3xl hover:bg-gray-800">
+            Shop Now
+          </button>
+          </Link>
+        </div>
+      ))}
     </div>
+    <div className="flex justify-center w-full rounded space-x-8 my-10">
+      {products2.map((product) => (
+        <div key={product.id} className="flex flex-col items-center  bg-white rounded-lg p-4 w-80">
+        <div className='w-[212px] hover:scale-105 transition duration-800  h-[212px] flex items-center justify-center rounded-full shadow-xl'>
+          <img
+            src={product.imageUrl}
+            alt={product.altText}
+            className=" w-[208px] h-[208px] rounded-full object-cover"
+          />
+          </div>
+          <h3 className="text-xl font-semibold mt-3">{product.name}</h3>
+          <Link to={`/store`}>
+          <button className="bg-black hover:text-gray-400 text-white px-8 py-2 mt-4 rounded-3xl hover:bg-gray-800">
+            Shop Now
+          </button>
+          </Link>
+        </div>
+      ))}
+    </div>
+    </>
   );
 };
 
