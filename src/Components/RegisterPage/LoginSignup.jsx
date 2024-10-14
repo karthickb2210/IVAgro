@@ -53,8 +53,8 @@ const LoginSignup = () => {
           );
           localStorage.setItem("name", loginData.name);
           localStorage.setItem("pass", loginData.pass);
-          setIsLoading(false);
           navigate("/dash");
+          setIsLoading(false);
         } else {
           toast.warn("Incorrect Username or password");
           setIsLoading(false);
@@ -64,6 +64,7 @@ const LoginSignup = () => {
         console.log(err);
         setIsLoading(false);
       });
+      
   };
 
   const handleSignupSubmit = (e) => {
@@ -84,14 +85,15 @@ const LoginSignup = () => {
         }
         toast.success("Account created Succesfully")
         console.log(res.data);
-        setIsLoading(false);
-        setIsLogin(!isLogin);
+        setIsLoading(false)
+        setIsLogin(true)
       })
       .catch((err) => {
         console.log(err);
         setIsLoading(false);
         setIsLogin(!isLogin);
       });
+      
   };
 
   return (

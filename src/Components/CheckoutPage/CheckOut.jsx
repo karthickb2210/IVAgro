@@ -1,38 +1,38 @@
-import React, { useState, useEffect,useContext } from 'react';
-import axios from 'axios';
-import NavBar from "../HomePage/NavBar/NavBar"
-import axiosInstance from '../../config/AxiosConfig';
-import { useNavigate } from 'react-router-dom';
-import { toast } from 'react-toastify';
-import CartContext from '../Shop/store/CartContext';
-import LeavesLoader from '../Loader/PlantLoader';
+import React, { useState, useEffect, useContext } from "react";
+import axios from "axios";
+import NavBar from "../HomePage/NavBar/NavBar";
+import axiosInstance from "../../config/AxiosConfig";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import CartContext from "../Shop/store/CartContext";
+import LeavesLoader from "../Loader/PlantLoader";
 
 const CheckOut = () => {
   const cartCtx = useContext(CartContext);
   const [cartItems, setCartItems] = useState([]);
-  const [isLoading,setIsLoading] = useState(false)
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
-  const [guest,setGuest] = useState(false);
+  const [guest, setGuest] = useState(false);
   useEffect(() => {
-    const cart = JSON.parse(localStorage.getItem('cart'));
-    console.log(cart)
+    const cart = JSON.parse(localStorage.getItem("cart"));
+    console.log(cart);
     setCartItems(cart || []);
   }, []);
 
   const [userDetails, setUserDetails] = useState({
-    name: '',
-    email: '',
-    house: '',
-    street:'',
-    address: '',
-    city: '',
-    state: '',
-    zip: '',
+    name: "",
+    email: "",
+    house: "",
+    street: "",
+    address: "",
+    city: "",
+    state: "",
+    zip: "",
   });
 
   const [loading, setLoading] = useState(false);
   const [addressSuggestions, setAddressSuggestions] = useState([]);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
 
   // Handle input changes for all form fields
   const handleInputChange = async (e) => {
@@ -40,7 +40,7 @@ const CheckOut = () => {
     setUserDetails({ ...userDetails, [name]: value });
 
     // If the zip field is updated and has 6 digits, fetch address details
-    if (name === 'zip' && value.length === 6) {
+    if (name === "zip" && value.length === 6) {
       await fetchAddressDetails(value);
     }
   };
@@ -48,13 +48,15 @@ const CheckOut = () => {
   // Fetch address details from India Post API
   const fetchAddressDetails = async (pinCode) => {
     setLoading(true);
-    setError('');
+    setError("");
     setAddressSuggestions([]);
     try {
-      const response = await axios.get(`https://api.postalpincode.in/pincode/${pinCode}`);
+      const response = await axios.get(
+        `https://api.postalpincode.in/pincode/${pinCode}`
+      );
       const data = response.data[0];
 
-      if (data.Status === 'Success') {
+      if (data.Status === "Success") {
         setAddressSuggestions(data.PostOffice);
         // If there's only one post office, autofill the details
         if (data.PostOffice.length === 1) {
@@ -67,10 +69,10 @@ const CheckOut = () => {
           }));
         }
       } else {
-        setError('Invalid PIN Code. Please enter a valid 6-digit PIN Code.');
+        setError("Invalid PIN Code. Please enter a valid 6-digit PIN Code.");
       }
     } catch (err) {
-      setError('Failed to fetch address details. Please try again later.');
+      setError("Failed to fetch address details. Please try again later.");
     } finally {
       setLoading(false);
     }
@@ -89,8 +91,6 @@ const CheckOut = () => {
   };
 
   const [amount, setAmount] = useState(0);
-
-  
 
   // const handleSubmit = (e) => {
   //   e.preventDefault();
@@ -116,93 +116,107 @@ const CheckOut = () => {
     e.preventDefault();
     try {
       // Call your backend API to create the order
-      const { data } = await axiosInstance.post('/create-order', { amount: (finalAmount.toFixed(2)) * 100 }); // Amount in paise
+      const { data } = await axiosInstance.post("/create-order", {
+        amount: finalAmount.toFixed(2) * 100,
+      }); // Amount in paise
 
       // Open Razorpay checkout
       const options = {
-        key: 'rzp_test_wbXDO68U56KR2k',
+        key: "rzp_test_wbXDO68U56KR2k",
         amount: data.amount,
-        currency: 'INR',
-        name: 'IronValley Agronomy',
-        description: 'Test Transaction',
-        image: 'https://your-logo-url.com/logo.png',
+        currency: "INR",
+        name: "IronValley Agronomy",
+        description: "Test Transaction",
+        image: "https://your-logo-url.com/logo.png",
         order_id: data.id,
         handler: function (response) {
-          
           const razorpay_creds = {
-            "razor_pay_order_id" : response.razorpay_order_id,
-             "razorpay_payment_id" : response.razorpay_payment_id,
-            "razorpay_signature" : response.razorpay_signature
-          }
+            razor_pay_order_id: response.razorpay_order_id,
+            razorpay_payment_id: response.razorpay_payment_id,
+            razorpay_signature: response.razorpay_signature,
+          };
 
           // Verify the payment on the backend
-          axiosInstance.post('/verify-payment',razorpay_creds).then((res) => {
+          axiosInstance
+            .post("/verify-payment", razorpay_creds)
+            .then((res) => {
+              if (res.data) {
+                setIsLoading(true);
+                var stockDeductions = {
+                  babySpinachQuantityDetections: 0,
+                  pakChoiQuantityDetections: 0,
+                  basilQuantityDetections: 0,
+                  kaleQuantityDetections: 0,
+                  lettuceQuantityDetections: 0,
+                };
+                console.log(cartItems);
+                cartItems.map((item) => {
+                  if (item.id === "m1") {
+                    stockDeductions.babySpinachQuantityDetections = (item.grams*item.quantity)+stockDeductions.babySpinachQuantityDetections;
+                  } else if (item.id === "m7") {
+                    stockDeductions.pakChoiQuantityDetections = (item.grams*item.quantity) + stockDeductions.pakChoiQuantityDetections;
+                  } else if (item.id === "m8") {
+                    stockDeductions.kaleQuantityDetections = (item.grams*item.quantity) + stockDeductions.kaleQuantityDetections;
+                  } else if (item.id === "m5") {
+                    stockDeductions.lettuceQuantityDetections = (item.grams*item.quantity) + stockDeductions.lettuceQuantityDetections;
+                  } else {
+                    stockDeductions.basilQuantityDetections = (item.grams*item.quantity) + stockDeductions.basilQuantityDetections;
+                  }
+                });
+                console.log(stockDeductions);
+                axiosInstance
+                  .post("/updateStocks", stockDeductions)
+                  .then((res) => {
+                    console.log(res);
+                  })
+                  .catch((err) => {
+                    console.log(err);
+                  });
 
-            if(res.data){
-              setIsLoading(true)
-              var stockDeductions = {
-                "babySpinachQuantityDetections" : 0,
-                "pakChoiQuantityDetections" : 0,
-                "basilQuantityDetections" :0,
-                "kaleQuantityDetections" :0,
-                "lettuceQuantityDetections":0
+                var orderDetails = [];
+                cartItems.map((item) => {
+                  const tempOrder = {
+                    itemName: item.name,
+                    itemQuantity: item.quantity,
+                    itemGrams: item.grams,
+                  };
+                  orderDetails.push(tempOrder);
+                });
+                const order = {
+                  email: localStorage.getItem("name"),
+                  orderDetails: orderDetails,
+                  paymentId: response.razorpay_payment_id,
+                  amountPaid: finalAmount.toFixed(2),
+                };
+                axiosInstance
+                  .post("/addOrder", order)
+                  .then((res) => {
+                    if (res.data.statusCode === 200){
+                    toast.success("Order placed successfully");
+                    cartCtx.clearCart();
+                    localStorage.removeItem("cart")
+                    setIsLoading(false);
+                    navigate("/");
+                    }
+                      else {
+                    toast.warn("Problem occured while placing order");
+                    setIsLoading(false)
+                    }
+                    
+                  })
+                  .catch((err) => {
+                    console.log(err);
+                    setIsLoading(false);
+                  });
               }
-              console.log(cartItems)
-              cartItems.map((item)=>{
-                if(item.id==="m1"){
-                  stockDeductions.babySpinachQuantityDetections+=item.grams
-                }else if(item.id==="m7"){
-                  stockDeductions.pakChoiQuantityDetections+=item.grams
-                }else if(item.id==="m8"){
-                  stockDeductions.kaleQuantityDetections+=item.grams
-                }else if(item.id==="m5"){
-                  stockDeductions.lettuceQuantityDetections+=item.grams
-                }else{
-                  stockDeductions.basilQuantityDetections+=item.grams
-                }
-              })
-              console.log(stockDeductions)
-              axiosInstance.post("/updateStocks",stockDeductions).then((res)=>{
-                console.log(res)
-              }).catch((err)=>{
-                console.log(err)
-              })
-              
-              var orderDetails = [];
-              cartItems.map((item)=>{
-                const tempOrder = {
-                  "itemName" : item.name,
-                  "itemQuantity" : item.quantity,
-                  "itemGrams" : item.grams
-                }
-                orderDetails.push(tempOrder)
-              })
-              const order = {
-                "email" : localStorage.getItem("name"),
-                "orderDetails" : orderDetails,
-                "paymentId" : response.razorpay_payment_id,
-                "amountPaid" : (finalAmount.toFixed(2))
-              }
-              axiosInstance.post("/addOrder",order).then((res)=>{
-                if(res.data.statusCode===200)
-                toast.success("Order placed successfully")
-              else
-              toast.warn("Problem occured while placing order")
-            cartCtx.clearCart();
-            setIsLoading(false)
-            navigate("/")
-              }).catch((err)=>{
-                console.log(err)
-              })
-
-
-            }
-          }).catch((err) => {
-            toast.error("Payment Failed")
-          });
+            })
+            .catch((err) => {
+              toast.error("Payment Failed");
+              setIsLoading(false);
+            });
         },
         theme: {
-          color: '#3399cc',
+          color: "#3399cc",
         },
       };
 
@@ -210,269 +224,328 @@ const CheckOut = () => {
       rzp.open();
     } catch (error) {
       console.error("Payment Error: ", error);
-      alert('Payment failed');
+      alert("Payment failed");
     }
   };
 
   return (
     <>
-    
-    <NavBar />
-    {isLoading ? <LeavesLoader /> :
-    <div className="min-h-screen mt-16 bg-gradient-to-r from-blue-50 to-blue-200 flex items-center justify-center p-6">
-      <div className="w-full max-w-4xl bg-white rounded-lg shadow-lg p-6">
-        <h2 className="text-3xl font-bold text-center mb-6 text-blue-600">Checkout Your Cart</h2>
+      <NavBar />
+      {isLoading ? (
+        <LeavesLoader />
+      ) : (
+        <div className="min-h-screen mt-16 bg-gradient-to-r from-blue-50 to-blue-200 flex items-center justify-center p-6">
+          <div className="w-full max-w-4xl bg-white rounded-lg shadow-lg p-6">
+            <h2 className="text-3xl font-bold text-center mb-6 text-blue-600">
+              Checkout Your Cart
+            </h2>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {/* Cart Details */}
-          <div className="bg-gray-100 p-4 rounded-lg shadow-md">
-            <h3 className="text-xl font-semibold mb-4 text-gray-700">Your Cart</h3>
-            <div className="space-y-3">
-              {cartItems.length > 0 ? (
-                cartItems.map((item) => (
-                  <div
-                    key={item.id}
-                    className="grid justify-items-stretch grid-flow-col bg-white p-3 rounded-lg shadow-sm"
-                  >
-                  <img className='h-16 w-16 rounded-xl '  src={item.image} alt='product image' />
-                  <div className=' justify-self-start content-center'>
-                    <div className="flex flex-col ">
-                      <h4 className="font-medium text-gray-800">{item.name}</h4>
-                      <span className="text-sm text-gray-500">Quantity: {item.quantity}</span>
-                      <span className="text-sm text-gray-500">Weight: {item.grams} grams</span>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {/* Cart Details */}
+              <div className="bg-gray-100 p-4 rounded-lg shadow-md">
+                <h3 className="text-xl font-semibold mb-4 text-gray-700">
+                  Your Cart
+                </h3>
+                <div className="space-y-3">
+                  {cartItems.length > 0 ? (
+                    cartItems.map((item) => (
+                      <div
+                        key={item.id}
+                        className="grid justify-items-stretch grid-flow-col bg-white p-3 rounded-lg shadow-sm"
+                      >
+                        <img
+                          className="h-16 w-16 rounded-xl "
+                          src={item.image}
+                          alt="product image"
+                        />
+                        <div className=" justify-self-start content-center">
+                          <div className="flex flex-col ">
+                            <h4 className="font-medium text-gray-800">
+                              {item.name}
+                            </h4>
+                            <span className="text-sm text-gray-500">
+                              Quantity: {item.quantity}
+                            </span>
+                            <span className="text-sm text-gray-500">
+                              Weight: {item.grams} grams
+                            </span>
+                          </div>
+                        </div>
+                        <span className="text-lg font-semibold text-gray-700 justify-self-end  content-center">
+                          ₹{(item.price * item.quantity).toFixed(2)}
+                        </span>
+                      </div>
+                    ))
+                  ) : (
+                    <p className="text-center text-gray-500">
+                      Your cart is empty.
+                    </p>
+                  )}
+                </div>
+              </div>
+
+              {/* User Details Form */}
+              <div className="bg-gray-100 p-4 rounded-lg shadow-md relative">
+                {cartItems.length > 0 && (
+                  <>
+                    <h1 className="text-xl font-semibold mb-4 text-gray-700">
+                      Cart Value
+                    </h1>
+                    <hr className="my-4" />
+                    <div className="flex justify-between text-lg font-semibold text-gray-700">
+                      <span>Subtotal</span>
+                      <span>₹ {totalAmount.toFixed(2)}</span>
                     </div>
-                    </div>
-                    <span className="text-lg font-semibold text-gray-700 justify-self-end  content-center">
-                      ₹{(item.price * item.quantity).toFixed(2)}
-                    </span>
-                  </div>
-                ))
-              ) : (
-                <p className="text-center text-gray-500">Your cart is empty.</p>
-              )}
-            </div>
-            
-          </div>
-
-          {/* User Details Form */}
-          <div className="bg-gray-100 p-4 rounded-lg shadow-md relative">
-          {cartItems.length > 0 && (
-              <>
-              <h1 className='text-xl font-semibold mb-4 text-gray-700'>Cart Value</h1>
-                <hr className="my-4" />
-                <div className="flex justify-between text-lg font-semibold text-gray-700">
-                  <span>Subtotal</span>
-                  <span>₹ {totalAmount.toFixed(2)}</span>
-                </div>
-                <div
-                  className={`flex justify-between text-lg font-semibold ${
-                    totalAmount >= 500 ? 'text-green-600' : 'text-gray-700'
-                  }`}
-                >
-                  <span>Shipping Charge</span>
-                  <span>₹ {shippingCharge.toFixed(2)}</span>
-                </div>
-                {totalAmount < 500 && (
-                  <div className="text-sm text-gray-600 mt-2">
-                    <p>Note: Shipping charge of ₹120 applies for orders below ₹500.</p>
-                  </div>
-                )}
-                <hr className="my-4" />
-                <div className="flex justify-between text-xl font-bold text-gray-800">
-                  <span>Total</span>
-                  <span>₹ {finalAmount.toFixed(2)}</span>
-                </div>
-              </>
-            )}
-            <div className='flex items-center justify-center my-12 space-x-10'>
-            {/* <button className='bg-blue-500 px-4 text-white py-2 rounded-lg font-semibold hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition duration-200'>Login</button>
-            <button className='bg-blue-500 px-4 text-white py-2 rounded-lg font-semibold hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition duration-200'>Check out as guest</button> */}
-            
-            <button
-                type="submit"
-                className="w-full bg-blue-500 text-white py-2 rounded-lg font-semibold hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition duration-200"
-                onClick={handleSubmit}
-                disabled={cartItems.length === 0}
-              >
-                Proceed To Pay
-              </button>
-            </div>
-            {guest && <>
-            <h3 className="text-xl font-semibold mb-4 text-gray-700">Shipping Information</h3>
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-700" htmlFor="name">
-                  Name
-                </label>
-                <input
-                  type="text"
-                  id="name"
-                  name="name"
-                  value={userDetails.name}
-                  onChange={handleInputChange}
-                  className="w-full border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
-                  required
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700" htmlFor="email">
-                  Email
-                </label>
-                <input
-                  type="email"
-                  id="email"
-                  name="email"
-                  value={userDetails.email}
-                  onChange={handleInputChange}
-                  className="w-full border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
-                  required
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700" htmlFor="email">
-                  House No.
-                </label>
-                <input
-                  type="text"
-                  id="house"
-                  name="house"
-                  value={userDetails.house}
-                  onChange={handleInputChange}
-                  className="w-full border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
-                  required
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700" htmlFor="email">
-                  Street Name
-                </label>
-                <input
-                  type="text"
-                  id="street"
-                  name="street"
-                  value={userDetails.street}
-                  onChange={handleInputChange}
-                  className="w-full border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
-                  required
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700" htmlFor="zip">
-                  PIN Code
-                </label>
-                <input
-                  type="text"
-                  id="zip"
-                  name="zip"
-                  value={userDetails.zip}
-                  onChange={handleInputChange}
-                  className="w-full border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
-                  maxLength="6"
-                  required
-                />
-                {loading && <p className="text-sm text-blue-500 mt-2">Fetching address details...</p>}
-                {error && <p className="text-sm text-red-500 mt-2">{error}</p>}
-              </div>
-
-              {/* Address Suggestions Dropdown */}
-              {addressSuggestions.length > 1 && (
-                <div className="relative">
-                  <label className="block text-sm font-medium text-gray-700" htmlFor="address">
-                    Select Locality
-                  </label>
-                  <div className="mt-1">
-                    <select
-                      id="address"
-                      name="address"
-                      value={userDetails.address}
-                      onChange={(e) => {
-                        const selectedSuggestion = addressSuggestions.find(
-                          (sugg) => sugg.Name === e.target.value
-                        );
-                        handleSelectSuggestion(selectedSuggestion);
-                      }}
-                      className="w-full border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
-                      required
+                    <div
+                      className={`flex justify-between text-lg font-semibold ${
+                        totalAmount >= 500 ? "text-green-600" : "text-gray-700"
+                      }`}
                     >
-                      <option value="" disabled>
-                        -- Select Locality --
-                      </option>
-                      {addressSuggestions.map((suggestion, index) => (
-                        <option key={index} value={suggestion.Name}>
-                          {suggestion.Name}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                </div>
-              )}
+                      <span>Shipping Charge</span>
+                      <span>₹ {shippingCharge.toFixed(2)}</span>
+                    </div>
+                    {totalAmount < 500 && (
+                      <div className="text-sm text-gray-600 mt-2">
+                        <p>
+                          Note: Shipping charge of ₹120 applies for orders below
+                          ₹500.
+                        </p>
+                      </div>
+                    )}
+                    <hr className="my-4" />
+                    <div className="flex justify-between text-xl font-bold text-gray-800">
+                      <span>Total</span>
+                      <span>₹ {finalAmount.toFixed(2)}</span>
+                    </div>
+                  </>
+                )}
+                <div className="flex items-center justify-center my-12 space-x-10">
+                  {/* <button className='bg-blue-500 px-4 text-white py-2 rounded-lg font-semibold hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition duration-200'>Login</button>
+            <button className='bg-blue-500 px-4 text-white py-2 rounded-lg font-semibold hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition duration-200'>Check out as guest</button> */}
 
-              {/* Address Fields */}
-              {addressSuggestions.length <= 1 && (
-                <div>
-                  <label className="block text-sm font-medium text-gray-700" htmlFor="address">
-                    Address
-                  </label>
-                  <input
-                    type="text"
-                    id="address"
-                    name="address"
-                    value={userDetails.address}
-                    onChange={handleInputChange}
-                    className="w-full border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
-                    required
-                  />
+                  <button
+                    type="submit"
+                    className="w-full bg-blue-500 text-white py-2 rounded-lg font-semibold hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition duration-200"
+                    onClick={handleSubmit}
+                    disabled={cartItems.length === 0}
+                  >
+                    Proceed To Pay
+                  </button>
                 </div>
-              )}
-              <div>
-                <label className="block text-sm font-medium text-gray-700" htmlFor="city">
-                  City
-                </label>
-                <input
-                  type="text"
-                  id="city"
-                  name="city"
-                  value={userDetails.city}
-                  onChange={handleInputChange}
-                  className="w-full border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
-                  required
-                  readOnly
-                />
+                {guest && (
+                  <>
+                    <h3 className="text-xl font-semibold mb-4 text-gray-700">
+                      Shipping Information
+                    </h3>
+                    <form onSubmit={handleSubmit} className="space-y-4">
+                      <div>
+                        <label
+                          className="block text-sm font-medium text-gray-700"
+                          htmlFor="name"
+                        >
+                          Name
+                        </label>
+                        <input
+                          type="text"
+                          id="name"
+                          name="name"
+                          value={userDetails.name}
+                          onChange={handleInputChange}
+                          className="w-full border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                          required
+                        />
+                      </div>
+                      <div>
+                        <label
+                          className="block text-sm font-medium text-gray-700"
+                          htmlFor="email"
+                        >
+                          Email
+                        </label>
+                        <input
+                          type="email"
+                          id="email"
+                          name="email"
+                          value={userDetails.email}
+                          onChange={handleInputChange}
+                          className="w-full border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                          required
+                        />
+                      </div>
+                      <div>
+                        <label
+                          className="block text-sm font-medium text-gray-700"
+                          htmlFor="email"
+                        >
+                          House No.
+                        </label>
+                        <input
+                          type="text"
+                          id="house"
+                          name="house"
+                          value={userDetails.house}
+                          onChange={handleInputChange}
+                          className="w-full border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                          required
+                        />
+                      </div>
+                      <div>
+                        <label
+                          className="block text-sm font-medium text-gray-700"
+                          htmlFor="email"
+                        >
+                          Street Name
+                        </label>
+                        <input
+                          type="text"
+                          id="street"
+                          name="street"
+                          value={userDetails.street}
+                          onChange={handleInputChange}
+                          className="w-full border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                          required
+                        />
+                      </div>
+                      <div>
+                        <label
+                          className="block text-sm font-medium text-gray-700"
+                          htmlFor="zip"
+                        >
+                          PIN Code
+                        </label>
+                        <input
+                          type="text"
+                          id="zip"
+                          name="zip"
+                          value={userDetails.zip}
+                          onChange={handleInputChange}
+                          className="w-full border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                          maxLength="6"
+                          required
+                        />
+                        {loading && (
+                          <p className="text-sm text-blue-500 mt-2">
+                            Fetching address details...
+                          </p>
+                        )}
+                        {error && (
+                          <p className="text-sm text-red-500 mt-2">{error}</p>
+                        )}
+                      </div>
+
+                      {/* Address Suggestions Dropdown */}
+                      {addressSuggestions.length > 1 && (
+                        <div className="relative">
+                          <label
+                            className="block text-sm font-medium text-gray-700"
+                            htmlFor="address"
+                          >
+                            Select Locality
+                          </label>
+                          <div className="mt-1">
+                            <select
+                              id="address"
+                              name="address"
+                              value={userDetails.address}
+                              onChange={(e) => {
+                                const selectedSuggestion =
+                                  addressSuggestions.find(
+                                    (sugg) => sugg.Name === e.target.value
+                                  );
+                                handleSelectSuggestion(selectedSuggestion);
+                              }}
+                              className="w-full border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                              required
+                            >
+                              <option value="" disabled>
+                                -- Select Locality --
+                              </option>
+                              {addressSuggestions.map((suggestion, index) => (
+                                <option key={index} value={suggestion.Name}>
+                                  {suggestion.Name}
+                                </option>
+                              ))}
+                            </select>
+                          </div>
+                        </div>
+                      )}
+
+                      {/* Address Fields */}
+                      {addressSuggestions.length <= 1 && (
+                        <div>
+                          <label
+                            className="block text-sm font-medium text-gray-700"
+                            htmlFor="address"
+                          >
+                            Address
+                          </label>
+                          <input
+                            type="text"
+                            id="address"
+                            name="address"
+                            value={userDetails.address}
+                            onChange={handleInputChange}
+                            className="w-full border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                            required
+                          />
+                        </div>
+                      )}
+                      <div>
+                        <label
+                          className="block text-sm font-medium text-gray-700"
+                          htmlFor="city"
+                        >
+                          City
+                        </label>
+                        <input
+                          type="text"
+                          id="city"
+                          name="city"
+                          value={userDetails.city}
+                          onChange={handleInputChange}
+                          className="w-full border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                          required
+                          readOnly
+                        />
+                      </div>
+                      <div>
+                        <label
+                          className="block text-sm font-medium text-gray-700"
+                          htmlFor="state"
+                        >
+                          State
+                        </label>
+                        <input
+                          type="text"
+                          id="state"
+                          name="state"
+                          value={userDetails.state}
+                          onChange={handleInputChange}
+                          className="w-full border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                          required
+                          readOnly
+                        />
+                      </div>
+                      <button
+                        type="submit"
+                        className="w-full bg-blue-500 text-white py-2 rounded-lg font-semibold hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition duration-200"
+                        disabled={cartItems.length === 0}
+                      >
+                        Proceed To Pay
+                      </button>
+                      {cartItems.length === 0 && (
+                        <p className="text-sm text-red-500 mt-2 text-center">
+                          Your cart is empty. Add items to place an order.
+                        </p>
+                      )}
+                    </form>
+                  </>
+                )}
               </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700" htmlFor="state">
-                  State
-                </label>
-                <input
-                  type="text"
-                  id="state"
-                  name="state"
-                  value={userDetails.state}
-                  onChange={handleInputChange}
-                  className="w-full border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
-                  required
-                  readOnly
-                />
-              </div>
-              <button
-                type="submit"
-                className="w-full bg-blue-500 text-white py-2 rounded-lg font-semibold hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition duration-200"
-                disabled={cartItems.length === 0}
-              >
-                Proceed To Pay
-              </button>
-              {cartItems.length === 0 && (
-                <p className="text-sm text-red-500 mt-2 text-center">
-                  Your cart is empty. Add items to place an order.
-                </p>
-              )}
-            </form>
-            </>}
+            </div>
           </div>
         </div>
-      </div>
-    </div>
-    }
+      )}
     </>
   );
 };

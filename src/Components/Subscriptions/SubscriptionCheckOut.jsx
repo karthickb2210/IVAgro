@@ -146,9 +146,10 @@ const SubscriptionCheckOut= () => {
           }
 
           // Verify the payment on the backend
-          setIsLoading(true)
+         
           axiosInstance.post('/verify-payment', razorpay_creds).then((res) => {
             if(res.data){
+              setIsLoading(true)
               var stockDeductions = {
                 "babySpinachQuantityDetections" : 0,
                 "pakChoiQuantityDetections" : 0,
@@ -199,6 +200,7 @@ const SubscriptionCheckOut= () => {
                 setIsLoading(false)
               }).catch((err)=>{
                 console.log(err)
+                setIsLoading(false)
               })
             }
           }).catch((err) => {
