@@ -141,7 +141,7 @@ const CheckOut = () => {
             .post("/verify-payment", razorpay_creds)
             .then((res) => {
               if (res.data) {
-                setIsLoading(true);
+                
                 var stockDeductions = {
                   babySpinachQuantityDetections: 0,
                   pakChoiQuantityDetections: 0,
@@ -195,10 +195,9 @@ const CheckOut = () => {
                     toast.success("Order placed successfully");
                     cartCtx.clearCart();
                     localStorage.removeItem("cart")
-                    setIsLoading(false);
                     navigate("/");
                     }
-                      else {
+                    else {
                     toast.warn("Problem occured while placing order");
                     setIsLoading(false)
                     }
@@ -324,7 +323,6 @@ const CheckOut = () => {
             <button className='bg-blue-500 px-4 text-white py-2 rounded-lg font-semibold hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition duration-200'>Check out as guest</button> */}
 
                   <button
-                    type="submit"
                     className="w-full bg-blue-500 text-white py-2 rounded-lg font-semibold hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition duration-200"
                     onClick={handleSubmit}
                     disabled={cartItems.length === 0}
