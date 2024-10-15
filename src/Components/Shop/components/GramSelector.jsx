@@ -20,7 +20,7 @@ export default function Product({ onConfirm, onCancel, price }) {
       
 
       {/* Gram Selector positioned above the Add to Cart button */}
-      <div className="gram-selector relative z-40 flex flex-col items-center bg-white shadow-lg p-3 rounded-md space-y-2 max-w-xs">
+      <div className="gram-selector relative z-20 flex flex-col items-center bg-white shadow-lg p-3 rounded-md space-y-2 max-w-xs">
         <div className="flex flex-wrap justify-center gap-2">
           {gramOptions.map((gram,index) => (
             <div

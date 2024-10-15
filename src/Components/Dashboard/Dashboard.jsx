@@ -16,7 +16,7 @@ function Dashboard() {
   const [activeTab, setActiveTab] = useState("profile");
   const [profileDetails, setprofileDetails] = useState();
   const [subscriptionDetails, setSubscriptionDetails] = useState();
-  const [orderDetails,setOrderDetails] = useState();
+  const [orderDetails, setOrderDetails] = useState();
   const [isMobileScreen, setIsMobileScreen] = useState(false);
 
   useEffect(() => {
@@ -32,31 +32,31 @@ function Dashboard() {
         console.log(err);
       });
 
-      const checkScreenSize = () => {
-        if (window.innerWidth >= 768) {
-          setIsMobileScreen(false);
-        } else {
-          setIsMobileScreen(true);
-        }
-      };
-      checkScreenSize();
-  
-      window.addEventListener('resize', checkScreenSize);
-      return () => {
-        window.removeEventListener('resize', checkScreenSize);
-      };
-    }, []);
-
-    console.log("Mobile Screen--",isMobileScreen)
-
-    //Drawer
-    const [open, setOpen] = useState(false);
-    const toggleDrawer = (newOpen) => () => {
-      setOpen(newOpen);
+    const checkScreenSize = () => {
+      if (window.innerWidth >= 768) {
+        setIsMobileScreen(false);
+      } else {
+        setIsMobileScreen(true);
+      }
     };
-    const DrawerList = (
-      <Box sx={{ width: 250 }} role="presentation" onClick={toggleDrawer(false)}>
-        <div className="mt-[10vh]">
+    checkScreenSize();
+
+    window.addEventListener("resize", checkScreenSize);
+    return () => {
+      window.removeEventListener("resize", checkScreenSize);
+    };
+  }, []);
+
+  console.log("Mobile Screen--", isMobileScreen);
+
+  //Drawer
+  const [open, setOpen] = useState(false);
+  const toggleDrawer = (newOpen) => () => {
+    setOpen(newOpen);
+  };
+  const DrawerList = (
+    <Box sx={{ width: 250 }} role="presentation" onClick={toggleDrawer(false)}>
+      <div className="mt-[10vh]">
         <div className="w-64 bg-white shadow-2xl p-4 items-center">
           <h2 className="text-2xl font-bold mb-10 text-green-800">
             🌿 DashBoard
@@ -121,113 +121,114 @@ function Dashboard() {
             </ul>
           </nav>
         </div>
-        </div>
-      </Box>
-    );
+      </div>
+    </Box>
+  );
   return (
     <>
-    <NavBar />
-    {!profileDetails ? <LeavesLoader /> :
-      <div className="min-h-screen bg-gradient-to-r mt-36 from-green-100 to-green-50 flex">
-       
-        {/* Sidebar */}
-        {!isMobileScreen&& <div className="w-64 bg-white shadow-2xl p-6">
-          <h2 className="text-3xl font-bold mb-10 text-green-800">
-            🌿 DashBoard
-          </h2>
-          <nav>
-            <ul>
-              <li
-                onClick={() => setActiveTab("profile")}
-                className={`p-4 mb-4 cursor-pointer rounded-lg flex items-center space-x-3 transition ${
-                  activeTab === "profile"
-                    ? "bg-green-500 text-white"
-                    : "hover:bg-green-200"
-                }`}
-              >
-                <FaUserCircle className="text-xl" />
-                <span>Profile</span>
-              </li>
-              <li
-                onClick={() => setActiveTab("addresses")}
-                className={`p-4 mb-4 cursor-pointer rounded-lg flex items-center space-x-3 transition ${
-                  activeTab === "addresses"
-                    ? "bg-green-500 text-white"
-                    : "hover:bg-green-200"
-                }`}
-              >
-                <FaHome className="text-xl" />
-                <span>Addresses</span>
-              </li>
-              <li
-                onClick={() => setActiveTab("subscriptions")}
-                className={`p-4 mb-4 cursor-pointer rounded-lg flex items-center space-x-3 transition ${
-                  activeTab === "subscriptions"
-                    ? "bg-green-500 text-white"
-                    : "hover:bg-green-200"
-                }`}
-              >
-                <FaLeaf className="text-xl" />
-                <span>Subscriptions</span>
-              </li>
-              <li
-                onClick={() => setActiveTab("orders")}
-                className={`p-4 mb-4 cursor-pointer rounded-lg flex items-center space-x-3 transition ${
-                  activeTab === "orders"
-                    ? "bg-green-500 text-white"
-                    : "hover:bg-green-200"
-                }`}
-              >
-                <FaShoppingCart className="text-xl" />
-                <span>Orders</span>
-              </li>
-              <li
-                onClick={() => setActiveTab("settings")}
-                className={`p-4 cursor-pointer rounded-lg flex items-center space-x-3 transition ${
-                  activeTab === "settings"
-                    ? "bg-green-500 text-white"
-                    : "hover:bg-green-200"
-                }`}
-              >
-                <FaCog className="text-xl" />
-                <span>Settings</span>
-              </li>
-            </ul>
-          </nav>
-        </div>}
+      <NavBar />
+      {!profileDetails ? (
+        <LeavesLoader />
+      ) : (
+        <div className="min-h-screen bg-gradient-to-r mt-36 from-green-100 to-green-50 flex">
+          {/* Sidebar */}
+          {!isMobileScreen && (
+            <div className="w-64 bg-white shadow-2xl p-6">
+              <h2 className="text-3xl font-bold mb-10 text-green-800">
+                🌿 DashBoard
+              </h2>
+              <nav>
+                <ul>
+                  <li
+                    onClick={() => setActiveTab("profile")}
+                    className={`p-4 mb-4 cursor-pointer rounded-lg flex items-center space-x-3 transition ${
+                      activeTab === "profile"
+                        ? "bg-green-500 text-white"
+                        : "hover:bg-green-200"
+                    }`}
+                  >
+                    <FaUserCircle className="text-xl" />
+                    <span>Profile</span>
+                  </li>
+                  <li
+                    onClick={() => setActiveTab("addresses")}
+                    className={`p-4 mb-4 cursor-pointer rounded-lg flex items-center space-x-3 transition ${
+                      activeTab === "addresses"
+                        ? "bg-green-500 text-white"
+                        : "hover:bg-green-200"
+                    }`}
+                  >
+                    <FaHome className="text-xl" />
+                    <span>Addresses</span>
+                  </li>
+                  <li
+                    onClick={() => setActiveTab("subscriptions")}
+                    className={`p-4 mb-4 cursor-pointer rounded-lg flex items-center space-x-3 transition ${
+                      activeTab === "subscriptions"
+                        ? "bg-green-500 text-white"
+                        : "hover:bg-green-200"
+                    }`}
+                  >
+                    <FaLeaf className="text-xl" />
+                    <span>Subscriptions</span>
+                  </li>
+                  <li
+                    onClick={() => setActiveTab("orders")}
+                    className={`p-4 mb-4 cursor-pointer rounded-lg flex items-center space-x-3 transition ${
+                      activeTab === "orders"
+                        ? "bg-green-500 text-white"
+                        : "hover:bg-green-200"
+                    }`}
+                  >
+                    <FaShoppingCart className="text-xl" />
+                    <span>Orders</span>
+                  </li>
+                  <li
+                    onClick={() => setActiveTab("settings")}
+                    className={`p-4 cursor-pointer rounded-lg flex items-center space-x-3 transition ${
+                      activeTab === "settings"
+                        ? "bg-green-500 text-white"
+                        : "hover:bg-green-200"
+                    }`}
+                  >
+                    <FaCog className="text-xl" />
+                    <span>Settings</span>
+                  </li>
+                </ul>
+              </nav>
+            </div>
+          )}
 
-        {/* Main Content */}
-        {profileDetails && (
-          <div className="flex-1 p-8 bg-white rounded-l-lg shadow-lg">
-            {activeTab === "profile" && <Profile data={profileDetails} />}
-            {activeTab === "addresses" && <Addresses />}
-            {activeTab === "subscriptions" && (
-              <Subscriptions subscriptionDetails={subscriptionDetails} />
-            )}
-            {activeTab === "orders" && <Orders orderDetails={orderDetails}/>}
-            {activeTab === "settings" && <Settings />}
-          </div>
-        )}
-      </div>
-    }
+          {/* Main Content */}
+          {profileDetails && (
+            <div className="flex-1 p-8 bg-white rounded-l-lg shadow-lg">
+              {activeTab === "profile" && <Profile data={profileDetails} />}
+              {activeTab === "addresses" && <Addresses />}
+              {activeTab === "subscriptions" && (
+                <Subscriptions subscriptionDetails={subscriptionDetails} />
+              )}
+              {activeTab === "orders" && <Orders orderDetails={orderDetails} />}
+              {activeTab === "settings" && <Settings />}
+            </div>
+          )}
+        </div>
+      )}
 
-    {isMobileScreen&&
-      <div className=" fixed bg-gray-400 rounded-e-md top-[30vh]  ">
-       <Button onClick={toggleDrawer(true)}>
-  <BsArrowRightSquareFill color="green" size={"2rem"} />
-  <span className="ml-2 text-black">Menu </span>
-</Button>
-      </div>
-    }
+      {isMobileScreen && (
+        <div className=" fixed bg-gray-400 rounded-e-md top-[30vh]  ">
+          <Button onClick={toggleDrawer(true)}>
+            <BsArrowRightSquareFill color="green" size={"2rem"} />
+            <span className="ml-2 text-black">Menu </span>
+          </Button>
+        </div>
+      )}
 
-    <section>
-      <Drawer open={open} onClose={toggleDrawer(false)}>
-        {DrawerList}
-      </Drawer>
-    </section>
-
+      <section>
+        <Drawer open={open} onClose={toggleDrawer(false)}>
+          {DrawerList}
+        </Drawer>
+      </section>
     </>
-    
   );
 }
 
@@ -243,7 +244,9 @@ const Profile = ({ data }) => (
         className="sm:w-24 w-20  object-contain rounded-full mr-4 shadow-lg"
       />
       <div>
-        <h3 className="sm:text-xl text-lg font-bold text-green-800">{data.username}</h3>
+        <h3 className="sm:text-xl text-lg font-bold text-green-800">
+          {data.username}
+        </h3>
         {/* <p className="text-green-600 text-wrap">jane.greenfield@plantlife.com</p> */}
       </div>
     </div>
@@ -276,22 +279,22 @@ const Addresses = () => (
 
 const Subscriptions = ({ subscriptionDetails }) => (
   <div className="bg-white p-8 shadow-lg rounded-lg">
-  {!subscriptionDetails[0] ? 
-   <h2 className="text-3xl font-semibold mb-8 text-green-700 text-center">
-      🌱 You have no Subscriptions plans active....
-    </h2>
- : 
-    <h2 className="text-2xl sm:text-3xl font-semibold mb-8 text-green-700 text-center">
-      🌱 Subscriptions
-    </h2>
-}
+    {!subscriptionDetails[0] ? (
+      <h2 className="text-3xl font-semibold mb-8 text-green-700 text-center">
+        🌱 You have no Subscriptions plans active....
+      </h2>
+    ) : (
+      <h2 className="text-2xl sm:text-3xl font-semibold mb-8 text-green-700 text-center">
+        🌱 Subscriptions
+      </h2>
+    )}
     {subscriptionDetails.map((subscription, index) => (
       <div
         key={subscription.subscriptionId}
         className="mb-6 p-6 bg-gray-50 rounded-lg shadow-sm transition-shadow hover:shadow-md"
       >
         <h3 className="text-green-700 text-xl lg:text-2xl font-bold mb-2 sm:mb-4 flex justify-between items-center">
-          Subscription {index+1}
+          Subscription {index + 1}
           <span className="text-sm lg:text-lg font-medium text-green-600">
             {subscription.subscriptionType}
           </span>
@@ -313,7 +316,7 @@ const Subscriptions = ({ subscriptionDetails }) => (
             <strong>Subscribed on:</strong>{" "}
             {subscription.createdAt.substring(0, 10)}
           </p>
-           <p className="text-gray-700 mb-1">
+          <p className="text-gray-700 mb-1">
             <strong>Box Size :</strong> {subscription.boxSize} grams
           </p>
           {/*<p className="text-gray-700 mb-1">
@@ -325,24 +328,24 @@ const Subscriptions = ({ subscriptionDetails }) => (
   </div>
 );
 
-const Orders = ({orderDetails}) => (
+const Orders = ({ orderDetails }) => (
   <div className="bg-white p-8 shadow-lg rounded-lg">
-  {!orderDetails[0] ? 
-   <h2 className="text-3xl font-semibold mb-8 text-green-700 text-center">
-      🌱 You have no order history....
-    </h2>
- : 
-    <h2 className="text-2xl sm:text-3xl font-semibold mb-8 text-green-700 text-center">
-      🌱 Orders
-    </h2>
-}
+    {!orderDetails[0] ? (
+      <h2 className="text-3xl font-semibold mb-8 text-green-700 text-center">
+        🌱 You have no order history....
+      </h2>
+    ) : (
+      <h2 className="text-2xl sm:text-3xl font-semibold mb-8 text-green-700 text-center">
+        🌱 Orders
+      </h2>
+    )}
     {orderDetails.map((order, index) => (
       <div
         key={order.orderId}
         className="mb-3 sm:mb-6 p-6 bg-gray-50 rounded-lg shadow-sm transition-shadow hover:shadow-md"
       >
         <h3 className="text-green-700 text-xl lg:text-2xl font-bold mb-2 sm:mb-4 flex justify-between items-center">
-          Order {index+1}
+          Order {index + 1}
           <span className="text-sm lg:text-lg font-medium text-green-600">
             {order.paymentId}
           </span>
@@ -361,11 +364,11 @@ const Orders = ({orderDetails}) => (
 
         <div className="sm:mt-4 mt-2 border-t border-green-200 sm:pt-4 pt-2 ">
           <p className="text-gray-700 mb-1">
-            <strong>Order on:</strong>{" "}
-            {order.createdAt.substring(0, 10)}
+            <strong>Order on:</strong> {order.createdAt.substring(0, 10)}
           </p>
-           <p className="text-gray-700 mb-1">
-            <strong>Delivery Status :</strong> {order.isDelivered ? "Delivered" : "Not Delivered"}
+          <p className="text-gray-700 mb-1">
+            <strong>Delivery Status :</strong>{" "}
+            {order.isDelivered ? "Delivered" : "Not Delivered"}
           </p>
           {/*<p className="text-gray-700 mb-1">
             <strong>Signature:</strong> {subscription.signature}
@@ -393,6 +396,5 @@ const Settings = () => (
     </div>
   </div>
 );
-
 
 export default Dashboard;

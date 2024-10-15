@@ -1,12 +1,36 @@
 import MealItem from "./MealItem.jsx";
-
-import Error from "./Error.jsx";
-import { useState } from "react";
-
-const requestConfig = {};
+import axiosInstance from "../../../config/AxiosConfig.js";
+import { useState ,useEffect} from "react";
+import PlantLoader from "../../Loader/PlantLoader.jsx"
+import { toast } from "react-toastify";
 
 export default function Meals() {
-  const [show, setShow] = useState(false);
+  const [isLoading,setIsLoading] = useState(false)
+  const [stock,setStock] = useState({
+    babySpinachQuantity : 0,
+    lettuceQuantity : 0,
+    kaleQuantity  :0,
+    basilQuantity : 0,
+    pakChoiQuantity : 0
+  });
+
+  useEffect(() => {
+    setIsLoading(true)
+    axiosInstance
+      .get("/admin/getStocks")
+      .then((res) => {
+        console.log(res.data.data[0]);
+        setStock(res.data.data[0]);
+        setIsLoading(false)
+      })
+      .catch((err) => {
+        console.log(err);
+        toast.error("Error Loading data")
+        setIsLoading(false)
+      });
+  }, []);
+
+
 
   // const {
   //   data: loadedMeals,
@@ -24,6 +48,7 @@ export default function Meals() {
   const loadedMeals = [
     {
       id: "m1",
+      available : stock.babySpinachQuantity>0,
       name: "Spinach",
       price: [15, 25,2*Baseprices.BabySpinach, 4*Baseprices.BabySpinach,10*Baseprices.BabySpinach],
       description:
@@ -76,6 +101,7 @@ export default function Meals() {
     {
       id: "m5",
       name: "Lettuce",
+      available : stock.lettuceQuantity>0,
       price: [15,Baseprices.Lettuce,2*Baseprices.Lettuce,4*Baseprices.Lettuce,10*Baseprices.Lettuce],
       description:
         "Lettuce is an excellent source of beta carotene (Vitamin A) which is needed for healthy skin, bones and eyes.",
@@ -99,6 +125,7 @@ export default function Meals() {
     {
       id: "m7",
       name: "Pak Choi",
+      available : stock.pakChoiQuantity>0,
       price: [20,Baseprices.PakChoi,2*Baseprices.PakChoi,4*Baseprices.PakChoi,10*Baseprices.PakChoi],
       description:
         "It's full of cancer fighting compounds such as vitamin C and vitamin E, beta-carotene ,folate and selenium.",
@@ -108,6 +135,7 @@ export default function Meals() {
     {
       id: "m8",
       name: "Kale",
+      available : stock.kaleQuantity>0,
       price: [24, Baseprices.Kale,2*Baseprices.Kale,4*Baseprices.Kale,10*Baseprices.Kale],
       description:
         "It is a nutrition superstar due to the amounts of vitamin A, B6, C, K, folate, fiber, carotenoids and manganese it contains.",
@@ -116,6 +144,7 @@ export default function Meals() {
     },
     {
       id: "m9",
+      available : stock.basilQuantity>0,
       name: "Basil",
       price: [20, Baseprices.Basil,2*Baseprices.Basil,4*Baseprices.Basil ,10*Baseprices.Basil],
       description:
@@ -124,6 +153,7 @@ export default function Meals() {
         "https://t3.ftcdn.net/jpg/01/48/71/76/240_F_148717694_VUiPGqDdJ6gOuHKDr6hAvAmI5qdpKZef.jpg",
     },
   ];
+
 
   // if (isLoading) {
   //   return <p className="center">Fetching meals...</p>;
@@ -137,11 +167,20 @@ export default function Meals() {
   //   return <p>No meals found.</p>
   // }
 
+  
+
   return (
+    <>
+    {isLoading 
+   
+   ? <PlantLoader /> :
     <ul id="meals" className=" space-x-7 space-y-6">
       {loadedMeals.map((meal) => (
         <MealItem key={meal.id} meal={meal} />
       ))}
     </ul>
+  }
+    </>
+    
   );
 }
