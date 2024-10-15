@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import NavBar from "../HomePage/NavBar/NavBar";
 import axiosInstance from "../../config/AxiosConfig";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import CartContext from "../Shop/store/CartContext";
 import LeavesLoader from "../Loader/PlantLoader";
@@ -12,10 +12,13 @@ const CheckOut = () => {
   const [cartItems, setCartItems] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
-  const [guest, setGuest] = useState(false);
+  const [guest, setGuest] = useState(true);
   useEffect(() => {
     const cart = JSON.parse(localStorage.getItem("cart"));
     console.log(cart);
+    if (localStorage.getItem("name")) {
+      setGuest(false);
+    }
     setCartItems(cart || []);
   }, []);
 
@@ -141,7 +144,6 @@ const CheckOut = () => {
             .post("/verify-payment", razorpay_creds)
             .then((res) => {
               if (res.data) {
-                
                 var stockDeductions = {
                   babySpinachQuantityDetections: 0,
                   pakChoiQuantityDetections: 0,
@@ -152,15 +154,25 @@ const CheckOut = () => {
                 console.log(cartItems);
                 cartItems.map((item) => {
                   if (item.id === "m1") {
-                    stockDeductions.babySpinachQuantityDetections = (item.grams*item.quantity)+stockDeductions.babySpinachQuantityDetections;
+                    stockDeductions.babySpinachQuantityDetections =
+                      item.grams * item.quantity +
+                      stockDeductions.babySpinachQuantityDetections;
                   } else if (item.id === "m7") {
-                    stockDeductions.pakChoiQuantityDetections = (item.grams*item.quantity) + stockDeductions.pakChoiQuantityDetections;
+                    stockDeductions.pakChoiQuantityDetections =
+                      item.grams * item.quantity +
+                      stockDeductions.pakChoiQuantityDetections;
                   } else if (item.id === "m8") {
-                    stockDeductions.kaleQuantityDetections = (item.grams*item.quantity) + stockDeductions.kaleQuantityDetections;
+                    stockDeductions.kaleQuantityDetections =
+                      item.grams * item.quantity +
+                      stockDeductions.kaleQuantityDetections;
                   } else if (item.id === "m5") {
-                    stockDeductions.lettuceQuantityDetections = (item.grams*item.quantity) + stockDeductions.lettuceQuantityDetections;
+                    stockDeductions.lettuceQuantityDetections =
+                      item.grams * item.quantity +
+                      stockDeductions.lettuceQuantityDetections;
                   } else {
-                    stockDeductions.basilQuantityDetections = (item.grams*item.quantity) + stockDeductions.basilQuantityDetections;
+                    stockDeductions.basilQuantityDetections =
+                      item.grams * item.quantity +
+                      stockDeductions.basilQuantityDetections;
                   }
                 });
                 console.log(stockDeductions);
@@ -171,7 +183,7 @@ const CheckOut = () => {
                   })
                   .catch((err) => {
                     console.log(err);
-                });
+                  });
 
                 var orderDetails = [];
                 cartItems.map((item) => {
@@ -182,29 +194,27 @@ const CheckOut = () => {
                   };
                   orderDetails.push(tempOrder);
                 });
-                console.log("Order Details",orderDetails);
+                console.log("Order Details", orderDetails);
                 const order = {
                   email: localStorage.getItem("name"),
                   orderDetails: orderDetails,
                   paymentId: response.razorpay_payment_id,
                   amountPaid: finalAmount.toFixed(2),
                 };
-                console.log("Order",order)
+                console.log("Order", order);
                 axiosInstance
                   .post("/addOrder", order)
                   .then((res) => {
-                    console.log(res.data.statusCode)
-                    if (res.data.statusCode === 200){
-                    toast.success("Order placed successfully");
-                    cartCtx.clearCart();
-                    localStorage.removeItem("cart")
-                    navigate("/");
+                    console.log(res.data.statusCode);
+                    if (res.data.statusCode === 200) {
+                      toast.success("Order placed successfully");
+                      cartCtx.clearCart();
+                      localStorage.removeItem("cart");
+                      navigate("/");
+                    } else {
+                      toast.warn("Problem occured while placing order");
+                      setIsLoading(false);
                     }
-                    else {
-                    toast.warn("Problem occured while placing order");
-                    setIsLoading(false)
-                    }
-                    
                   })
                   .catch((err) => {
                     console.log(err);
@@ -324,16 +334,23 @@ const CheckOut = () => {
                 <div className="flex items-center justify-center my-12 space-x-10">
                   {/* <button className='bg-blue-500 px-4 text-white py-2 rounded-lg font-semibold hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition duration-200'>Login</button>
             <button className='bg-blue-500 px-4 text-white py-2 rounded-lg font-semibold hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition duration-200'>Check out as guest</button> */}
-
-                  <button
-                    className="w-full bg-blue-500 text-white py-2 rounded-lg font-semibold hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition duration-200"
-                    onClick={handleSubmit}
-                    disabled={cartItems.length === 0}
-                  >
-                    Proceed To Pay
-                  </button>
+                  {!guest ? (
+                    <button
+                      className="w-full bg-blue-500 text-white py-2 rounded-lg font-semibold hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition duration-200"
+                      onClick={handleSubmit}
+                      disabled={cartItems.length === 0}
+                    >
+                      Proceed To Pay
+                    </button>
+                  ) : (
+                    <Link to={`/register`}>
+                      <button className="w-full bg-blue-500 text-white py-2 px-2 rounded-lg font-semibold hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition duration-200">
+                        Login to proceed
+                      </button>
+                    </Link>
+                  )}
                 </div>
-                {guest && (
+                {/* {guest && (
                   <>
                     <h3 className="text-xl font-semibold mb-4 text-gray-700">
                       Shipping Information
@@ -435,7 +452,7 @@ const CheckOut = () => {
                       </div>
 
                       {/* Address Suggestions Dropdown */}
-                      {addressSuggestions.length > 1 && (
+                {/* {addressSuggestions.length > 1 && (
                         <div className="relative">
                           <label
                             className="block text-sm font-medium text-gray-700"
@@ -469,10 +486,10 @@ const CheckOut = () => {
                             </select>
                           </div>
                         </div>
-                      )}
+                      )} */}
 
-                      {/* Address Fields */}
-                      {addressSuggestions.length <= 1 && (
+                {/* Address Fields */}
+                {/* {addressSuggestions.length <= 1 && (
                         <div>
                           <label
                             className="block text-sm font-medium text-gray-700"
@@ -541,7 +558,7 @@ const CheckOut = () => {
                       )}
                     </form>
                   </>
-                )}
+                )} */}
               </div>
             </div>
           </div>

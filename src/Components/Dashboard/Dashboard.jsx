@@ -6,15 +6,18 @@ import {
   FaShoppingCart,
   FaCog,
 } from "react-icons/fa";
+import { BsArrowRightSquareFill } from "react-icons/bs";
 import axiosInstance from "../../config/AxiosConfig";
 import NavBar from "../HomePage/NavBar/NavBar";
 import LeavesLoader from "../Loader/PlantLoader";
+import { Box, Button, Drawer } from "@mui/material";
 
 function Dashboard() {
   const [activeTab, setActiveTab] = useState("profile");
   const [profileDetails, setprofileDetails] = useState();
   const [subscriptionDetails, setSubscriptionDetails] = useState();
   const [orderDetails,setOrderDetails] = useState();
+  const [isMobileScreen, setIsMobileScreen] = useState(false);
 
   useEffect(() => {
     const name = localStorage.getItem("name");
@@ -28,16 +31,34 @@ function Dashboard() {
       .catch((err) => {
         console.log(err);
       });
-  }, []);
 
-  return (
-    <>
-    <NavBar />
-    {!profileDetails ? <LeavesLoader /> :
-      <div className="min-h-screen bg-gradient-to-r mt-36 from-green-100 to-green-50 flex">
-        {/* Sidebar */}
-        <div className="w-64 bg-white shadow-2xl p-6">
-          <h2 className="text-3xl font-bold mb-10 text-green-800">
+      const checkScreenSize = () => {
+        if (window.innerWidth >= 768) {
+          setIsMobileScreen(false);
+        } else {
+          setIsMobileScreen(true);
+        }
+      };
+      checkScreenSize();
+  
+      window.addEventListener('resize', checkScreenSize);
+      return () => {
+        window.removeEventListener('resize', checkScreenSize);
+      };
+    }, []);
+
+    console.log("Mobile Screen--",isMobileScreen)
+
+    //Drawer
+    const [open, setOpen] = useState(false);
+    const toggleDrawer = (newOpen) => () => {
+      setOpen(newOpen);
+    };
+    const DrawerList = (
+      <Box sx={{ width: 250 }} role="presentation" onClick={toggleDrawer(false)}>
+        <div className="mt-[10vh]">
+        <div className="w-64 bg-white shadow-2xl p-4 items-center">
+          <h2 className="text-2xl font-bold mb-10 text-green-800">
             🌿 DashBoard
           </h2>
           <nav>
@@ -100,6 +121,80 @@ function Dashboard() {
             </ul>
           </nav>
         </div>
+        </div>
+      </Box>
+    );
+  return (
+    <>
+    <NavBar />
+    {!profileDetails ? <LeavesLoader /> :
+      <div className="min-h-screen bg-gradient-to-r mt-36 from-green-100 to-green-50 flex">
+       
+        {/* Sidebar */}
+        {!isMobileScreen&& <div className="w-64 bg-white shadow-2xl p-6">
+          <h2 className="text-3xl font-bold mb-10 text-green-800">
+            🌿 DashBoard
+          </h2>
+          <nav>
+            <ul>
+              <li
+                onClick={() => setActiveTab("profile")}
+                className={`p-4 mb-4 cursor-pointer rounded-lg flex items-center space-x-3 transition ${
+                  activeTab === "profile"
+                    ? "bg-green-500 text-white"
+                    : "hover:bg-green-200"
+                }`}
+              >
+                <FaUserCircle className="text-xl" />
+                <span>Profile</span>
+              </li>
+              <li
+                onClick={() => setActiveTab("addresses")}
+                className={`p-4 mb-4 cursor-pointer rounded-lg flex items-center space-x-3 transition ${
+                  activeTab === "addresses"
+                    ? "bg-green-500 text-white"
+                    : "hover:bg-green-200"
+                }`}
+              >
+                <FaHome className="text-xl" />
+                <span>Addresses</span>
+              </li>
+              <li
+                onClick={() => setActiveTab("subscriptions")}
+                className={`p-4 mb-4 cursor-pointer rounded-lg flex items-center space-x-3 transition ${
+                  activeTab === "subscriptions"
+                    ? "bg-green-500 text-white"
+                    : "hover:bg-green-200"
+                }`}
+              >
+                <FaLeaf className="text-xl" />
+                <span>Subscriptions</span>
+              </li>
+              <li
+                onClick={() => setActiveTab("orders")}
+                className={`p-4 mb-4 cursor-pointer rounded-lg flex items-center space-x-3 transition ${
+                  activeTab === "orders"
+                    ? "bg-green-500 text-white"
+                    : "hover:bg-green-200"
+                }`}
+              >
+                <FaShoppingCart className="text-xl" />
+                <span>Orders</span>
+              </li>
+              <li
+                onClick={() => setActiveTab("settings")}
+                className={`p-4 cursor-pointer rounded-lg flex items-center space-x-3 transition ${
+                  activeTab === "settings"
+                    ? "bg-green-500 text-white"
+                    : "hover:bg-green-200"
+                }`}
+              >
+                <FaCog className="text-xl" />
+                <span>Settings</span>
+              </li>
+            </ul>
+          </nav>
+        </div>}
 
         {/* Main Content */}
         {profileDetails && (
@@ -116,6 +211,21 @@ function Dashboard() {
       </div>
     }
 
+    {isMobileScreen&&
+      <div className=" fixed bg-gray-400 rounded-e-md top-[30vh]  ">
+       <Button onClick={toggleDrawer(true)}>
+  <BsArrowRightSquareFill color="green" size={"2rem"} />
+  <span className="ml-2 text-black">Menu </span>
+</Button>
+      </div>
+    }
+
+    <section>
+      <Drawer open={open} onClose={toggleDrawer(false)}>
+        {DrawerList}
+      </Drawer>
+    </section>
+
     </>
     
   );
@@ -123,25 +233,25 @@ function Dashboard() {
 
 const Profile = ({ data }) => (
   <div className="bg-white p-6  shadow-md rounded-lg">
-    <h2 className="text-3xl font-semibold mb-6 text-green-700">
+    <h2 className="sm:text-3xl text-2xl font-semibold mb-6 text-green-700">
       👤 User Profile
     </h2>
     <div className="flex items-center mb-4">
       <img
         src="https://t3.ftcdn.net/jpg/06/33/54/78/240_F_633547842_AugYzexTpMJ9z1YcpTKUBoqBF0CUCk10.jpg"
         alt="Profile"
-        className="w-24 object-contain h-24 rounded-full mr-4 shadow-lg"
+        className="sm:w-24 w-20  object-contain rounded-full mr-4 shadow-lg"
       />
       <div>
-        <h3 className="text-xl font-bold text-green-800">{data.username}</h3>
+        <h3 className="sm:text-xl text-lg font-bold text-green-800">{data.username}</h3>
         {/* <p className="text-green-600 text-wrap">jane.greenfield@plantlife.com</p> */}
       </div>
     </div>
     <div className="mt-6">
-      <h4 className="text-green-700 font-semibold mb-2">
+      <h4 className="text-green-700 font-medium sm:font-semibold mb-2">
         Email : {data.mail}{" "}
       </h4>
-      <h4 className="text-green-700 font-semibold mb-2">
+      <h4 className="text-green-700 font-medium sm:font-semibold mb-2">
         Mobile Number : {data.mobileNumber}
       </h4>
     </div>
@@ -171,7 +281,7 @@ const Subscriptions = ({ subscriptionDetails }) => (
       🌱 You have no Subscriptions plans active....
     </h2>
  : 
-    <h2 className="text-3xl font-semibold mb-8 text-green-700 text-center">
+    <h2 className="text-2xl sm:text-3xl font-semibold mb-8 text-green-700 text-center">
       🌱 Subscriptions
     </h2>
 }
@@ -180,17 +290,17 @@ const Subscriptions = ({ subscriptionDetails }) => (
         key={subscription.subscriptionId}
         className="mb-6 p-6 bg-gray-50 rounded-lg shadow-sm transition-shadow hover:shadow-md"
       >
-        <h3 className="text-green-700 text-2xl font-bold mb-4 flex justify-between items-center">
+        <h3 className="text-green-700 text-xl lg:text-2xl font-bold mb-2 sm:mb-4 flex justify-between items-center">
           Subscription {index+1}
-          <span className="text-lg font-medium text-green-600">
+          <span className="text-sm lg:text-lg font-medium text-green-600">
             {subscription.subscriptionType}
           </span>
         </h3>
 
-        <div className="border-t border-green-200 pt-4">
+        <div className="border-t border-green-200 pt-2 sm:pt-4">
           <ul className="list-disc list-inside">
             {subscription.subscriptionDetails.map((detail, idx) => (
-              <li key={idx} className="text-green-600 text-lg mb-2">
+              <li key={idx} className="text-green-600 lg:text-lg sm:mb-2 mb-1">
                 <strong>{detail.product_name}</strong> - Quantity:{" "}
                 {detail.quantity} grams
               </li>
@@ -198,7 +308,7 @@ const Subscriptions = ({ subscriptionDetails }) => (
           </ul>
         </div>
 
-        <div className="mt-4 border-t border-green-200 pt-4">
+        <div className="sm:mt-4 mt-2 border-t border-green-200 pt-4">
           <p className="text-gray-700 mb-1">
             <strong>Subscribed on:</strong>{" "}
             {subscription.createdAt.substring(0, 10)}
@@ -222,18 +332,18 @@ const Orders = ({orderDetails}) => (
       🌱 You have no order history....
     </h2>
  : 
-    <h2 className="text-3xl font-semibold mb-8 text-green-700 text-center">
+    <h2 className="text-2xl sm:text-3xl font-semibold mb-8 text-green-700 text-center">
       🌱 Orders
     </h2>
 }
     {orderDetails.map((order, index) => (
       <div
         key={order.orderId}
-        className="mb-6 p-6 bg-gray-50 rounded-lg shadow-sm transition-shadow hover:shadow-md"
+        className="mb-3 sm:mb-6 p-6 bg-gray-50 rounded-lg shadow-sm transition-shadow hover:shadow-md"
       >
-        <h3 className="text-green-700 text-2xl font-bold mb-4 flex justify-between items-center">
+        <h3 className="text-green-700 text-xl lg:text-2xl font-bold mb-2 sm:mb-4 flex justify-between items-center">
           Order {index+1}
-          <span className="text-lg font-medium text-green-600">
+          <span className="text-sm lg:text-lg font-medium text-green-600">
             {order.paymentId}
           </span>
         </h3>
@@ -241,7 +351,7 @@ const Orders = ({orderDetails}) => (
         <div className="border-t border-green-200 pt-4">
           <ul className="list-disc list-inside">
             {order.orderDetails.map((detail, idx) => (
-              <li key={idx} className="text-green-600 text-lg mb-2">
+              <li key={idx} className="text-green-600 lg:text-lg mb-1 sm:mb-2">
                 <strong>{detail.itemName}</strong> - Quantity:{" "}
                 {detail.itemGrams} grams
               </li>
@@ -249,7 +359,7 @@ const Orders = ({orderDetails}) => (
           </ul>
         </div>
 
-        <div className="mt-4 border-t border-green-200 pt-4">
+        <div className="sm:mt-4 mt-2 border-t border-green-200 sm:pt-4 pt-2 ">
           <p className="text-gray-700 mb-1">
             <strong>Order on:</strong>{" "}
             {order.createdAt.substring(0, 10)}
@@ -283,5 +393,6 @@ const Settings = () => (
     </div>
   </div>
 );
+
 
 export default Dashboard;

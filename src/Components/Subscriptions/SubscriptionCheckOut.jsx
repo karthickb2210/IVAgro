@@ -3,17 +3,19 @@ import axios from 'axios';
 import NavBar from "../HomePage/NavBar/NavBar"
 import axiosInstance from '../../config/AxiosConfig';
 import { toast } from 'react-toastify';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate,Link } from 'react-router-dom';
 import LeavesLoader from '../Loader/PlantLoader';
 
 
 const SubscriptionCheckOut= () => {
   const [cartItems, setCartItems] = useState([]);
   const [guest,setGuest] = useState(true);
-  const [showForm,setShowForm] = useState(false)
   useEffect(() => {
     const cart = JSON.parse(sessionStorage.getItem('subbox'));
     console.log(cart)
+    if(localStorage.getItem("name")){
+      setGuest(false)
+    }
     setCartItems(cart || []);
     const user = localStorage.getItem('name')
     if(user){
@@ -294,10 +296,14 @@ const SubscriptionCheckOut= () => {
             <button className='bg-blue-500 px-4 text-white py-2 rounded-lg font-semibold hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition duration-200'>Check out as guest</button>
             */}
             </div> 
-                {!guest && 
+                {!guest ? 
                     <button onClick={handleSubmit} className='bg-blue-500 px-4 text-white py-2 rounded-lg font-semibold hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition duration-200'>Proceed to Payment</button>
+                   : 
+                   <Link to={`/register`}>
+                   <button className='bg-blue-500 px-4 text-white py-2 rounded-lg font-semibold hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition duration-200'>Login to Proceed</button>
+                   </Link>
                 }
-                {guest && !showForm && 
+                {/* {guest && !showForm && 
                     <button onClick={()=>setShowForm(true)} className='bg-blue-500 px-4 text-white py-2 rounded-lg font-semibold hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition duration-200'>CheckOut as guest user</button>
                 }
             {guest && showForm && <>
@@ -375,10 +381,10 @@ const SubscriptionCheckOut= () => {
                 />
                 {loading && <p className="text-sm text-blue-500 mt-2">Fetching address details...</p>}
                 {error && <p className="text-sm text-red-500 mt-2">{error}</p>}
-              </div>
+              </div> */}
 
               {/* Address Suggestions Dropdown */}
-              {addressSuggestions.length > 1 && (
+              {/* {addressSuggestions.length > 1 && (
                 <div className="relative">
                   <label className="block text-sm font-medium text-gray-700" htmlFor="address">
                     Select Locality
@@ -408,10 +414,10 @@ const SubscriptionCheckOut= () => {
                     </select>
                   </div>
                 </div>
-              )}
+              )} */}
 
               {/* Address Fields */}
-              {addressSuggestions.length <= 1 && (
+              {/* {addressSuggestions.length <= 1 && (
                 <div>
                   <label className="block text-sm font-medium text-gray-700" htmlFor="address">
                     Address
@@ -472,7 +478,7 @@ const SubscriptionCheckOut= () => {
             </form>
             </>
             
-            }
+            } */}
           </div>
         </div>
       </div>
