@@ -20,15 +20,10 @@ const Popup = () => {
   return (
     <>
       {isOpen && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-20">
-          <div className="relative bg-white p-6 rounded-lg shadow-lg  md:mx-6 lg:mx-12">
+        <div className="fixed  inset-0 flex items-center justify-center bg-black bg-opacity-50 z-20">
+          
             {/* Close Button at Top Right */}
-            <button
-              onClick={handleClose}
-              className="absolute top-2 right-2 text-gray-500 hover:text-gray-700"
-            >
-              &#x2715;
-            </button>
+            
             
             {/* <img
               src="https://www.shutterstock.com/image-vector/welcome-our-farmhouse-inspirational-quotes-260nw-2196191199.jpg"
@@ -36,19 +31,27 @@ const Popup = () => {
               className="mb-4 w-full h-auto rounded"
             /> */}
 
-            <div className="relative bg-gradient-to-r from-yellow-100 via-orange-500 to-green-600 py-12 sm:py-16 md:py-20 px-6 sm:px-8 md:px-16 text-white overflow-hidden">
+            <div className="relative mx-8 bg-banner-back py-12 sm:py-16 md:py-20 px-6 sm:px-8 md:px-16 text-white overflow-hidden">
+              
+            <button
+              onClick={handleClose}
+              className="absolute top-2 z-50 right-3 text-2xl text-white hover:text-red-500"
+            >
+              &#x2715;
+            </button>
       <motion.div
         className="absolute inset-0 w-full h-full"
         animate={{ scale: [1, 1.1, 1] }}
         transition={{ duration: 10, repeat: Infinity, ease: 'easeInOut' }}
       >
+      
         <div className="absolute inset-0 bg-black opacity-30" />
         
       </motion.div>
 
       <div className="relative z-10 flex flex-col items-center text-center">
         <motion.h1
-          className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold"
+          className="text-3xl font-sans sm:text-4xl md:text-5xl lg:text-6xl font-bold"
           initial={{ opacity: 0, y: 50 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1 }}
@@ -73,7 +76,7 @@ const Popup = () => {
         </motion.h3>
         <Link to={`/farm`}>
           <motion.button
-            className="mt-6 sm:mt-8 px-4 sm:px-6 py-2 sm:py-3 bg-white text-green-500 font-semibold rounded-md shadow-lg hover:bg-gray-200 transition-all duration-300"
+            className="mt-6 sm:mt-8 px-4 sm:px-6 py-2 sm:py-3 hover:bg-gray-400 bg-white text-banner-back font-semibold rounded-md shadow-lg transition-all duration-300"
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.8, delay: 1 }}
@@ -81,12 +84,13 @@ const Popup = () => {
             Book Your Visit
           </motion.button>
         </Link>
+        
       </div>
     </div>
             {/* <Banner /> */}
             
           </div>
-        </div>
+        
       )}
     </>
   );

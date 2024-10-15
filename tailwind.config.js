@@ -5,7 +5,14 @@ export default {
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        'banner-back': '#0b1320',
+      },
+      fontFamily: {
+        sans: ['Biryani', 'sans-serif'], // Set Briyani as the primary sans-serif font
+      }
+    },
   },
   plugins: [],
 }

@@ -31,7 +31,7 @@ export default function MealItem({ meal }) {
           </div>
           <div>
             <h3>{meal.name}</h3>
-            <p className="meal-item-price">
+            <p className="meal-item-price text-md">
               {/* Call for Price */}
              Prices starts at ₹ {meal.price[0]}
             </p>

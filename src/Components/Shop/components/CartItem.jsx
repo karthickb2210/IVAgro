@@ -8,7 +8,7 @@ export default function CartItem({
   onDecrease,
 }) {
   return (
-    <div className="flex items-center justify-between  p-2">
+    <div className="flex items-center justify-between border rounded-xl border-gray-300  p-2">
       {/* Image Section */}
       <div className="flex items-center space-x-4">
         <img
@@ -33,7 +33,7 @@ export default function CartItem({
           >
             −
           </button>
-          <span className="px-4 py-1 border-l border-r rounded-full border-gray-300">{quantity}</span>
+          <span className="px-4 py-1  border-gray-300">{quantity}</span>
           <button
             onClick={onIncrease}
             className="px-2 py-1 text-gray-600 hover:bg-green-500"
