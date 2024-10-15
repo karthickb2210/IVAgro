@@ -17,6 +17,7 @@ export default function Cart() {
     (totalPrice, item) => totalPrice + item.quantity * item.price,
     0
   );
+  console.log(cartCtx)
 
   function handleCloseCart() {
     userProgressCtx.hideCart();
@@ -33,10 +34,11 @@ export default function Cart() {
       open={userProgressCtx.progress === 'cart'}
       onClose={userProgressCtx.progress === 'cart' ? handleCloseCart : null}
     >
-      <h2>Your Cart</h2>
-      <ul>
+      <h2 className='mb-8 text-3xl'>Your Cart</h2>
+      <ul className='flex flex-col space-y-4 mt-6'>
         {cartCtx.items.map((item) => (
           <CartItem
+          image={item.image}
             key={item.id}
             name={item.name}
             quantity={item.quantity}
@@ -47,7 +49,7 @@ export default function Cart() {
           />
         ))}
       </ul>
-      <p className="cart-total">₹ {cartTotal.toFixed(2)}</p>
+      <p className="cart-total">Total Cost - ₹ {cartTotal.toFixed(2)}</p>
       <p className="modal-actions">
         <Button textOnly onClick={handleCloseCart}>
           Close
