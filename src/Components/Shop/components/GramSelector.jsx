@@ -1,25 +1,31 @@
 import { useState } from 'react';
 import Button from './UI/Button.jsx';
 
-const gramOptions = [50, 100, 150, 250, 500, 1000];
+const gramOptions = [30, 50, 100, 200, 500];
 
 export default function Product({ onConfirm, onCancel, price }) {
-  const [selectedGram, setSelectedGram] = useState(50);
+  const [selectedGram, setSelectedGram] = useState(30);
+  const [hover,setHover] = useState(true)
+  console.log(price)
 
   const handleSelect = (gram) => {
     setSelectedGram(gram);
   };
 
+  
+
   return (
-    <div className="product-container flex flex-col items-center space-y-4 p-4">
+    <div className="product-container flex flex-col items-center space-y-4 p-2">
       {/* Product Image */}
       
 
       {/* Gram Selector positioned above the Add to Cart button */}
       <div className="gram-selector relative z-40 flex flex-col items-center bg-white shadow-lg p-3 rounded-md space-y-2 max-w-xs">
         <div className="flex flex-wrap justify-center gap-2">
-          {gramOptions.map((gram) => (
+          {gramOptions.map((gram,index) => (
             <div
+            onMouseOver={()=>setHover(false)}
+            onMouseLeave={()=>setHover(true)}
               key={gram}
               onClick={() => handleSelect(gram)}
               className={`cursor-pointer transition-colors duration-200 ease-in-out rounded-full px-3 py-1 text-xs border-2 ${
@@ -29,7 +35,7 @@ export default function Product({ onConfirm, onCancel, price }) {
               } hover:bg-green-500 hover:text-white hover:border-green-500`}
               style={{ minWidth: '50px', textAlign: 'center' }}
             >
-              {gram}g
+             {hover ? `${gram} g` : `₹ ${price[index]}`  }
             </div>
           ))}
         </div>

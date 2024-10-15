@@ -13,16 +13,23 @@ export default function Meals() {
   //   isLoading,
   //   error,
   // } = useHttp('http://localhost:3000/meals', requestConfig, []);
+  const Baseprices = {
+    BabySpinach : 25,
+    Lettuce : 25,
+    PakChoi : 30,
+    Kale : 24,
+    Basil : 30
+  }
 
   const loadedMeals = [
     {
       id: "m1",
-      name: "Baby Spinach",
-      price: ["8", "16", "24", "36", "54", "80"],
+      name: "Spinach",
+      price: [15, 25,2*Baseprices.BabySpinach, 4*Baseprices.BabySpinach,10*Baseprices.BabySpinach],
       description:
         "Baby Spinach is high in vitamin K which serves several function in your body but it is best know for its role in blood clotting.",
       image:
-        "https://t3.ftcdn.net/jpg/08/07/98/62/240_F_807986222_KjBaQUDhq5lvjb4FI3mU4Y7ViaHcTTeN.jpg",
+      "https://t4.ftcdn.net/jpg/09/79/09/47/240_F_979094741_XvQvDjsLWmyGTx0wNOrSR3cQEOJb3kPD.jpg",
     },
     //  {
     //      "id": "m2",
@@ -69,7 +76,7 @@ export default function Meals() {
     {
       id: "m5",
       name: "Lettuce",
-      price: ["8", "16", "24", "36", "54", "80"],
+      price: [15,Baseprices.Lettuce,2*Baseprices.Lettuce,4*Baseprices.Lettuce,10*Baseprices.Lettuce],
       description:
         "Lettuce is an excellent source of beta carotene (Vitamin A) which is needed for healthy skin, bones and eyes.",
       image:
@@ -92,7 +99,7 @@ export default function Meals() {
     {
       id: "m7",
       name: "Pak Choi",
-      price: ["8", "16", "24", "36", "54", "80"],
+      price: [20,Baseprices.PakChoi,2*Baseprices.PakChoi,4*Baseprices.PakChoi,10*Baseprices.PakChoi],
       description:
         "It's full of cancer fighting compounds such as vitamin C and vitamin E, beta-carotene ,folate and selenium.",
       image:
@@ -101,7 +108,7 @@ export default function Meals() {
     {
       id: "m8",
       name: "Kale",
-      price: ["8", "16", "24", "36", "54", "80"],
+      price: [24, Baseprices.Kale,2*Baseprices.Kale,4*Baseprices.Kale,10*Baseprices.Kale],
       description:
         "It is a nutrition superstar due to the amounts of vitamin A, B6, C, K, folate, fiber, carotenoids and manganese it contains.",
       image:
@@ -110,7 +117,7 @@ export default function Meals() {
     {
       id: "m9",
       name: "Basil",
-      price: ["8", "16", "24", "36", "54", "80"],
+      price: [20, Baseprices.Basil,2*Baseprices.Basil,4*Baseprices.Basil ,10*Baseprices.Basil],
       description:
         "It provides some macro nutrients such as calcium and vitamin K, as well as a range of antioxidants.",
       image:

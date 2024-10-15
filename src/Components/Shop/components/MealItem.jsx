@@ -12,7 +12,7 @@ export default function MealItem({ meal }) {
     cartCtx.addItem({ ...meal, grams,price });
     setShowGramSelector(false);
     toast.success("Item added to cart", {
-      position: "bottom-right",
+      position: "top-right",
       autoClose: 1000,
       hideProgressBar: false,
       closeOnClick: true,
@@ -26,17 +26,19 @@ export default function MealItem({ meal }) {
     <>
       <li className="meal-item hover:scale-105 transition duration-600">
         <article>
-          <img className='' src={meal.image} alt={meal.name} />
+          <div className='w-full'>
+          <img className=' min-w-full' src={meal.image} alt={meal.name} />
+          </div>
           <div>
             <h3>{meal.name}</h3>
             <p className="meal-item-price">
-              Call for Price
-             {/* starts at ₹ {meal.price[0]} */}
+              {/* Call for Price */}
+             Prices starts at ₹ {meal.price[0]}
             </p>
             {!showGramSelector && 
             <p className="meal-item-description">{meal.description}</p>
             }</div>
-          <p className="meal-item-actions">
+          <p className=" mb-4">
             {showGramSelector ? (
               <GramSelector
                 price ={meal.price}

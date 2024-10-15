@@ -20,70 +20,52 @@ const products1 = [
     imageUrl: 'https://t4.ftcdn.net/jpg/08/70/22/97/240_F_870229787_4j7LsGpWJjAYSRfsEymBfUijSUFCh94l.jpg', // Replace with actual image URL
     altText: 'Basil',
   },
-];
-
-const products2 = [
   {
-    id: 1,
+    id: 4,
     name: 'Arugula',
     imageUrl: 'https://t3.ftcdn.net/jpg/05/61/80/16/240_F_561801605_BXZylBtM4OSmbIRuVZRX32aQdn7guWV2.jpg', // Replace with actual image URL
     altText: 'Arugula',
   },
   {
-    id: 2,
+    id: 5,
     name: 'Pak Choi',
     imageUrl: 'https://t3.ftcdn.net/jpg/01/30/06/18/240_F_130061886_qchDVRKIl40W4c8V6ePygqcgqOPF4Lpl.jpg', // Replace with actual image URL
     altText: 'Pak Choi',
   },
   {
-    id: 3,
+    id: 6,
     name: 'Lettuce',
     imageUrl: 'https://t3.ftcdn.net/jpg/01/03/07/26/240_F_103072613_toV709NM95mGl0ZclCXX7tSPuGnRptkY.jpg', // Replace with actual image URL
     altText: 'Lettuce',
   },
 ];
 
+
 const HighlightedProducts = () => {
   return (
     <>
-    <div className="flex justify-center w-full rounded space-x-8 my-10">
+    <div className="grid 2xl:grid-cols-5 xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1">
       {products1.map((product) => (
-        <div key={product.id} className="flex mt-6 flex-col items-center  bg-white rounded-lg p-4 w-80">
-        <div className='w-[212px] hover:scale-105 transition duration-700 h-[212px] flex items-center justify-center rounded-full shadow-xl '>
-          <img
-            src={product.imageUrl}
-            alt={product.altText}
-            className=" w-[208px] h-[208px] rounded-full object-cover"
-          />
-          </div>
-          <h3 className="text-xl font-semibold mt-3">{product.name}</h3>
-          <Link to={`/store`}>
-          <button className="bg-black hover:text-white text-white px-8 py-2 mt-4 rounded-3xl hover:bg-gray-800">
-            Shop Now
-          </button>
-          </Link>
+
+          <div key={product.id} className="flex mt-6 flex-col items-center  bg-white rounded-lg p-4">
+            <div className=' hover:scale-105 transition duration-700  w-[208px] h-[208px] flex items-center justify-center rounded-full shadow-xl '>
+              <img
+                src={product.imageUrl}
+                alt={product.altText}
+                className="w-full h-full rounded-full object-cover"
+              />
+              </div>
+              <h3 className="text-xl font-semibold mt-3">{product.name}</h3>
+              <Link to={`/store`}>
+              <button className="bg-black hover:text-white text-white px-8 py-2 mt-4 rounded-3xl hover:bg-gray-800">
+                Shop Now
+              </button>
+              </Link>
         </div>
+
       ))}
     </div>
-    <div className="flex justify-center w-full rounded space-x-8 my-10">
-      {products2.map((product) => (
-        <div key={product.id} className="flex flex-col items-center  bg-white rounded-lg p-4 w-80">
-        <div className='w-[212px] hover:scale-105 transition duration-700  h-[212px] flex items-center justify-center rounded-full shadow-xl'>
-          <img
-            src={product.imageUrl}
-            alt={product.altText}
-            className=" w-[208px] h-[208px] rounded-full object-cover"
-          />
-          </div>
-          <h3 className="text-xl font-semibold mt-3">{product.name}</h3>
-          <Link to={`/store`}>
-          <button className="bg-black hover:text-white text-white px-8 py-2 mt-4 rounded-3xl hover:bg-gray-800">
-            Shop Now
-          </button>
-          </Link>
-        </div>
-      ))}
-    </div>
+    
     </>
   );
 };

@@ -1,5 +1,4 @@
 import React from 'react'
-import Cart from './components/Cart.jsx';
 import Checkout from './components/Checkout.jsx';
 import Header from './components/Header.jsx';
 import Meals from './components/Meals.jsx';
@@ -12,9 +11,9 @@ export default function Shop() {
   return (
     <>
     <NavBar />
-    <div className='bod'>
+    <div className='bod mt-36'>
      
-        <Header />
+        {/* <Header /> */}
         <Meals />
         <Checkout />
       
