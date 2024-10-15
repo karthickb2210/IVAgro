@@ -171,7 +171,7 @@ const CheckOut = () => {
                   })
                   .catch((err) => {
                     console.log(err);
-                  });
+                });
 
                 var orderDetails = [];
                 cartItems.map((item) => {
@@ -182,15 +182,18 @@ const CheckOut = () => {
                   };
                   orderDetails.push(tempOrder);
                 });
+                console.log("Order Details",orderDetails);
                 const order = {
                   email: localStorage.getItem("name"),
                   orderDetails: orderDetails,
                   paymentId: response.razorpay_payment_id,
                   amountPaid: finalAmount.toFixed(2),
                 };
+                console.log("Order",order)
                 axiosInstance
                   .post("/addOrder", order)
                   .then((res) => {
+                    console.log(res.data.statusCode)
                     if (res.data.statusCode === 200){
                     toast.success("Order placed successfully");
                     cartCtx.clearCart();
