@@ -7,8 +7,54 @@ import { useDispatch, useSelector } from "react-redux";
 import axiosInstance from "../../config/AxiosConfig";
 import { useNavigate } from "react-router-dom";
 import LeavesLoader from "../Loader/PlantLoader";
+import { initializeApp } from "firebase/app";
+import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyDziw2P9FawldfGCTQs0XQ7Uj3-MJWPFPs",
+  authDomain: "iron-valley-agronomy.firebaseapp.com",
+  projectId: "iron-valley-agronomy",
+  storageBucket: "iron-valley-agronomy.appspot.com",
+  messagingSenderId: "625995143189",
+  appId: "1:625995143189:web:6c2d6adad5b25e3b08d61c",
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const provider = new GoogleAuthProvider();
 
 const LoginSignup = () => {
+  const handleGoogleSignIn = async () => {
+    try {
+      var result;
+      signInWithPopup(auth, provider).then((res)=>{
+        result = res;
+        axiosInstance.get(`/existsByMail/${res.user.email}`).then((response)=>{
+          if(response.data.flag){
+            const user = { name: response.data.data.mail, 
+              pass: response.data.data.password ? response.data.data.password : res.data.data.username }
+              googleLogin(user)
+          }else{
+            const data = {
+              username : res.user.displayName,
+              mail : res.user.email,
+              mobileNumber : res.user.phoneNumber ? res.user.phoneNumber : " ",
+              password : res.user.displayName
+            }
+            newAccountWithGoogle(data)
+          }
+        })
+      });
+      // const credential = GoogleAuthProvider.credentialFromResult(result);
+      // const token = credential.accessToken;
+      // const user = result.user;
+      // console.log("User Info:", user);
+    } catch (error) {
+      console.error("Error signing in:", error);
+    }
+  };
+  
+
   const [isLogin, setIsLogin] = useState(true);
   const [loginData, setLoginData] = useState({ name: "", pass: "" });
   const [signupData, setSignupData] = useState({
@@ -17,6 +63,9 @@ const LoginSignup = () => {
     mobileNumber: "",
     password: "",
   });
+
+  
+
   const user = useSelector((state) => state.user.value);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -36,6 +85,34 @@ const LoginSignup = () => {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const googleLogin = (data) => {
+    setIsLoading(true);
+    axiosInstance
+      .post("/checkUser", data)
+      .then((res) => {
+        if (res.data.flag) {
+          toast.success("Login succesfull");
+          dispatch(
+            login({
+              name: data.name,
+              pass: data.pass,
+            })
+          );
+          localStorage.setItem("name", data.name);
+          localStorage.setItem("pass", data.pass);
+          navigate("/dash");
+          setIsLoading(false);
+        } else {
+          toast.warn("Incorrect Username or password");
+          setIsLoading(false);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        setIsLoading(false);
+      });
+  };
 
   const handleLoginSubmit = (e) => {
     setIsLoading(true);
@@ -64,8 +141,8 @@ const LoginSignup = () => {
         console.log(err);
         setIsLoading(false);
       });
-      
   };
+  
 
   const handleSignupSubmit = (e) => {
     setIsLoading(true);
@@ -83,17 +160,44 @@ const LoginSignup = () => {
           setIsLoading(false);
           return;
         }
-        toast.success("Account created Succesfully")
+        toast.success("Account created Succesfully");
         console.log(res.data);
-        setIsLoading(false)
-        setIsLogin(true)
+        setIsLoading(false);
+        setIsLogin(true);
       })
       .catch((err) => {
         console.log(err);
         setIsLoading(false);
         setIsLogin(!isLogin);
       });
-      
+  };
+
+
+  const newAccountWithGoogle = (data) => {
+    setIsLoading(true);
+    axiosInstance
+      .post("/register", data)
+      .then((res) => {
+        if (res.data.statusCode === 99) {
+          toast.warn("Email already registered");
+          setIsLoading(false);
+          return;
+        }
+        if (res.data.statusCode === 11) {
+          toast.warn("Mobile Number already registered");
+          setIsLoading(false);
+          return;
+        }
+        toast.success("Account created Succesfully");
+        console.log(res.data);
+        setIsLoading(false);
+        setIsLogin(true);
+      })
+      .catch((err) => {
+        console.log(err);
+        setIsLoading(false);
+        setIsLogin(!isLogin);
+      });
   };
 
   return (
@@ -161,15 +265,30 @@ const LoginSignup = () => {
                       Login
                     </button>
                   </form>
-                  <p className="text-sm mt-4 text-center">
-                    Don't have an account?{" "}
+                  <div className="flex items-center justify-center flex-col">
+                    <p className="text-sm mt-4 text-center">
+                      Don't have an account?{" "}
+                      <button
+                        onClick={toggleForm}
+                        className="text-green-600 hover:underline"
+                      >
+                        Sign Up
+                      </button>
+                    </p>
                     <button
-                      onClick={toggleForm}
-                      className="text-green-600 hover:underline"
+                      onClick={handleGoogleSignIn}
+                      className="flex mt-4  items-center justify-center w-full max-w-xs h-12 bg-white border border-gray-300 rounded-lg shadow-sm hover:shadow-md transition duration-200 focus:outline-none focus:ring-2 focus:ring-blue-400"
                     >
-                      Sign Up
+                      <img
+                        src="https://t4.ftcdn.net/jpg/03/08/54/37/240_F_308543787_DmPo1IELtKY9hG8E8GlW8KHEsRC7JiDN.jpg"
+                        alt="Google Logo"
+                        className="h-5 w-5 mr-2"
+                      />
+                      <span className="text-md font-semibold text-gray-700">
+                        Continue With Google
+                      </span>
                     </button>
-                  </p>
+                  </div>
                 </motion.div>
               ) : (
                 <motion.div
@@ -239,15 +358,17 @@ const LoginSignup = () => {
                       Sign Up
                     </button>
                   </form>
-                  <p className="text-sm mt-4 text-center">
-                    Already have an account?{" "}
-                    <button
-                      onClick={toggleForm}
-                      className="text-yellow-600 hover:underline"
-                    >
-                      Login
-                    </button>
-                  </p>
+                  <div className=" flex flex-col items-center justify-center">
+                    <p className="text-sm mt-4 text-center">
+                      Already have an account?{" "}
+                      <button
+                        onClick={toggleForm}
+                        className="text-yellow-600 hover:underline"
+                      >
+                        Login
+                      </button>
+                    </p>
+                  </div>
                 </motion.div>
               )}
             </AnimatePresence>
