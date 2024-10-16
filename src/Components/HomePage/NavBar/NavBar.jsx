@@ -178,7 +178,7 @@ const NavBar = () => {
                       Leafy Greens
                     </Link>
                     <Link
-                      to="/macro-greens"
+                      to="/store"
                       className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                     >
                       Micro Greens
@@ -263,12 +263,12 @@ const NavBar = () => {
                 </Link>
                 {about && (
                   <div className="absolute bg-white shadow-lg rounded-md w-40">
-                    <Link
+                    {/* <Link
                       to="/ourStory"
                       className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                     >
                       Our Story
-                    </Link>
+                    </Link> */}
                     <Link
                       to="/product"
                       className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"

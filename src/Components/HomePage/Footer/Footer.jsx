@@ -32,49 +32,49 @@ export default function Footer() {
 
               <div class="flex flex-col items-start mt-5 space-y-2">
                 <a
-                  href="#"
+                  href="/"
                   class="transition-colors duration-300 text-gray-300 hover:text-blue-400 hover:underline"
                 >
                   Home
                 </a>
                 <a
-                  href="#"
+                  href="/farm"
                   class=" transition-colors duration-300 text-gray-300 hover:text-blue-400 hover:underline"
                 >
                   Farm
                 </a>
                 <a
-                  href="#"
+                  href="/product"
                   class="transition-colors duration-300 text-gray-300 hover:text-blue-400 hover:underline"
                 >
-                  Contact
+                  Products
                 </a>
               </div>
             </div>
 
             <div>
-              <p class="font-semibold text-white">Brands</p>
+              <p class="font-semibold text-white">Store</p>
 
               <div class="flex flex-col items-start mt-5 space-y-2">
                 <a
-                  href="#"
+                  href="/store"
                   class=" transition-colors duration-300 text-gray-300 hover:underline hover:text-blue-500"
                 >
-                  Green Muscle{" "}
+                  Leafy Greens{" "}
                 </a>
                 <a
-                  href="#"
+                  href="/store"
                   class=" transition-colors duration-300 text-gray-300 hover:text-blue-400 hover:underline "
                 >
-                  Divine Cotyledons
-                </a>
+                  Micro greens
+                                  </a>
               </div>
             </div>
           </div>
 
           <hr class="my-2 md:my-4 border-gray-700" />
 
-          <div class="flex items-center justify-between">
+          {/* <div class="flex items-center justify-between">
             <a href="#" className=" flex flex-row">
               <img class="w-auto h-7" src="/logo.png" alt="" />
               <h3 className=" text-white ml-3">Iron Valley Agronomy</h3>
@@ -138,7 +138,7 @@ export default function Footer() {
                 </svg>
               </a>
             </div>
-          </div>
+          </div> */}
         </div>
       </footer>
     </>

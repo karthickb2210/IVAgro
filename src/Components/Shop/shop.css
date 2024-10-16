@@ -33,7 +33,6 @@
   height: 4rem;
   object-fit:contain;
   border-radius: 20px;
-  
 }
 
 #main-header button {
@@ -69,7 +68,6 @@
 }
 
 .meal-item img {
-  
   border-radius: 40px;
   object-fit: fill;
 }
