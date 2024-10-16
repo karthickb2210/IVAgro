@@ -1,16 +1,18 @@
 import React, { useState, useEffect, useContext } from "react";
-import axios from "axios";
 import NavBar from "../HomePage/NavBar/NavBar";
 import axiosInstance from "../../config/AxiosConfig";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import CartContext from "../Shop/store/CartContext";
 import LeavesLoader from "../Loader/PlantLoader";
+import AddressRadioCard from "./AddressRadioCard";
 
 const CheckOut = () => {
   const cartCtx = useContext(CartContext);
   const [cartItems, setCartItems] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [addressDetails, setAddressDetails] = useState([]);
+  const [showAddress, setShowAddress] = useState();
   const navigate = useNavigate();
   const [guest, setGuest] = useState(true);
   useEffect(() => {
@@ -19,92 +21,23 @@ const CheckOut = () => {
     if (localStorage.getItem("name")) {
       setGuest(false);
     }
+    axiosInstance
+      .get(`/getAllAddress/${localStorage.getItem("name")}`)
+      .then((res) => {
+        console.log(res.data);
+        setAddressDetails(res.data.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
     setCartItems(cart || []);
   }, []);
 
-  const [userDetails, setUserDetails] = useState({
-    name: "",
-    email: "",
-    house: "",
-    street: "",
-    address: "",
-    city: "",
-    state: "",
-    zip: "",
-  });
+  const [selectedAddressIndex, setSelectedAddressIndex] = useState(-1);
 
-  const [loading, setLoading] = useState(false);
-  const [addressSuggestions, setAddressSuggestions] = useState([]);
-  const [error, setError] = useState("");
-
-  // Handle input changes for all form fields
-  const handleInputChange = async (e) => {
-    const { name, value } = e.target;
-    setUserDetails({ ...userDetails, [name]: value });
-
-    // If the zip field is updated and has 6 digits, fetch address details
-    if (name === "zip" && value.length === 6) {
-      await fetchAddressDetails(value);
-    }
+  const handleSelect = (index) => {
+    setSelectedAddressIndex(index);
   };
-
-  // Fetch address details from India Post API
-  const fetchAddressDetails = async (pinCode) => {
-    setLoading(true);
-    setError("");
-    setAddressSuggestions([]);
-    try {
-      const response = await axios.get(
-        `https://api.postalpincode.in/pincode/${pinCode}`
-      );
-      const data = response.data[0];
-
-      if (data.Status === "Success") {
-        setAddressSuggestions(data.PostOffice);
-        // If there's only one post office, autofill the details
-        if (data.PostOffice.length === 1) {
-          const { Name, District, State } = data.PostOffice[0];
-          setUserDetails((prevDetails) => ({
-            ...prevDetails,
-            address: Name,
-            city: District,
-            state: State,
-          }));
-        }
-      } else {
-        setError("Invalid PIN Code. Please enter a valid 6-digit PIN Code.");
-      }
-    } catch (err) {
-      setError("Failed to fetch address details. Please try again later.");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  // Handle selecting an address suggestion
-  const handleSelectSuggestion = (suggestion) => {
-    const { Name, District, State } = suggestion;
-    setUserDetails((prevDetails) => ({
-      ...prevDetails,
-      address: Name,
-      city: District,
-      state: State,
-    }));
-    setAddressSuggestions([]);
-  };
-
-  const [amount, setAmount] = useState(0);
-
-  // const handleSubmit = (e) => {
-  //   e.preventDefault();
-  //   console.log('Order Placed:', userDetails);
-  //   console.log('Cart Items:', cartItems);
-  //   toast.success("Your Order has been Booked");
-  //   setTimeout(()=>{
-  //     navigate("/")
-  //   },2000);
-  //   // Add logic to handle order placement
-  // };
 
   const totalAmount = cartItems.reduce(
     (totalPrice, item) => totalPrice + item.quantity * item.price,
@@ -117,6 +50,7 @@ const CheckOut = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsLoading(true)
     try {
       // Call your backend API to create the order
       const { data } = await axiosInstance.post("/create-order", {
@@ -195,9 +129,11 @@ const CheckOut = () => {
                   orderDetails.push(tempOrder);
                 });
                 console.log("Order Details", orderDetails);
+                console.log("Address")
                 const order = {
                   email: localStorage.getItem("name"),
                   orderDetails: orderDetails,
+                  addressDetails: addressDetails[selectedAddressIndex],
                   paymentId: response.razorpay_payment_id,
                   amountPaid: finalAmount.toFixed(2),
                 };
@@ -223,7 +159,7 @@ const CheckOut = () => {
               }
             })
             .catch((err) => {
-              toast.error("Payment Failed");
+              toast.error("Payment Failed", err);
               setIsLoading(false);
             });
         },
@@ -237,6 +173,7 @@ const CheckOut = () => {
     } catch (error) {
       console.error("Payment Error: ", error);
       alert("Payment failed");
+      setIsLoading(false)
     }
   };
 
@@ -332,17 +269,18 @@ const CheckOut = () => {
                   </>
                 )}
                 <div className="flex items-center justify-center my-12 space-x-10">
-                  {/* <button className='bg-blue-500 px-4 text-white py-2 rounded-lg font-semibold hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition duration-200'>Login</button>
-            <button className='bg-blue-500 px-4 text-white py-2 rounded-lg font-semibold hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition duration-200'>Check out as guest</button> */}
-                  {!guest ? (
+                  {!guest ? <>
+                    {!showAddress ?
                     <button
                       className="w-full bg-blue-500 text-white py-2 rounded-lg font-semibold hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition duration-200"
-                      onClick={handleSubmit}
                       disabled={cartItems.length === 0}
+                      onClick={() => setShowAddress(true)}
                     >
-                      Proceed To Pay
-                    </button>
-                  ) : (
+                      Select Address
+                    </button> :
+                    <p className=" text-start text-md font-semibold">Select an Address below</p>
+                    }
+                    </> : (
                     <Link to={`/register`}>
                       <button className="w-full bg-blue-500 text-white py-2 px-2 rounded-lg font-semibold hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition duration-200">
                         Login to proceed
@@ -350,215 +288,37 @@ const CheckOut = () => {
                     </Link>
                   )}
                 </div>
-                {/* {guest && (
-                  <>
-                    <h3 className="text-xl font-semibold mb-4 text-gray-700">
-                      Shipping Information
-                    </h3>
-                    <form onSubmit={handleSubmit} className="space-y-4">
-                      <div>
-                        <label
-                          className="block text-sm font-medium text-gray-700"
-                          htmlFor="name"
-                        >
-                          Name
-                        </label>
-                        <input
-                          type="text"
-                          id="name"
-                          name="name"
-                          value={userDetails.name}
-                          onChange={handleInputChange}
-                          className="w-full border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
-                          required
-                        />
-                      </div>
-                      <div>
-                        <label
-                          className="block text-sm font-medium text-gray-700"
-                          htmlFor="email"
-                        >
-                          Email
-                        </label>
-                        <input
-                          type="email"
-                          id="email"
-                          name="email"
-                          value={userDetails.email}
-                          onChange={handleInputChange}
-                          className="w-full border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
-                          required
-                        />
-                      </div>
-                      <div>
-                        <label
-                          className="block text-sm font-medium text-gray-700"
-                          htmlFor="email"
-                        >
-                          House No.
-                        </label>
-                        <input
-                          type="text"
-                          id="house"
-                          name="house"
-                          value={userDetails.house}
-                          onChange={handleInputChange}
-                          className="w-full border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
-                          required
-                        />
-                      </div>
-                      <div>
-                        <label
-                          className="block text-sm font-medium text-gray-700"
-                          htmlFor="email"
-                        >
-                          Street Name
-                        </label>
-                        <input
-                          type="text"
-                          id="street"
-                          name="street"
-                          value={userDetails.street}
-                          onChange={handleInputChange}
-                          className="w-full border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
-                          required
-                        />
-                      </div>
-                      <div>
-                        <label
-                          className="block text-sm font-medium text-gray-700"
-                          htmlFor="zip"
-                        >
-                          PIN Code
-                        </label>
-                        <input
-                          type="text"
-                          id="zip"
-                          name="zip"
-                          value={userDetails.zip}
-                          onChange={handleInputChange}
-                          className="w-full border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
-                          maxLength="6"
-                          required
-                        />
-                        {loading && (
-                          <p className="text-sm text-blue-500 mt-2">
-                            Fetching address details...
-                          </p>
-                        )}
-                        {error && (
-                          <p className="text-sm text-red-500 mt-2">{error}</p>
-                        )}
-                      </div>
-
-                      {/* Address Suggestions Dropdown */}
-                {/* {addressSuggestions.length > 1 && (
-                        <div className="relative">
-                          <label
-                            className="block text-sm font-medium text-gray-700"
-                            htmlFor="address"
-                          >
-                            Select Locality
-                          </label>
-                          <div className="mt-1">
-                            <select
-                              id="address"
-                              name="address"
-                              value={userDetails.address}
-                              onChange={(e) => {
-                                const selectedSuggestion =
-                                  addressSuggestions.find(
-                                    (sugg) => sugg.Name === e.target.value
-                                  );
-                                handleSelectSuggestion(selectedSuggestion);
-                              }}
-                              className="w-full border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
-                              required
-                            >
-                              <option value="" disabled>
-                                -- Select Locality --
-                              </option>
-                              {addressSuggestions.map((suggestion, index) => (
-                                <option key={index} value={suggestion.Name}>
-                                  {suggestion.Name}
-                                </option>
-                              ))}
-                            </select>
-                          </div>
-                        </div>
-                      )} */}
-
-                {/* Address Fields */}
-                {/* {addressSuggestions.length <= 1 && (
-                        <div>
-                          <label
-                            className="block text-sm font-medium text-gray-700"
-                            htmlFor="address"
-                          >
-                            Address
-                          </label>
-                          <input
-                            type="text"
-                            id="address"
-                            name="address"
-                            value={userDetails.address}
-                            onChange={handleInputChange}
-                            className="w-full border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
-                            required
-                          />
-                        </div>
-                      )}
-                      <div>
-                        <label
-                          className="block text-sm font-medium text-gray-700"
-                          htmlFor="city"
-                        >
-                          City
-                        </label>
-                        <input
-                          type="text"
-                          id="city"
-                          name="city"
-                          value={userDetails.city}
-                          onChange={handleInputChange}
-                          className="w-full border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
-                          required
-                          readOnly
-                        />
-                      </div>
-                      <div>
-                        <label
-                          className="block text-sm font-medium text-gray-700"
-                          htmlFor="state"
-                        >
-                          State
-                        </label>
-                        <input
-                          type="text"
-                          id="state"
-                          name="state"
-                          value={userDetails.state}
-                          onChange={handleInputChange}
-                          className="w-full border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
-                          required
-                          readOnly
-                        />
-                      </div>
-                      <button
-                        type="submit"
-                        className="w-full bg-blue-500 text-white py-2 rounded-lg font-semibold hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition duration-200"
-                        disabled={cartItems.length === 0}
-                      >
-                        Proceed To Pay
-                      </button>
-                      {cartItems.length === 0 && (
-                        <p className="text-sm text-red-500 mt-2 text-center">
-                          Your cart is empty. Add items to place an order.
-                        </p>
-                      )}
-                    </form>
-                  </>
-                )} */}
+                {addressDetails && addressDetails.length===0 && showAddress ? 
+                  <Link to={`/dash`}>
+                  <button
+                    className="w-full bg-blue-500 text-white py-2 rounded-lg font-semibold hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition duration-200"
+                  >
+                    Add Address
+                  </button>
+                  </Link>
+                  : <>
+                {showAddress && (
+                  <div className="max-w-md mx-auto mt-8">
+                    {addressDetails.map((address, index) => (
+                      <AddressRadioCard
+                        key={index}
+                        address={address}
+                        selected={selectedAddressIndex === index}
+                        onSelect={() => handleSelect(index)}
+                      />
+                    ))}
+                  </div>
+                )}
+</>
+              }
+                {showAddress && !addressDetails.length==0 && !(selectedAddressIndex===-1) && 
+                  <button
+                    className="w-full bg-blue-500 text-white py-2 rounded-lg font-semibold hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition duration-200"
+                    onClick={handleSubmit}
+                  >
+                    Proceed to Pay
+                  </button>
+                }
               </div>
             </div>
           </div>

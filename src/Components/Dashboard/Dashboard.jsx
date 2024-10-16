@@ -11,6 +11,9 @@ import axiosInstance from "../../config/AxiosConfig";
 import NavBar from "../HomePage/NavBar/NavBar";
 import LeavesLoader from "../Loader/PlantLoader";
 import { Box, Button, Drawer } from "@mui/material";
+import Address from "./Address";
+import AddressCard from "./AddressCard";
+import { toast } from "react-toastify";
 
 function Dashboard() {
   const [activeTab, setActiveTab] = useState("profile");
@@ -18,17 +21,21 @@ function Dashboard() {
   const [subscriptionDetails, setSubscriptionDetails] = useState();
   const [orderDetails, setOrderDetails] = useState();
   const [isMobileScreen, setIsMobileScreen] = useState(false);
+  const [showForm, setShowForm] = useState(false);
+  const [addressDetails, setAddressDetails] = useState();
 
   useEffect(() => {
     const name = localStorage.getItem("name");
     axiosInstance
       .get(`/getDashDetails/${name}`)
       .then((res) => {
+        setAddressDetails(res.data.data.addressDetails);
         setprofileDetails(res.data.data.profileDetails);
         setSubscriptionDetails(res.data.data.subscriptionDetails);
         setOrderDetails(res.data.data.orderDetails);
       })
       .catch((err) => {
+        toast.error("Connection Issues")
         console.log(err);
       });
 
@@ -46,8 +53,6 @@ function Dashboard() {
       window.removeEventListener("resize", checkScreenSize);
     };
   }, []);
-
-  console.log("Mobile Screen--", isMobileScreen);
 
   //Drawer
   const [open, setOpen] = useState(false);
@@ -203,7 +208,13 @@ function Dashboard() {
           {profileDetails && (
             <div className="flex-1 p-8 bg-white rounded-l-lg shadow-lg">
               {activeTab === "profile" && <Profile data={profileDetails} />}
-              {activeTab === "addresses" && <Addresses />}
+              {activeTab === "addresses" && (
+                <Addresses
+                  form={showForm}
+                  formfunction={setShowForm}
+                  addressDetails={addressDetails}
+                />
+              )}
               {activeTab === "subscriptions" && (
                 <Subscriptions subscriptionDetails={subscriptionDetails} />
               )}
@@ -261,19 +272,40 @@ const Profile = ({ data }) => (
   </div>
 );
 
-const Addresses = () => (
+const Addresses = ({ form, formfunction, addressDetails }) => (
   <div className="bg-white p-6 shadow-md rounded-lg">
-    <h2 className="text-3xl font-semibold mb-6 text-green-700">📍 Addresses</h2>
-    <div className="mb-6">
-      <h4 className="font-semibold text-green-800">Home Address</h4>
-      <p className="text-green-600">789 Eco Street, Nature City, CA 90210</p>
-    </div>
-    <div>
-      <h4 className="font-semibold text-green-800">Billing Address</h4>
-      <p className="text-green-600">
-        123 Green Lane, Sustainable Town, CA 95014
-      </p>
-    </div>
+    <div className=" flex relative">
+      <h2 className="text-3xl font-semibold mb-6 text-green-700">
+        📍 Addresses
+      </h2>
+
+      {!form ? (
+        <button
+          onClick={() => formfunction(true)}
+          className="absolute right-2 bg-green-500 rounded-md px-4 py-2"
+        >
+          Add Address
+        </button>
+      ) : (
+        <button
+          onClick={() => formfunction(false)}
+          className="absolute right-2 bg-red-500 rounded-md px-4 py-2"
+        >
+          Cancel
+        </button>
+      )}
+      </div>
+      {!form && 
+      <div>
+        {addressDetails.map((address,index) => (
+        <div key={address.addressId} className=" space-x-8 flex flex-col items-center justify-center">
+          <AddressCard addressDetails={address} index={index} />
+        </div>
+      ))}
+      </div>
+    }
+    
+    {form && <Address />}
   </div>
 );
 
