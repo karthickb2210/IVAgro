@@ -1,10 +1,11 @@
 // src/api/axiosConfig.js
 import axios from 'axios';
 
+const apiUrl = import.meta.env.VITE_API_URL
+
 const axiosInstance = axios.create({
-  // baseURL: 'http://localhost:8080/',
-  // baseURL : 'https://agronomy-9m1j.onrender.com/'
-     baseURL : "https://electronic-michell-ironvalleyagronomy-835a5573.koyeb.app/"
+  //  baseURL: 'http://localhost:8080/',
+     baseURL : apiUrl,
   // Replace with your backend URL
 });
 
