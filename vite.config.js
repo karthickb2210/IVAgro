@@ -8,7 +8,7 @@ const manifestForPlugin = {
   includeAssets: [ "icon-512x512.png", "icon-192x192.png" ],
   manifest: {
     name: "IronValley Agro",
-    short_name: "E-Com App",
+    short_name: "IV Agro",
     description: "An app that helps you purchase herbs",
     icons: [
       
