@@ -33,7 +33,6 @@ const manifestForPlugin = {
         src: "/logo144.png",
         sizes: "144x144",
         type: "image/png",
-        purpose: "any"
       },
       {
         src: "/logo256.png",
