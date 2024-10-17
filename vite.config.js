@@ -5,36 +5,23 @@ import { VitePWA } from 'vite-plugin-pwa'
 
 const manifestForPlugin = {
   registerType: "prompt",
-  includeAssets: [ "logo512.png", "logo256.png","logo180.png","logo144.png","logo384.png" ],
+  includeAssets: [ "icon-512x512.png", "icon-192x192.png" ],
   manifest: {
     name: "IronValley Agro",
     short_name: "E-Com App",
     description: "An app that helps you purchase herbs",
     icons: [
+      
       {
-        src: '/logo180.png',
-        sizes:'180x180',
-        type:'image/png',
-        purpose:'apple touch icon',
+        src: "/icon-192x192.png",
+        sizes: "192x192",
+        type: "image/png"
       },
       {
-        src: "/logo144.png",
-        sizes: "144x144",
+        src: "/icon-512x512.png",
+        sizes: "512x512",
         type: "image/png",
-        purpose: "any"
       },
-      {
-        src: "/logo256.png",
-        sizes: "256x256",
-        type: "image/png",
-        purpose: "icon"
-      },
-      {
-        src: "/logo384.png",
-        sizes: "384x384",
-        type: "image/png",
-        purpose: "any maskable"
-      }
     ],
     theme_color: "#181818",
     background_color: "#e8eac2",
