@@ -40,10 +40,10 @@ export default function Product({ onConfirm, onCancel, price }) {
           ))}
         </div>
         <div className="flex space-x-2">
-          <Button className="text-xs" onClick={() => onConfirm(selectedGram, price[gramOptions.indexOf(selectedGram)])}>
+          <Button className="text-xs font-bold" onClick={() => onConfirm(selectedGram, price[gramOptions.indexOf(selectedGram)])}>
             Confirm
           </Button>
-          <Button className="text-xs" onClick={onCancel}>Cancel</Button>
+          <Button className="text-xs font-bold bg-red-500 hover:bg-red-600" onClick={onCancel}>Cancel</Button>
         </div>
       </div>
 

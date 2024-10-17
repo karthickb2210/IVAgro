@@ -47,14 +47,14 @@ export default function Meals() {
 
   const loadedMeals = [
     {
-      id: "m1",
-      available : stock.babySpinachQuantity>0,
-      name: "Spinach",
-      price: [15, 25,2*Baseprices.BabySpinach, 4*Baseprices.BabySpinach,10*Baseprices.BabySpinach],
+      id: "m8",
+      name: "Kale",
+      available : stock.kaleQuantity>0,
+      price: [24, Baseprices.Kale,2*Baseprices.Kale,4*Baseprices.Kale,10*Baseprices.Kale],
       description:
-        "Baby Spinach is high in vitamin K which serves several function in your body but it is best know for its role in blood clotting.",
+        "It is a nutrition superstar due to the amounts of vitamin A, B6, C, K, folate, fiber, carotenoids and manganese it contains.",
       image:
-      "https://t4.ftcdn.net/jpg/09/79/09/47/240_F_979094741_XvQvDjsLWmyGTx0wNOrSR3cQEOJb3kPD.jpg",
+        "https://t3.ftcdn.net/jpg/02/30/97/16/240_F_230971608_hsf90qBGPcmUuv3m0LkWPAuI5i5PnQmL.jpg",
     },
     //  {
     //      "id": "m2",
@@ -132,16 +132,7 @@ export default function Meals() {
       image:
         "https://t3.ftcdn.net/jpg/03/92/37/26/240_F_392372698_06CR5RnRAQLHY7uzkqS9G6bfDeDPuuzk.jpg",
     },
-    {
-      id: "m8",
-      name: "Kale",
-      available : stock.kaleQuantity>0,
-      price: [24, Baseprices.Kale,2*Baseprices.Kale,4*Baseprices.Kale,10*Baseprices.Kale],
-      description:
-        "It is a nutrition superstar due to the amounts of vitamin A, B6, C, K, folate, fiber, carotenoids and manganese it contains.",
-      image:
-        "https://t3.ftcdn.net/jpg/02/30/97/16/240_F_230971608_hsf90qBGPcmUuv3m0LkWPAuI5i5PnQmL.jpg",
-    },
+    
     {
       id: "m9",
       available : stock.basilQuantity>0,
@@ -151,6 +142,16 @@ export default function Meals() {
         "It provides some macro nutrients such as calcium and vitamin K, as well as a range of antioxidants.",
       image:
         "https://t3.ftcdn.net/jpg/01/48/71/76/240_F_148717694_VUiPGqDdJ6gOuHKDr6hAvAmI5qdpKZef.jpg",
+    },
+    {
+      id: "m1",
+      available : stock.babySpinachQuantity>0,
+      name: "Spinach",
+      price: [15, 25,2*Baseprices.BabySpinach, 4*Baseprices.BabySpinach,10*Baseprices.BabySpinach],
+      description:
+        "Baby Spinach is high in vitamin K which serves several function in your body but it is best know for its role in blood clotting.",
+      image:
+      "https://t4.ftcdn.net/jpg/09/79/09/47/240_F_979094741_XvQvDjsLWmyGTx0wNOrSR3cQEOJb3kPD.jpg",
     },
   ];
 
@@ -174,7 +175,7 @@ export default function Meals() {
     {isLoading 
    
    ? <PlantLoader /> :
-    <ul id="meals" className=" space-x-7 space-y-6">
+    <ul id="meals" className="w-[90%] max-w-[70rem] mx-[auto] my-8 p-4 grid grid-cols-[repeat(auto-fit,_minmax(20rem,_1fr))] gap-4 space-x-7 space-y-6">
       {loadedMeals.map((meal) => (
         <MealItem key={meal.id} meal={meal} />
       ))}

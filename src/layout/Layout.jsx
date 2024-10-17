@@ -24,11 +24,13 @@ import Dashboard from "../Components/Dashboard/Dashboard.jsx";
 import AdminDashboard from "../Components/Admin/AdminDashboard.jsx";
 import GreenMuscle from "../Components/Brands/GreenMuscle.jsx";
 import DivineCot from "../Components/Brands/DivineCot.jsx";
+import ScrollToTop from "./ScrollToTop.jsx";
 
 export default function Layout() {
   return (
     <>
       <BrowserRouter>
+      <ScrollToTop />
         <Routes>
           <Route path="/" element={<MainPage />}></Route>
           <Route path="/store" element={<Shop />}></Route>

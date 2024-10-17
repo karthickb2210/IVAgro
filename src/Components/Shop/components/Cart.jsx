@@ -6,7 +6,6 @@ import Button from './UI/Button.jsx';
 
 import UserProgressContext from '../store/UserProgressContext.jsx';
 import CartItem from './CartItem.jsx';
-import { Link, useNavigate } from 'react-router-dom';
 
 export default function Cart() {
   // const navigate =useNavigate()

@@ -188,8 +188,14 @@ const LoginSignup = () => {
           setIsLoading(false);
           return;
         }
+        
         toast.success("Account created Succesfully");
-        console.log(res.data);
+        console.log(res.data.data);
+        const user = {
+          name : res.data.data.mail,
+          pass : res.data.data.password
+        }
+        googleLogin(user)
         setIsLoading(false);
         setIsLogin(true);
       })

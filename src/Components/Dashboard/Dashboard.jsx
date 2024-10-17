@@ -16,7 +16,7 @@ import AddressCard from "./AddressCard";
 import { toast } from "react-toastify";
 
 function Dashboard() {
-  const [activeTab, setActiveTab] = useState("profile");
+  const [activeTab, setActiveTab] = useState(sessionStorage.getItem("tab")? sessionStorage.getItem("tab") : "profile");
   const [profileDetails, setprofileDetails] = useState();
   const [subscriptionDetails, setSubscriptionDetails] = useState();
   const [orderDetails, setOrderDetails] = useState();
@@ -25,6 +25,11 @@ function Dashboard() {
   const [addressDetails, setAddressDetails] = useState();
 
   useEffect(() => {
+    if(sessionStorage.getItem("tab")){
+        setTimeout(() => {
+            sessionStorage.removeItem("tab")
+        }, 1000);
+    }
     const name = localStorage.getItem("name");
     axiosInstance
       .get(`/getDashDetails/${name}`)
@@ -226,7 +231,7 @@ function Dashboard() {
       )}
 
       {isMobileScreen && (
-        <div className=" fixed bg-gray-400 rounded-e-md top-[30vh]  ">
+        <div className=" fixed bg-gray-400 rounded-e-md top-[20vh]  ">
           <Button onClick={toggleDrawer(true)}>
             <BsArrowRightSquareFill color="green" size={"2rem"} />
             <span className="ml-2 text-black">Menu </span>

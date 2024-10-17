@@ -1,8 +1,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Raleway:wght@400;700&family=Lato:wght@400;700&display=swap');
 
-* {
+/* * {
   box-sizing: border-box;
-}
+} */
 
 .bod {
   margin: 0;
@@ -14,44 +14,20 @@
   min-height: 100vh;
 }
 
-#main-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 2rem 10%;
-}
-
-#main-header #title {
-  display: flex;
-  /* gap: 1rem; */
-  font:bold;
-  align-items: center;
-}
-
-#main-header #title img {
-  width: 4rem;
-  height: 4rem;
-  object-fit:contain;
-  border-radius: 20px;
-}
-
-#main-header button {
-  font-size: 1.5rem;
-  font-family: 'Lato', sans-serif;
-}
 
 
 
-#meals {
+
+/* #meals {
   width: 90%;
   max-width: 70rem;
   list-style: none;
   margin: 2rem auto;
   padding: 1rem;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
+   grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr)); 
   gap: 1rem;
-}
+} */
 
 .meal-item {
   background-color: #1d1a16;
@@ -69,7 +45,6 @@
 
 .meal-item img {
   border-radius: 40px;
-  object-fit: fill;
 }
 
 .meal-item h3 {

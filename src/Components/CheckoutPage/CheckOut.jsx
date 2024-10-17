@@ -50,7 +50,7 @@ const CheckOut = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setIsLoading(true)
+    setIsLoading(true);
     try {
       // Call your backend API to create the order
       const { data } = await axiosInstance.post("/create-order", {
@@ -129,7 +129,7 @@ const CheckOut = () => {
                   orderDetails.push(tempOrder);
                 });
                 console.log("Order Details", orderDetails);
-                console.log("Address")
+                console.log("Address");
                 const order = {
                   email: localStorage.getItem("name"),
                   orderDetails: orderDetails,
@@ -149,18 +149,15 @@ const CheckOut = () => {
                       navigate("/");
                     } else {
                       toast.warn("Problem occured while placing order");
-                      setIsLoading(false);
                     }
                   })
                   .catch((err) => {
                     console.log(err);
-                    setIsLoading(false);
                   });
               }
             })
             .catch((err) => {
               toast.error("Payment Failed", err);
-              setIsLoading(false);
             });
         },
         theme: {
@@ -173,7 +170,8 @@ const CheckOut = () => {
     } catch (error) {
       console.error("Payment Error: ", error);
       alert("Payment failed");
-      setIsLoading(false)
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -269,18 +267,23 @@ const CheckOut = () => {
                   </>
                 )}
                 <div className="flex items-center justify-center my-12 space-x-10">
-                  {!guest ? <>
-                    {!showAddress ?
-                    <button
-                      className="w-full bg-blue-500 text-white py-2 rounded-lg font-semibold hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition duration-200"
-                      disabled={cartItems.length === 0}
-                      onClick={() => setShowAddress(true)}
-                    >
-                      Select Address
-                    </button> :
-                    <p className=" text-start text-md font-semibold">Select an Address below</p>
-                    }
-                    </> : (
+                  {!guest ? (
+                    <>
+                      {!showAddress ? (
+                        <button
+                          className="w-full bg-blue-500 text-white py-2 rounded-lg font-semibold hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition duration-200"
+                          disabled={cartItems.length === 0}
+                          onClick={() => setShowAddress(true)}
+                        >
+                          Select Address
+                        </button>
+                      ) : (
+                        <p className=" text-start text-md font-semibold">
+                          Select an Address below
+                        </p>
+                      )}
+                    </>
+                  ) : (
                     <Link to={`/register`}>
                       <button className="w-full bg-blue-500 text-white py-2 px-2 rounded-lg font-semibold hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition duration-200">
                         Login to proceed
@@ -288,37 +291,40 @@ const CheckOut = () => {
                     </Link>
                   )}
                 </div>
-                {addressDetails && addressDetails.length===0 && showAddress ? 
+                {addressDetails &&
+                addressDetails.length === 0 &&
+                showAddress ? (
                   <Link to={`/dash`}>
-                  <button
-                    className="w-full bg-blue-500 text-white py-2 rounded-lg font-semibold hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition duration-200"
-                  >
-                    Add Address
-                  </button>
+                    <button onClick={()=>sessionStorage.setItem("tab","addresses")} className="w-full bg-blue-500 text-white py-2 rounded-lg font-semibold hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition duration-200">
+                      Add Address
+                    </button>
                   </Link>
-                  : <>
-                {showAddress && (
-                  <div className="max-w-md mx-auto mt-8">
-                    {addressDetails.map((address, index) => (
-                      <AddressRadioCard
-                        key={index}
-                        address={address}
-                        selected={selectedAddressIndex === index}
-                        onSelect={() => handleSelect(index)}
-                      />
-                    ))}
-                  </div>
+                ) : (
+                  <>
+                    {showAddress && (
+                      <div className="max-w-md mx-auto mt-8">
+                        {addressDetails.map((address, index) => (
+                          <AddressRadioCard
+                            key={index}
+                            address={address}
+                            selected={selectedAddressIndex === index}
+                            onSelect={() => handleSelect(index)}
+                          />
+                        ))}
+                      </div>
+                    )}
+                  </>
                 )}
-</>
-              }
-                {showAddress && !addressDetails.length==0 && !(selectedAddressIndex===-1) && 
-                  <button
-                    className="w-full bg-blue-500 text-white py-2 rounded-lg font-semibold hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition duration-200"
-                    onClick={handleSubmit}
-                  >
-                    Proceed to Pay
-                  </button>
-                }
+                {showAddress &&
+                  !addressDetails.length == 0 &&
+                  !(selectedAddressIndex === -1) && (
+                    <button
+                      className="w-full bg-blue-500 text-white py-2 rounded-lg font-semibold hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition duration-200"
+                      onClick={handleSubmit}
+                    >
+                      Proceed to Pay
+                    </button>
+                  )}
               </div>
             </div>
           </div>
