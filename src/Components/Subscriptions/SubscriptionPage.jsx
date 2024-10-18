@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useRef } from "react";
 import NavBar from "../HomePage/NavBar/NavBar";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -18,6 +18,8 @@ const SubscriptionPage = () => {
 
   const [boxSize,setBoxSize] = useState('')
   const boxSizes = [100,250,500];
+
+  const touchRef = useRef(null); 
 
   const handleSelectBoxSize = (value) =>{
     setBoxSize(value)
@@ -56,6 +58,18 @@ const SubscriptionPage = () => {
 
   const handleDragStart = (event, product) => {
     event.dataTransfer.setData("productId", product.id);
+  };
+
+  const handleTouchStart = (event, product) => {
+    touchRef.current = product;
+  };
+
+  const handleTouchEnd = () => {
+    if (touchRef.current) {
+      setSelectedProduct(touchRef.current);
+      openQuantityModal();
+      touchRef.current = null;
+    }
   };
 
   const handleDrop = (event) => {
@@ -158,8 +172,10 @@ const SubscriptionPage = () => {
                 {/* Left Side: Subscription Box */}
                 <div
                   className="w-1/2 p-4 bg-gray-100 rounded-md mr-4 relative"
+                  
                   onDrop={handleDrop}
                   onDragOver={handleDragOver}
+                  onTouchEnd={handleTouchEnd}
                   style={{ minHeight: "300px" }}
                 >
                   <div className="flex flex-col h-full">
@@ -228,6 +244,7 @@ const SubscriptionPage = () => {
                         key={index}
                         className="cursor-pointer p-4 border rounded-md"
                         draggable
+                        onTouchStart={(event) => handleTouchStart(event, product)}
                         onDragStart={(event) => handleDragStart(event, product)}
                       >
                         <img

@@ -197,7 +197,6 @@ const LoginSignup = () => {
         }
         googleLogin(user)
         setIsLoading(false);
-        setIsLogin(true);
       })
       .catch((err) => {
         console.log(err);
