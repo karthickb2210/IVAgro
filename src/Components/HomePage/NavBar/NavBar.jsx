@@ -122,7 +122,7 @@ const NavBar = () => {
 
   return (
     <header
-      className={`shadow-md fixed top-0 w-full z-30 transition-transform duration-500 ${
+      className={`shadow-md fixed min-h-[20vh] max-h-[70vh] top-0 w-full z-30 transition-transform duration-500 ${
         isVisible && scrolling ? "-translate-y-full" : "translate-y-0"
       }`}
     >

@@ -51,7 +51,7 @@ const Carousel = () => {
 
   return (
     <div
-      className="relative min-h-screen mb-6 mt-36 mx-4 overflow-hidden"
+      className="relative min-h-screen mb-6 mt-[30vh] rounded-xl mx-4 overflow-hidden"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >

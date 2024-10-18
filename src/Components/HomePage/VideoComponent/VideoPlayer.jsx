@@ -2,7 +2,7 @@ import React from "react";
 import vid from "/vid.mp4"
 const VideoPlayer = () => {
   return (
-    <div className="flex justify-center mx-16 mt-12 items-center min-h-screen ">
+    <div className="flex justify-center mx-[5vw] mt-12 items-center ">
       <video
         className="max-w-full  h-auto rounded-lg shadow-lg"
         autoPlay

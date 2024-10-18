@@ -67,7 +67,7 @@ function Dashboard() {
   const DrawerList = (
     <Box sx={{ width: 250 }} role="presentation" onClick={toggleDrawer(false)}>
       <div className="mt-[10vh]">
-        <div className="w-64 bg-white shadow-2xl p-4 items-center">
+        <div className="w-64 bg-white shadow-2xl p-3 items-center">
           <h2 className="text-2xl font-bold mb-10 text-green-800">
             🌿 DashBoard
           </h2>
@@ -231,7 +231,7 @@ function Dashboard() {
       )}
 
       {isMobileScreen && (
-        <div className=" fixed bg-gray-400 rounded-e-md top-[20vh]  ">
+        <div className=" fixed bg-gray-400 rounded-e-md top-[29vh]  ">
           <Button onClick={toggleDrawer(true)}>
             <BsArrowRightSquareFill color="green" size={"2rem"} />
             <span className="ml-2 text-black">Menu </span>
@@ -271,7 +271,7 @@ const Profile = ({ data }) => (
         Email : {data.mail}{" "}
       </h4>
       <h4 className="text-green-700 font-medium sm:font-semibold mb-2">
-        Mobile Number : {data.mobileNumber}
+        Mobile Number : {!data.mobileNumber===" " ? data.mobileNumber : "Not Updated Yet.."}
       </h4>
     </div>
   </div>
