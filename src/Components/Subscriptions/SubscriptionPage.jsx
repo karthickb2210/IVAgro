@@ -1,8 +1,8 @@
-import React, { useState,useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import NavBar from "../HomePage/NavBar/NavBar";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
-import products from "./Products"
+import products from "./Products";
 import { MdDeleteForever } from "react-icons/md";
 
 const SubscriptionPage = () => {
@@ -13,45 +13,42 @@ const SubscriptionPage = () => {
   const [subtype, setSubtype] = useState(false);
 
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
-  
-  const [currBoxSize,setCurrBoxSize] = useState(0);
 
-  const [subscriptionType, setSubscriptionType] = useState('');
-  const subscriptiontypes = ['Weekly', 'Bi-Weekly', 'Fort-Nightly','Monthly'];
+  const [currBoxSize, setCurrBoxSize] = useState(0);
 
-  const [boxSize,setBoxSize] = useState('')
-  const boxSizes = [100,250,500];
+  const [subscriptionType, setSubscriptionType] = useState("");
+  const subscriptiontypes = ["Weekly", "Bi-Weekly", "Fort-Nightly", "Monthly"];
 
-  useEffect(()=>{
+  const [boxSize, setBoxSize] = useState("");
+  const boxSizes = [100, 250, 500];
+
+  useEffect(() => {
     const handleResize = () => {
       setIsMobile(window.innerWidth < 768);
     };
 
-    window.addEventListener('resize', handleResize);
+    window.addEventListener("resize", handleResize);
 
     // Cleanup the event listener when the component unmounts
     return () => {
-      window.removeEventListener('resize', handleResize);
+      window.removeEventListener("resize", handleResize);
     };
-  },[])
+  }, []);
 
-
-  const handleSelectBoxSize = (value) =>{
-    setBoxSize(value)
-    setCurrBoxSize(value)
-  }
+  const handleSelectBoxSize = (value) => {
+    setBoxSize(value);
+    setCurrBoxSize(value);
+  };
 
   const handleSelect = (value) => {
     setSubscriptionType(value);
   };
 
   const handleCheckout = () => {
-    sessionStorage.setItem("boxsize",boxSize);
-    sessionStorage.setItem("subscriptionType",subscriptionType);
+    sessionStorage.setItem("boxsize", boxSize);
+    sessionStorage.setItem("subscriptionType", subscriptionType);
     sessionStorage.setItem("subbox", JSON.stringify(subscriptionBox));
   };
-
-  
 
   const openModal = (product) => {
     setSelectedProduct(product);
@@ -62,7 +59,6 @@ const SubscriptionPage = () => {
     setIsModalOpen(false);
   };
 
-
   const openQuantityModal = () => {
     setQuantityModalOpen(true);
   };
@@ -70,33 +66,33 @@ const SubscriptionPage = () => {
   const closeQuantityModal = () => {
     setQuantityModalOpen(false);
   };
-  console.log(isMobile)
+  console.log(isMobile);
 
   const handleDragStart = (event, product) => {
     event.dataTransfer.setData("productId", product.id);
   };
 
-  const handleProductClick = (product)=>{
-    if(isMobile){
-    const productId = product.id
-    const productToAdd = products.find((product) => product.id === productId);
-    if (
-      productToAdd 
-      // &&
-      // !subscriptionBox.some((item) => item.product.id === productId)
-    ) {
-      setSelectedProduct(productToAdd);
-      openQuantityModal(); // Ask for quantity
+  const handleProductClick = (product) => {
+    if (isMobile) {
+      const productId = product.id;
+      const productToAdd = products.find((product) => product.id === productId);
+      if (
+        productToAdd
+        // &&
+        // !subscriptionBox.some((item) => item.product.id === productId)
+      ) {
+        setSelectedProduct(productToAdd);
+        openQuantityModal(); // Ask for quantity
+      }
     }
-    }
-  }
+  };
 
   const handleDrop = (event) => {
     event.preventDefault();
     const productId = event.dataTransfer.getData("productId");
     const productToAdd = products.find((product) => product.id === productId);
     if (
-      productToAdd 
+      productToAdd
       // &&
       // !subscriptionBox.some((item) => item.product.id === productId)
     ) {
@@ -109,14 +105,12 @@ const SubscriptionPage = () => {
     event.preventDefault();
   };
 
-  
-
   const handleAddToSubscriptionBox = (quantity) => {
-    if(currBoxSize-quantity<0){
-      toast.warn("Oops!! Your box has no empty space")
+    if (currBoxSize - quantity < 0) {
+      toast.warn("Oops!! Your box has no empty space");
       return;
     }
-    setCurrBoxSize(currBoxSize-quantity)
+    setCurrBoxSize(currBoxSize - quantity);
     setSubscriptionBox([
       ...subscriptionBox,
       { product: selectedProduct, quantity },
@@ -124,10 +118,16 @@ const SubscriptionPage = () => {
     closeQuantityModal();
   };
 
-  const handleRemoveFromSubscriptionBox = (productId,quantity) => {
-    const value = subscriptionBox.find((item)=> item.product.id===productId && item.quantity===quantity)
-    setCurrBoxSize(currBoxSize+value.quantity)
-    setSubscriptionBox(subscriptionBox.filter((item) => !(item.product.id===productId && item.quantity===quantity) ));
+  const handleRemoveFromSubscriptionBox = (productId, quantity) => {
+    const value = subscriptionBox.find(
+      (item) => item.product.id === productId && item.quantity === quantity
+    );
+    setCurrBoxSize(currBoxSize + value.quantity);
+    setSubscriptionBox(
+      subscriptionBox.filter(
+        (item) => !(item.product.id === productId && item.quantity === quantity)
+      )
+    );
   };
 
   return (
@@ -161,8 +161,9 @@ const SubscriptionPage = () => {
                 alt={product.name}
                 className="w-full h-48  object-cover rounded-md mb-4"
               />
-              <h2 className="text-2xl font-semibold mb-2">{product.name}</h2>
-              <p className="mb-4">{product.description}</p>
+              <h2 className="flex  items-center justify-center text-2xl font-semibold mb-2">{product.name}</h2>
+              <p className="mb-4 text-center">{product.description}</p>
+              <div className=" flex items-center justify-center">
               <button
                 className="bg-amber-500 text-white py-2 px-4 rounded hover:bg-amber-700 transition"
                 onClick={
@@ -170,8 +171,10 @@ const SubscriptionPage = () => {
                   // () => openModal(product)
                 }
               >
+              
                 Subscribe Now
               </button>
+              </div>
             </div>
           ))}
         </section>
@@ -199,7 +202,9 @@ const SubscriptionPage = () => {
                 >
                   <div className="flex flex-col h-full">
                     <h3 className="text-xl font-bold mb-4">Subscription Box</h3>
-                    <h2 className="text-md sm:text-sm mb-4">Current Space in box -  <b>{currBoxSize} grams </b></h2>
+                    <h2 className="text-md sm:text-sm mb-4">
+                      Current Space in box - <b>{currBoxSize} grams </b>
+                    </h2>
                     {subscriptionBox.length === 0 ? (
                       <p>
                         Please drag and put the items you want to subscribe in
@@ -208,7 +213,10 @@ const SubscriptionPage = () => {
                     ) : (
                       <div className="grid 2xl:grid-cols-4 xl:grid-cols-3 grid-cols-2 gap-2">
                         {subscriptionBox.map((item, index) => (
-                          <div key={index} className="border p-1 rounded flex flex-col">
+                          <div
+                            key={index}
+                            className="border p-1 rounded flex flex-col"
+                          >
                             <img
                               src={item.product.image}
                               alt={item.product.name}
@@ -220,7 +228,10 @@ const SubscriptionPage = () => {
                             <button
                               className="text-black mt-1 p-1 text-center w-full rounded-lg bg-red-600 flex items-center justify-center"
                               onClick={() =>
-                                handleRemoveFromSubscriptionBox(item.product.id,item.quantity)
+                                handleRemoveFromSubscriptionBox(
+                                  item.product.id,
+                                  item.quantity
+                                )
                               }
                             >
                               <MdDeleteForever />
@@ -230,7 +241,6 @@ const SubscriptionPage = () => {
                       </div>
                     )}
                     {/* Checkout Button */}
-                    
                   </div>
                 </div>
 
@@ -245,41 +255,37 @@ const SubscriptionPage = () => {
                     ) */}
 
                 <div className="w-1/2 p-1 touch-none bg-white grid grid-cols-2 xl:grid-cols-3 gap-4">
-                  {products
-                    
-                    .map((product, index) => (
-                      <div
-                        key={index}
-                        className="cursor-pointer flex-grow p-1 flex flex-col border rounded-md"
-                        draggable
-                        onDragStart={(event) => handleDragStart(event, product)}
-                        onClick={()=>handleProductClick(product)}
-                      >
-                        <img
-                          src={product.image}
-                          alt={product.name}
-                          className="w-full object-cover rounded-xl"
-                        />
-                        <p className="text-center mt-2 text-sm">
-                          {product.name}
-                        </p>
-                      </div>
-                    ))}
+                  {products.map((product, index) => (
+                    <div
+                      key={index}
+                      className="cursor-pointer flex-grow p-1 flex flex-col border rounded-md"
+                      draggable
+                      onDragStart={(event) => handleDragStart(event, product)}
+                      onClick={() => handleProductClick(product)}
+                    >
+                      <img
+                        src={product.image}
+                        alt={product.name}
+                        className="w-full object-cover rounded-xl"
+                      />
+                      <p className="text-center mt-2 text-sm">{product.name}</p>
+                    </div>
+                  ))}
                 </div>
               </div>
               <div className=" flex justify-center items-center mt-2">
-              {subscriptionBox.length > 0 && (
-                      <div className="mt-4">
-                        <Link to={`/subscription-checkout`}>
-                          <button
-                            onClick={handleCheckout}
-                            className="bg-teal-950 text-white py-2 px-6 rounded hover:bg-teal-600 transition"
-                          >
-                            Checkout
-                          </button>
-                        </Link>
-                      </div>
-                    )}
+                {subscriptionBox.length > 0 && (
+                  <div className="mt-4">
+                    <Link to={`/subscription-checkout`}>
+                      <button
+                        onClick={handleCheckout}
+                        className="bg-teal-950 text-white py-2 px-6 rounded hover:bg-teal-600 transition"
+                      >
+                        Checkout
+                      </button>
+                    </Link>
+                  </div>
+                )}
               </div>
             </div>
           </div>
@@ -293,57 +299,57 @@ const SubscriptionPage = () => {
                 Select Quantity for {selectedProduct.name}
               </h3>
               <div className="flex justify-around">
-              <div className="flex flex-col space-y-4">
-                <button
-                  className="bg-teal-950 hover:bg-teal-700 text-white py-2 px-4 rounded"
-                  onClick={() => handleAddToSubscriptionBox(30)}
-                >
-                  30g
-                </button>
-                <button
-                  className="bg-teal-950 hover:bg-teal-700 text-white py-2 px-4 rounded"
-                  onClick={() => handleAddToSubscriptionBox(40)}
-                >
-                  40g
-                </button>
-                <button
-                  className="bg-teal-950 hover:bg-teal-700 text-white py-2 px-4 rounded"
-                  onClick={() => handleAddToSubscriptionBox(50)}
-                >
-                  50g
-                </button>
-                <button
-                  className="bg-teal-950 hover:bg-teal-700 text-white py-2 px-4 rounded"
-                  onClick={() => handleAddToSubscriptionBox(60)}
-                >
-                  60g
-                </button>
+                <div className="flex flex-col space-y-4">
+                  <button
+                    className="bg-teal-950 hover:bg-teal-700 text-white py-2 px-4 rounded"
+                    onClick={() => handleAddToSubscriptionBox(30)}
+                  >
+                    30g
+                  </button>
+                  <button
+                    className="bg-teal-950 hover:bg-teal-700 text-white py-2 px-4 rounded"
+                    onClick={() => handleAddToSubscriptionBox(40)}
+                  >
+                    40g
+                  </button>
+                  <button
+                    className="bg-teal-950 hover:bg-teal-700 text-white py-2 px-4 rounded"
+                    onClick={() => handleAddToSubscriptionBox(50)}
+                  >
+                    50g
+                  </button>
+                  <button
+                    className="bg-teal-950 hover:bg-teal-700 text-white py-2 px-4 rounded"
+                    onClick={() => handleAddToSubscriptionBox(60)}
+                  >
+                    60g
+                  </button>
                 </div>
                 <div className="flex flex-col space-y-4">
-                <button
-                  className="bg-teal-950 hover:bg-teal-700 text-white py-2 px-4 rounded"
-                  onClick={() => handleAddToSubscriptionBox(70)}
-                >
-                  70g
-                </button>
-                <button
-                  className="bg-teal-950 hover:bg-teal-700 text-white py-2 px-4 rounded"
-                  onClick={() => handleAddToSubscriptionBox(80)}
-                >
-                  80g
-                </button>
-                <button
-                  className="bg-teal-950 hover:bg-teal-700 text-white py-2 px-4 rounded"
-                  onClick={() => handleAddToSubscriptionBox(90)}
-                >
-                  90g
-                </button>
-                <button
-                  className="bg-teal-950 hover:bg-teal-700 text-white py-2 px-4 rounded"
-                  onClick={() => handleAddToSubscriptionBox(100)}
-                >
-                  100g
-                </button>
+                  <button
+                    className="bg-teal-950 hover:bg-teal-700 text-white py-2 px-4 rounded"
+                    onClick={() => handleAddToSubscriptionBox(70)}
+                  >
+                    70g
+                  </button>
+                  <button
+                    className="bg-teal-950 hover:bg-teal-700 text-white py-2 px-4 rounded"
+                    onClick={() => handleAddToSubscriptionBox(80)}
+                  >
+                    80g
+                  </button>
+                  <button
+                    className="bg-teal-950 hover:bg-teal-700 text-white py-2 px-4 rounded"
+                    onClick={() => handleAddToSubscriptionBox(90)}
+                  >
+                    90g
+                  </button>
+                  <button
+                    className="bg-teal-950 hover:bg-teal-700 text-white py-2 px-4 rounded"
+                    onClick={() => handleAddToSubscriptionBox(100)}
+                  >
+                    100g
+                  </button>
                 </div>
               </div>
               <button
@@ -363,17 +369,19 @@ const SubscriptionPage = () => {
                 Select the subscription type
               </h3>
               <div className="flex justify-around space-x-8">
-              {subscriptiontypes.map((substype) => (
-        <div
-          key={subtype}
-          onClick={() => handleSelect(substype)}
-          className={`cursor-pointer p-2 text-nowrap border border-black sm:text-xs md:text-md rounded-lg transition-all duration-400 ${
-            subscriptionType === substype ? 'bg-teal-950 text-white' : 'bg-white text-black'
-          }`}
-        >
-          {substype}
-        </div>
-      ))}
+                {subscriptiontypes.map((substype) => (
+                  <div
+                    key={subtype}
+                    onClick={() => handleSelect(substype)}
+                    className={`cursor-pointer p-2 text-md text-nowrap xl:text-xl border border-black sm:text-xs md:text-md rounded-lg transition-all duration-400 ${
+                      subscriptionType === substype
+                        ? "bg-teal-950 text-white"
+                        : "bg-white text-black"
+                    }`}
+                  >
+                    {substype}
+                  </div>
+                ))}
               </div>
 
               <div className="my-6">
@@ -381,33 +389,35 @@ const SubscriptionPage = () => {
                   Select the Size of the Box
                 </h3>
                 <div className="flex justify-around space-x-8">
-                {boxSizes.map((size) => (
-        <div
-          key={size}
-          onClick={() => handleSelectBoxSize(size)}
-          className={`cursor-pointer p-3 sm:text-xs md:text-md  border border-black rounded-lg transition-all duration-200 ${
-            boxSize === size ? 'bg-teal-950 text-white' : 'bg-white text-black'
-          }`}
-        >
-          {size} grams
-        </div>
-      ))}
+                  {boxSizes.map((size) => (
+                    <div
+                      key={size}
+                      onClick={() => handleSelectBoxSize(size)}
+                      className={`cursor-pointer p-3 sm:text-xs md:text-md text-md xl:text-xl border border-black rounded-lg transition-all duration-200 ${
+                        boxSize === size
+                          ? "bg-teal-950 text-white"
+                          : "bg-white text-black"
+                      }`}
+                    >
+                      {size} grams
+                    </div>
+                  ))}
                 </div>
               </div>
-              {boxSize && subscriptionType && 
-              <button
-                className="mt-4 justify-center items-center bg-teal-950 text-white py-2 px-4 rounded"
-                onClick={()=>{
-                  setSubtype(false)
-                  setIsModalOpen(true)
-                }}
-              >
-                Proceed
-              </button>
-              }
+              {boxSize && subscriptionType && (
+                <button
+                  className="mt-4 justify-center items-center bg-teal-950 text-white py-2 px-4 rounded"
+                  onClick={() => {
+                    setSubtype(false);
+                    setIsModalOpen(true);
+                  }}
+                >
+                  Proceed
+                </button>
+              )}
               <button
                 className="mt-4 justify-center items-center bg-red-500 text-white py-2 px-4 rounded"
-                onClick={()=>setSubtype(false)}
+                onClick={() => setSubtype(false)}
               >
                 Cancel
               </button>

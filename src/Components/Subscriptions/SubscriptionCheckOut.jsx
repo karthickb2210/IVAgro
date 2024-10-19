@@ -5,95 +5,42 @@ import axiosInstance from '../../config/AxiosConfig';
 import { toast } from 'react-toastify';
 import { useNavigate,Link } from 'react-router-dom';
 import LeavesLoader from '../Loader/PlantLoader';
-
+import AddressRadioCard from '../CheckoutPage/AddressRadioCard';
 
 const SubscriptionCheckOut= () => {
   const [cartItems, setCartItems] = useState([]);
   const [guest,setGuest] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
+  const [addressDetails, setAddressDetails] = useState([]);
+  const [showAddress, setShowAddress] = useState();
+
+
   useEffect(() => {
     const cart = JSON.parse(sessionStorage.getItem('subbox'));
     console.log(cart)
-    if(localStorage.getItem("name")){
-      setGuest(false)
+    if (localStorage.getItem("name")) {
+      setGuest(false);
     }
+    axiosInstance
+      .get(`/getAllAddress/${localStorage.getItem("name")}`)
+      .then((res) => {
+        console.log(res.data);
+        setAddressDetails(res.data.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
     setCartItems(cart || []);
-    const user = localStorage.getItem('name')
-    if(user){
-        setGuest(false)
-    }
   }, []);
+
+  const [selectedAddressIndex, setSelectedAddressIndex] = useState(-1);
+
+  const handleSelect = (index) => {
+    setSelectedAddressIndex(index);
+  };
 
   const prices = [199,299,399];
 
-  const [userDetails, setUserDetails] = useState({
-    name: '',
-    email: '',
-    house: '',
-    street:'',
-    address: '',
-    city: '',
-    state: '',
-    zip: '',
-  });
-
-  const [loading, setLoading] = useState(false);
-  const [isLoading,setIsLoading] = useState(false);
-  const [addressSuggestions, setAddressSuggestions] = useState([]);
-  const [error, setError] = useState('');
-
-  // Handle input changes for all form fields
-  const handleInputChange = async (e) => {
-    const { name, value } = e.target;
-    setUserDetails({ ...userDetails, [name]: value });
-
-    // If the zip field is updated and has 6 digits, fetch address details
-    if (name === 'zip' && value.length === 6) {
-      await fetchAddressDetails(value);
-    }
-  };
-
-  // Fetch address details from India Post API
-  const fetchAddressDetails = async (pinCode) => {
-    setLoading(true);
-    setError('');
-    setAddressSuggestions([]);
-    try {
-      const response = await axios.get(`https://api.postalpincode.in/pincode/${pinCode}`);
-      const data = response.data[0];
-
-      if (data.Status === 'Success') {
-        setAddressSuggestions(data.PostOffice);
-        // If there's only one post office, autofill the details
-        if (data.PostOffice.length === 1) {
-          const { Name, District, State } = data.PostOffice[0];
-          setUserDetails((prevDetails) => ({
-            ...prevDetails,
-            address: Name,
-            city: District,
-            state: State,
-          }));
-        }
-      } else {
-        setError('Invalid PIN Code. Please enter a valid 6-digit PIN Code.');
-      }
-    } catch (err) {
-      setError('Failed to fetch address details. Please try again later.');
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  // Handle selecting an address suggestion
-  const handleSelectSuggestion = (suggestion) => {
-    const { Name, District, State } = suggestion;
-    setUserDetails((prevDetails) => ({
-      ...prevDetails,
-      address: Name,
-      city: District,
-      state: State,
-    }));
-    setAddressSuggestions([]);
-  };
 
   // const handleSubmit = (e) => {
   //   e.preventDefault();
@@ -175,7 +122,6 @@ const SubscriptionCheckOut= () => {
               console.log(stockDeductions)
               axiosInstance.post("/updateStocks",stockDeductions).then((res)=>{
                 console.log(res)
-                toast.success("Subscription added succesfully");
                 navigate("/")
               }).catch((err)=>{
                 console.log(err)
@@ -190,15 +136,15 @@ const SubscriptionCheckOut= () => {
               })
               const subscription = {
                 "mail" : localStorage.getItem("name"),
-                "orderId" : response.razorpay_order_id,
                 "paymentId" : response.razorpay_payment_id,
-               "signature" : response.razorpay_signature,
+                "address":addressDetails[selectedAddressIndex],
                "subscriptionDetails" : subscriptionDetails,
                "subscriptionType" : subscriptionType,
                "boxSize" : boxSize
               }
               axiosInstance.post("/addSubscription",subscription).then((res)=>{
                 console.log(res)
+                toast.success("Subscription added successfully")
                 setIsLoading(false)
               }).catch((err)=>{
                 console.log(err)
@@ -291,195 +237,69 @@ const SubscriptionCheckOut= () => {
                 </div>
               </>
             )}
-            <div className='flex items-center justify-center my-12 space-x-10'>
-            {/* <button className='bg-blue-500 px-4 text-white py-2 rounded-lg font-semibold hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition duration-200'>Login</button>
-            <button className='bg-blue-500 px-4 text-white py-2 rounded-lg font-semibold hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition duration-200'>Check out as guest</button>
-            */}
-            </div> 
-                {!guest ? 
-                    <button onClick={handleSubmit} className='bg-blue-500 px-4 text-white py-2 rounded-lg font-semibold hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition duration-200'>Proceed to Payment</button>
-                   : 
-                   <Link to={`/register`}>
-                   <button className='bg-blue-500 px-4 text-white py-2 rounded-lg font-semibold hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition duration-200'>Login to Proceed</button>
-                   </Link>
-                }
-                {/* {guest && !showForm && 
-                    <button onClick={()=>setShowForm(true)} className='bg-blue-500 px-4 text-white py-2 rounded-lg font-semibold hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition duration-200'>CheckOut as guest user</button>
-                }
-            {guest && showForm && <>
-            <h3 className="text-xl font-semibold mb-4 text-gray-700">Shipping Information</h3>
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-700" htmlFor="name">
-                  Name
-                </label>
-                <input
-                  type="text"
-                  id="name"
-                  name="name"
-                  value={userDetails.name}
-                  onChange={handleInputChange}
-                  className="w-full border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
-                  required
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700" htmlFor="email">
-                  Email
-                </label>
-                <input
-                  type="email"
-                  id="email"
-                  name="email"
-                  value={userDetails.email}
-                  onChange={handleInputChange}
-                  className="w-full border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
-                  required
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700" htmlFor="email">
-                  House No.
-                </label>
-                <input
-                  type="text"
-                  id="house"
-                  name="house"
-                  value={userDetails.house}
-                  onChange={handleInputChange}
-                  className="w-full border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
-                  required
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700" htmlFor="email">
-                  Street Name
-                </label>
-                <input
-                  type="text"
-                  id="street"
-                  name="street"
-                  value={userDetails.street}
-                  onChange={handleInputChange}
-                  className="w-full border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
-                  required
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700" htmlFor="zip">
-                  PIN Code
-                </label>
-                <input
-                  type="text"
-                  id="zip"
-                  name="zip"
-                  value={userDetails.zip}
-                  onChange={handleInputChange}
-                  className="w-full border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
-                  maxLength="6"
-                  required
-                />
-                {loading && <p className="text-sm text-blue-500 mt-2">Fetching address details...</p>}
-                {error && <p className="text-sm text-red-500 mt-2">{error}</p>}
-              </div> */}
-
-              {/* Address Suggestions Dropdown */}
-              {/* {addressSuggestions.length > 1 && (
-                <div className="relative">
-                  <label className="block text-sm font-medium text-gray-700" htmlFor="address">
-                    Select Locality
-                  </label>
-                  <div className="mt-1">
-                    <select
-                      id="address"
-                      name="address"
-                      value={userDetails.address}
-                      onChange={(e) => {
-                        const selectedSuggestion = addressSuggestions.find(
-                          (sugg) => sugg.Name === e.target.value
-                        );
-                        handleSelectSuggestion(selectedSuggestion);
-                      }}
-                      className="w-full border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
-                      required
+            <div className="flex items-center justify-center my-12 space-x-10">
+                  {!guest ? (
+                    <>
+                      {!showAddress ? (
+                        <button
+                          className="w-full bg-blue-500 text-white py-2 rounded-lg font-semibold hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition duration-200"
+                          disabled={cartItems.length === 0}
+                          onClick={() => setShowAddress(true)}
+                        >
+                          Select Address
+                        </button>
+                      ) : (
+                        <p className=" text-start text-md font-semibold">
+                          Select an Address below
+                        </p>
+                      )}
+                    </>
+                  ) : (
+                    <Link to={`/register`}>
+                      <button className="w-full bg-blue-500 text-white py-2 px-2 rounded-lg font-semibold hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition duration-200">
+                        Login to proceed
+                      </button>
+                    </Link>
+                  )}
+                </div>
+                {addressDetails &&
+                addressDetails.length === 0 &&
+                showAddress ? (
+                  <Link to={`/dash`}>
+                    <button
+                      onClick={() => sessionStorage.setItem("tab", "addresses")}
+                      className="w-full bg-blue-500 text-white py-2 rounded-lg font-semibold hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition duration-200"
                     >
-                      <option value="" disabled>
-                        -- Select Locality --
-                      </option>
-                      {addressSuggestions.map((suggestion, index) => (
-                        <option key={index} value={suggestion.Name}>
-                          {suggestion.Name}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                </div>
-              )} */}
-
-              {/* Address Fields */}
-              {/* {addressSuggestions.length <= 1 && (
-                <div>
-                  <label className="block text-sm font-medium text-gray-700" htmlFor="address">
-                    Address
-                  </label>
-                  <input
-                    type="text"
-                    id="address"
-                    name="address"
-                    value={userDetails.address}
-                    onChange={handleInputChange}
-                    className="w-full border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
-                    required
-                  />
-                </div>
-              )}
-              <div>
-                <label className="block text-sm font-medium text-gray-700" htmlFor="city">
-                  City
-                </label>
-                <input
-                  type="text"
-                  id="city"
-                  name="city"
-                  value={userDetails.city}
-                  onChange={handleInputChange}
-                  className="w-full border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
-                  required
-                  readOnly
-                />
+                      Add Address
+                    </button>
+                  </Link>
+                ) : (
+                  <>
+                    {showAddress && (
+                      <div className="max-w-md mx-auto mt-8">
+                        {addressDetails.map((address, index) => (
+                          <AddressRadioCard
+                            key={index}
+                            address={address}
+                            selected={selectedAddressIndex === index}
+                            onSelect={() => handleSelect(index)}
+                          />
+                        ))}
+                      </div>
+                    )}
+                  </>
+                )}
+                {showAddress &&
+                  !addressDetails.length == 0 &&
+                  !(selectedAddressIndex === -1) && (
+                    <button
+                      className="w-full bg-blue-500 text-white py-2 rounded-lg font-semibold hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition duration-200"
+                      onClick={handleSubmit}
+                    >
+                      Proceed to Pay
+                    </button>
+                  )}
               </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700" htmlFor="state">
-                  State
-                </label>
-                <input
-                  type="text"
-                  id="state"
-                  name="state"
-                  value={userDetails.state}
-                  onChange={handleInputChange}
-                  className="w-full border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
-                  required
-                  readOnly
-                />
-              </div>
-              <button
-                type="submit"
-                className="w-full bg-blue-500 text-white py-2 rounded-lg font-semibold hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition duration-200"
-                disabled={cartItems.length === 0}
-              >
-                Proceed To Pay
-              </button>
-              {cartItems.length === 0 && (
-                <p className="text-sm text-red-500 mt-2 text-center">
-                  Your cart is empty. Add items to place an order.
-                </p>
-              )}
-            </form>
-            </>
-            
-            } */}
-          </div>
         </div>
       </div>
     </div>

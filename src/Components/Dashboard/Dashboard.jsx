@@ -16,7 +16,9 @@ import AddressCard from "./AddressCard";
 import { toast } from "react-toastify";
 
 function Dashboard() {
-  const [activeTab, setActiveTab] = useState(sessionStorage.getItem("tab")? sessionStorage.getItem("tab") : "profile");
+  const [activeTab, setActiveTab] = useState(
+    sessionStorage.getItem("tab") ? sessionStorage.getItem("tab") : "profile"
+  );
   const [profileDetails, setprofileDetails] = useState();
   const [subscriptionDetails, setSubscriptionDetails] = useState();
   const [orderDetails, setOrderDetails] = useState();
@@ -25,22 +27,23 @@ function Dashboard() {
   const [addressDetails, setAddressDetails] = useState();
 
   useEffect(() => {
-    if(sessionStorage.getItem("tab")){
-        setTimeout(() => {
-            sessionStorage.removeItem("tab")
-        }, 1000);
+    if (sessionStorage.getItem("tab")) {
+      setTimeout(() => {
+        sessionStorage.removeItem("tab");
+      }, 1000);
     }
     const name = localStorage.getItem("name");
     axiosInstance
       .get(`/getDashDetails/${name}`)
       .then((res) => {
+        console.log(res.data)
         setAddressDetails(res.data.data.addressDetails);
         setprofileDetails(res.data.data.profileDetails);
         setSubscriptionDetails(res.data.data.subscriptionDetails);
         setOrderDetails(res.data.data.orderDetails);
       })
       .catch((err) => {
-        toast.error("Connection Issues")
+        toast.error("Connection Issues");
         console.log(err);
       });
 
@@ -271,7 +274,8 @@ const Profile = ({ data }) => (
         Email : {data.mail}{" "}
       </h4>
       <h4 className="text-green-700 font-medium sm:font-semibold mb-2">
-        Mobile Number : {!data.mobileNumber===" " ? data.mobileNumber : "Not Updated Yet.."}
+        Mobile Number :{" "}
+        {!data.mobileNumber === " " ? data.mobileNumber : "Not Updated Yet.."}
       </h4>
     </div>
   </div>
@@ -299,17 +303,20 @@ const Addresses = ({ form, formfunction, addressDetails }) => (
           Cancel
         </button>
       )}
-      </div>
-      {!form && 
+    </div>
+    {!form && (
       <div>
-        {addressDetails.map((address,index) => (
-        <div key={address.addressId} className=" space-x-8 flex flex-col items-center justify-center">
-          <AddressCard addressDetails={address} index={index} />
-        </div>
-      ))}
+        {addressDetails.map((address, index) => (
+          <div
+            key={address.addressId}
+            className=" space-x-8 flex flex-col items-center justify-center"
+          >
+            <AddressCard addressDetails={address} index={index} />
+          </div>
+        ))}
       </div>
-    }
-    
+    )}
+
     {form && <Address />}
   </div>
 );
@@ -383,9 +390,28 @@ const Orders = ({ orderDetails }) => (
       >
         <h3 className="text-green-700 text-xl lg:text-2xl font-bold mb-2 sm:mb-4 flex justify-between items-center">
           Order {index + 1}
-          <span className="text-sm lg:text-lg font-medium text-green-600">
-            {order.paymentId}
-          </span>
+          <div
+            className={`p-1 px-2 border justify-end text-xl rounded-lg text-center ${
+              order.delivered
+
+                ? "bg-green-200 border-green-400"
+                : "bg-red-200 border-red-400"
+            }`}
+          >
+            {order.delivered
+              ? (
+              <h6 className="text-green-700">
+                Delivered
+              </h6>
+            ) : (
+              <h6 className="text-red-700">
+                Not Delivered
+              </h6>
+            )}
+          </div>
+          {/* <span className="text-sm lg:text-lg font-medium text-green-600">
+           Porter Tracking Id :  {order.porterTrackerId}
+          </span> */}
         </h3>
 
         <div className="border-t border-green-200 pt-4">
@@ -398,19 +424,17 @@ const Orders = ({ orderDetails }) => (
             ))}
           </ul>
         </div>
-
-        <div className="sm:mt-4 mt-2 border-t border-green-200 sm:pt-4 pt-2 ">
+          <div className="sm:mt-4 mt-2 border-t border-green-200 sm:pt-4 pt-2 justify-start">
           <p className="text-gray-700 mb-1">
-            <strong>Order on:</strong> {order.createdAt.substring(0, 10)}
+            <strong>Porter Tracking Id:</strong> {(order.porterTrackerId==="0"|| order.porterTrackerId==null) ? "Not Shipped Yet..." : `${order.porterTrackerId}`}
           </p>
-          <p className="text-gray-700 mb-1">
-            <strong>Delivery Status :</strong>{" "}
-            {order.isDelivered ? "Delivered" : "Not Delivered"}
-          </p>
-          {/*<p className="text-gray-700 mb-1">
-            <strong>Signature:</strong> {subscription.signature}
-          </p> */}
-        </div>
+            <p className="text-gray-700 mb-1">
+              <strong>Order on:</strong> {order.createdAt.substring(0, 10)}
+            </p>
+            
+          </div>
+          
+        
       </div>
     ))}
   </div>

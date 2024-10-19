@@ -295,7 +295,10 @@ const CheckOut = () => {
                 addressDetails.length === 0 &&
                 showAddress ? (
                   <Link to={`/dash`}>
-                    <button onClick={()=>sessionStorage.setItem("tab","addresses")} className="w-full bg-blue-500 text-white py-2 rounded-lg font-semibold hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition duration-200">
+                    <button
+                      onClick={() => sessionStorage.setItem("tab", "addresses")}
+                      className="w-full bg-blue-500 text-white py-2 rounded-lg font-semibold hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition duration-200"
+                    >
                       Add Address
                     </button>
                   </Link>
