@@ -90,6 +90,10 @@ const SubscriptionPage = () => {
     event.preventDefault();
   };
 
+  const handleTouchOver = (event) =>{
+    event.preventDefault();
+  }
+
   const handleAddToSubscriptionBox = (quantity) => {
     if(currBoxSize-quantity<0){
       toast.warn("Oops!! Your box has no empty space")
@@ -172,8 +176,8 @@ const SubscriptionPage = () => {
                 {/* Left Side: Subscription Box */}
                 <div
                   className="w-1/2 p-4 bg-gray-100 rounded-md mr-4 relative"
-                  
                   onDrop={handleDrop}
+                  onTouchMove={handleTouchOver}
                   onDragOver={handleDragOver}
                   onTouchEnd={handleTouchEnd}
                   style={{ minHeight: "300px" }}
@@ -236,7 +240,7 @@ const SubscriptionPage = () => {
                         )
                     ) */}
 
-                <div className="w-1/2 p-4 bg-white grid grid-cols-2 gap-4">
+                <div className="w-1/2 p-4 touch-none bg-white grid grid-cols-2 gap-4">
                   {products
                     
                     .map((product, index) => (
