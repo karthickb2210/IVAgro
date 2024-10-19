@@ -358,7 +358,7 @@ const SubscriptionPage = () => {
 
         {subtype && (
           <div className="fixed z-40 inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-            <div className="bg-white flex flex-col p-6 rounded-lg">
+            <div className="bg-white flex flex-col p-3 rounded-lg">
               <h3 className="text-xl font-semibold mb-4">
                 Select the subscription type
               </h3>
@@ -367,7 +367,7 @@ const SubscriptionPage = () => {
         <div
           key={subtype}
           onClick={() => handleSelect(substype)}
-          className={`cursor-pointer p-3 border border-black rounded-lg transition-all duration-400 ${
+          className={`cursor-pointer p-2 text-nowrap border border-black sm:text-xs md:text-md rounded-lg transition-all duration-400 ${
             subscriptionType === substype ? 'bg-teal-950 text-white' : 'bg-white text-black'
           }`}
         >
@@ -385,7 +385,7 @@ const SubscriptionPage = () => {
         <div
           key={size}
           onClick={() => handleSelectBoxSize(size)}
-          className={`cursor-pointer p-4 border border-black rounded-lg transition-all duration-200 ${
+          className={`cursor-pointer p-3 sm:text-xs md:text-md  border border-black rounded-lg transition-all duration-200 ${
             boxSize === size ? 'bg-teal-950 text-white' : 'bg-white text-black'
           }`}
         >
