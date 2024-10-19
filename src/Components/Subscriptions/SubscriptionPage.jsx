@@ -1,8 +1,9 @@
-import React, { useState,useRef } from "react";
+import React, { useState,useRef, useEffect } from "react";
 import NavBar from "../HomePage/NavBar/NavBar";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import products from "./Products"
+import { MdDeleteForever } from "react-icons/md";
 
 const SubscriptionPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -10,6 +11,8 @@ const SubscriptionPage = () => {
   const [subscriptionBox, setSubscriptionBox] = useState([]); // Products in the subscription box
   const [quantityModalOpen, setQuantityModalOpen] = useState(false);
   const [subtype, setSubtype] = useState(false);
+
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
   
   const [currBoxSize,setCurrBoxSize] = useState(0);
 
@@ -19,7 +22,19 @@ const SubscriptionPage = () => {
   const [boxSize,setBoxSize] = useState('')
   const boxSizes = [100,250,500];
 
-  const touchRef = useRef(null); 
+  useEffect(()=>{
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+
+    window.addEventListener('resize', handleResize);
+
+    // Cleanup the event listener when the component unmounts
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  },[])
+
 
   const handleSelectBoxSize = (value) =>{
     setBoxSize(value)
@@ -55,22 +70,26 @@ const SubscriptionPage = () => {
   const closeQuantityModal = () => {
     setQuantityModalOpen(false);
   };
+  console.log(isMobile)
 
   const handleDragStart = (event, product) => {
     event.dataTransfer.setData("productId", product.id);
   };
 
-  const handleTouchStart = (event, product) => {
-    touchRef.current = product;
-  };
-
-  const handleTouchEnd = () => {
-    if (touchRef.current) {
-      setSelectedProduct(touchRef.current);
-      openQuantityModal();
-      touchRef.current = null;
+  const handleProductClick = (product)=>{
+    if(isMobile){
+    const productId = product.id
+    const productToAdd = products.find((product) => product.id === productId);
+    if (
+      productToAdd 
+      // &&
+      // !subscriptionBox.some((item) => item.product.id === productId)
+    ) {
+      setSelectedProduct(productToAdd);
+      openQuantityModal(); // Ask for quantity
     }
-  };
+    }
+  }
 
   const handleDrop = (event) => {
     event.preventDefault();
@@ -90,9 +109,7 @@ const SubscriptionPage = () => {
     event.preventDefault();
   };
 
-  const handleTouchOver = (event) =>{
-    event.preventDefault();
-  }
+  
 
   const handleAddToSubscriptionBox = (quantity) => {
     if(currBoxSize-quantity<0){
@@ -162,8 +179,8 @@ const SubscriptionPage = () => {
         {/* Modal */}
         {isModalOpen && (
           <div className="fixed z-30 inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-            <div className="bg-white p-6 rounded-lg max-w-4xl w-full">
-              <div className="flex justify-between items-center mb-4">
+            <div className="bg-white max-h-screen overflow-y-auto p-6 rounded-lg max-w-4xl w-full">
+              <div className="flex max-h-screen overflow-y-auto justify-between items-center mb-4">
                 <h2 className="text-2xl font-semibold">Subscription Details</h2>
                 <button
                   className="text-gray-500 hover:text-gray-700"
@@ -172,61 +189,48 @@ const SubscriptionPage = () => {
                   Close
                 </button>
               </div>
-              <div className="flex">
+              <div className={`flex `}>
                 {/* Left Side: Subscription Box */}
                 <div
                   className="w-1/2 p-4 bg-gray-100 rounded-md mr-4 relative"
                   onDrop={handleDrop}
-                  onTouchMove={handleTouchOver}
                   onDragOver={handleDragOver}
-                  onTouchEnd={handleTouchEnd}
                   style={{ minHeight: "300px" }}
                 >
                   <div className="flex flex-col h-full">
                     <h3 className="text-xl font-bold mb-4">Subscription Box</h3>
-                    <h2 className="text-md mb-4">Current Space in box -  <b>{currBoxSize} grams </b></h2>
+                    <h2 className="text-md sm:text-sm mb-4">Current Space in box -  <b>{currBoxSize} grams </b></h2>
                     {subscriptionBox.length === 0 ? (
                       <p>
                         Please drag and put the items you want to subscribe in
                         this box in assorted way
                       </p>
                     ) : (
-                      <div className="grid grid-cols-3 gap-2">
+                      <div className="grid 2xl:grid-cols-4 xl:grid-cols-3 grid-cols-2 gap-2">
                         {subscriptionBox.map((item, index) => (
-                          <div key={index} className="border p-2 rounded">
+                          <div key={index} className="border p-1 rounded flex flex-col">
                             <img
                               src={item.product.image}
                               alt={item.product.name}
-                              className="w-full h-16 object-cover rounded-md"
+                              className="object-cover  rounded-md"
                             />
-                            <p className="text-xs mt-2 text-center">
+                            <p className="text-xs mt-1 text-center">
                               {item.product.name} ({item.quantity}g)
                             </p>
                             <button
-                              className="text-red-500 mt-2 text-center"
+                              className="text-black mt-1 p-1 text-center w-full rounded-lg bg-red-600 flex items-center justify-center"
                               onClick={() =>
                                 handleRemoveFromSubscriptionBox(item.product.id,item.quantity)
                               }
                             >
-                              Remove
+                              <MdDeleteForever />
                             </button>
                           </div>
                         ))}
                       </div>
                     )}
                     {/* Checkout Button */}
-                    {subscriptionBox.length > 0 && (
-                      <div className="mt-4">
-                        <Link to={`/subscription-checkout`}>
-                          <button
-                            onClick={handleCheckout}
-                            className="bg-teal-950 text-white py-2 px-6 rounded hover:bg-teal-600 transition"
-                          >
-                            Checkout
-                          </button>
-                        </Link>
-                      </div>
-                    )}
+                    
                   </div>
                 </div>
 
@@ -240,21 +244,21 @@ const SubscriptionPage = () => {
                         )
                     ) */}
 
-                <div className="w-1/2 p-4 touch-none bg-white grid grid-cols-2 gap-4">
+                <div className="w-1/2 p-1 touch-none bg-white grid grid-cols-2 xl:grid-cols-3 gap-4">
                   {products
                     
                     .map((product, index) => (
                       <div
                         key={index}
-                        className="cursor-pointer p-4 border rounded-md"
+                        className="cursor-pointer flex-grow p-1 flex flex-col border rounded-md"
                         draggable
-                        onTouchStart={(event) => handleTouchStart(event, product)}
                         onDragStart={(event) => handleDragStart(event, product)}
+                        onClick={()=>handleProductClick(product)}
                       >
                         <img
                           src={product.image}
                           alt={product.name}
-                          className="w-full h-20 object-cover rounded-md"
+                          className="w-full object-cover rounded-xl"
                         />
                         <p className="text-center mt-2 text-sm">
                           {product.name}
@@ -262,6 +266,20 @@ const SubscriptionPage = () => {
                       </div>
                     ))}
                 </div>
+              </div>
+              <div className=" flex justify-center items-center mt-2">
+              {subscriptionBox.length > 0 && (
+                      <div className="mt-4">
+                        <Link to={`/subscription-checkout`}>
+                          <button
+                            onClick={handleCheckout}
+                            className="bg-teal-950 text-white py-2 px-6 rounded hover:bg-teal-600 transition"
+                          >
+                            Checkout
+                          </button>
+                        </Link>
+                      </div>
+                    )}
               </div>
             </div>
           </div>

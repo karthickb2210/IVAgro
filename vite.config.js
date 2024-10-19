@@ -38,6 +38,10 @@ const manifestForPlugin = {
 export default defineConfig({
   
   plugins: [react(), VitePWA(manifestForPlugin)],
+  server: {
+    host: '0.0.0.0', // Listen to all network interfaces
+    port: 5173, // The port where your app will be served
+  }
 });
 
 
