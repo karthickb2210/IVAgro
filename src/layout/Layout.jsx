@@ -21,7 +21,6 @@ import Footer from "../Components/HomePage/Footer/Footer.jsx";
 import SpinachRecipePage from "../Components/OurProducts/Recipes/SpinachRecipePage.jsx";
 import KaleRecipePage from "../Components/OurProducts/Recipes/KaleRecipePage.jsx";
 import Dashboard from "../Components/Dashboard/Dashboard.jsx";
-import AdminDashboard from "../Components/Admin/AdminDashboard.jsx";
 import GreenMuscle from "../Components/Brands/GreenMuscle.jsx";
 import DivineCot from "../Components/Brands/DivineCot.jsx";
 import ScrollToTop from "./ScrollToTop.jsx";
@@ -57,7 +56,6 @@ export default function Layout() {
           ></Route>
           <Route path="/register" element={<LoginSignup />}></Route>
           <Route path="/stocks" element={<StockDisplay />}></Route>
-          <Route path="/api/admin" element={<AdminDashboard />}></Route>
           <Route path="/green-muscle" element={<GreenMuscle />}></Route>
           <Route path="/divine-cotyledons" element={<DivineCot />}></Route>
           <Route path="*" element={<NotFoundPage />}></Route>
