@@ -180,7 +180,7 @@ const recipes = [
         "If your kale soup is too thick, stir in a little water and heat it up",
          "Serve with a drizzle of cream (or non-dairy cream) and a sprinkling of seeds"
     ],
-    image: potatosabzi,
+    image: kalesoup,
     nutrients: [
       { name: "Calories", value: "150 kcal" },
       { name: "Protein", value: "5 g" },

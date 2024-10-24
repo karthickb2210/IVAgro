@@ -24,6 +24,8 @@ import Dashboard from "../Components/Dashboard/Dashboard.jsx";
 import GreenMuscle from "../Components/Brands/GreenMuscle.jsx";
 import DivineCot from "../Components/Brands/DivineCot.jsx";
 import ScrollToTop from "./ScrollToTop.jsx";
+import BasilRecipePage from "../Components/OurProducts/Recipes/BasilRecipePage.jsx";
+import PakChoiRecipePage from "../Components/OurProducts/Recipes/PakChoiRecipePage.jsx";
 
 export default function Layout() {
   return (
@@ -48,8 +50,11 @@ export default function Layout() {
             path="/recipe/Baby_Spinach"
             element={<SpinachRecipePage />}
           ></Route>
+          <Route path="/recipe/Pak Choi" element={<PakChoiRecipePage />}></Route>
+          <Route path="/recipe/Basil" element={<BasilRecipePage />}></Route>
           <Route path="/recipe/Kale" element={<KaleRecipePage />}></Route>
           <Route path="/Baby_Spinach" element={<BabySpinachPage />}></Route>
+
           <Route
             path="/subscription-checkout"
             element={<SubscriptionCheckOut />}

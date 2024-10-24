@@ -134,7 +134,7 @@ export default function ProductPage() {
   return (
     <div className=' flex justify-center items-center flex-wrap space-x-12'>
       <ProductCard data={Productdata[0]} />
-      <ProductCard data={Productdata[5]} />
+      {/* <ProductCard data={Productdata[5]} /> */}
       <ProductCard data={Productdata[6]} />
       <ProductCard data={Productdata[7]} />
       <ProductCard data={Productdata[8]} />

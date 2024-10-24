@@ -110,7 +110,7 @@ const Recipe = ({ data }) => {
           {data.nutrients.map((nutrient, index) => (
             <div
               key={index}
-              className="border p-6 rounded-lg shadow-lg bg-gradient-to-br from-green-200 via-green-100 to-white text-center transform transition-all duration-300 hover:scale-105 hover:shadow-xl"
+              className="border px-4 py-2 rounded-lg shadow-lg bg-gradient-to-br from-green-200 via-green-100 to-white text-center transform transition-all duration-300 hover:scale-105 hover:shadow-xl"
             >
               <h3 className="text-md font-bold text-gray-800 mb-2">
                 {nutrient.name}
