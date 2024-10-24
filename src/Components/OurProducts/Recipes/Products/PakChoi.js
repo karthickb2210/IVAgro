@@ -1,8 +1,8 @@
 import stirfriedpakchoi from "../../img/pakchoi/stir-fried-pakchoi.jpg";
 import ramenpakchoi from "../../img/pakchoi/ramenpakchoi.jpg";
-import MushroomPakChoi from "../../img/pakChoi/MushroompakChoi.jpg";
-import Chickenpakchoisoup from "../../img/pakChoi/Chickenpakchoisoup.jpg"
-import TofuPakchoi from "../../img/pakChoi/TofuPakchoi.jpg"
+import MushroomPakChoi from "../../img/pakchoi/MushroompakChoi.jpg";
+import Chickenpakchoisoup from "../../img/pakchoi/Chickenpakchoisoup.jpg"
+import TofuPakchoi from "../../img/pakchoi/TofuPakchoi.jpg"
 const recipes = [
   {
     id: 1,
