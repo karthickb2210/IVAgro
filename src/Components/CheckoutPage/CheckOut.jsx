@@ -245,17 +245,17 @@ const CheckOut = () => {
                     </div>
                     <div
                       className={`flex justify-between text-lg font-semibold ${
-                        totalAmount >= 500 ? "text-green-600" : "text-gray-700"
+                        totalAmount >= 399 ? "text-green-600" : "text-gray-700"
                       }`}
                     >
                       <span>Shipping Charge</span>
                       <span>₹ {shippingCharge.toFixed(2)}</span>
                     </div>
-                    {totalAmount < 500 && (
+                    {totalAmount < 399 && (
                       <div className="text-sm text-gray-600 mt-2">
                         <p>
                           Note: Shipping charge of ₹120 applies for orders below
-                          ₹500.
+                          ₹399.
                         </p>
                       </div>
                     )}
@@ -278,31 +278,35 @@ const CheckOut = () => {
                           Select Address
                         </button>
                       ) : (
-                        <p className=" text-start text-md font-semibold">
+                        <p className="text-start text-md font-semibold">
                           Select an Address below
                         </p>
                       )}
                     </>
                   ) : (
                     <Link to={`/register`}>
-                      <button className="w-full bg-blue-500 text-white py-2 px-2 rounded-lg font-semibold hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition duration-200">
+                      <button
+                      onClick={()=>sessionStorage.setItem("fromOrdersLogin",true)}
+                       className="w-full bg-blue-500 text-white py-2 px-2 rounded-lg font-semibold hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition duration-200">
                         Login to proceed
                       </button>
                     </Link>
                   )}
                 </div>
-                {addressDetails &&
-                addressDetails.length === 0 &&
-                showAddress ? (
+                {
+                showAddress &&
+                <>
                   <Link to={`/dash`}>
                     <button
-                      onClick={() => sessionStorage.setItem("tab", "addresses")}
+                      onClick={() => {
+                        sessionStorage.setItem("fromOrderCheckout",true);
+                        sessionStorage.setItem("tab", "addresses")}}
                       className="w-full bg-blue-500 text-white py-2 rounded-lg font-semibold hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition duration-200"
                     >
-                      Add Address
+                      Add new Address
                     </button>
                   </Link>
-                ) : (
+                
                   <>
                     {showAddress && (
                       <div className="max-w-md mx-auto mt-8">
@@ -317,7 +321,8 @@ const CheckOut = () => {
                       </div>
                     )}
                   </>
-                )}
+                  </>
+                }
                 {showAddress &&
                   !addressDetails.length == 0 &&
                   !(selectedAddressIndex === -1) && (

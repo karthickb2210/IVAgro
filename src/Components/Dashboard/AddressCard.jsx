@@ -1,11 +1,16 @@
 import React from 'react';
 
-const AddressCard = ({ addressDetails,index }) => {
-    console.log(addressDetails)
+const AddressCard = ({ addressDetails,index,setEditAddress,setIsEdit}) => {
   return (
     <div className="max-w-4xl mx-auto p-6 bg-white shadow-lg rounded-lg flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0 md:space-x-6">
       <div className="flex-1">
-        <h2 className="text-2xl font-bold mb-4">Address Details {index+1}</h2>
+      <div className=' flex justify-between items-center'>
+        <h2 className="text-2xl font-bold mb-4">Address {index+1}</h2>
+        <button onClick={()=>{
+          setIsEdit(true)
+          setEditAddress(addressDetails)}} className='bg-red-500 mb-4 px-3 py-1 rounded-md'> Edit Address</button>
+    </div>
+
         <div className="flex flex-wrap">
           <div className="w-full md:w-1/2 mb-2">
             <span className="font-semibold">House: </span>
@@ -35,6 +40,7 @@ const AddressCard = ({ addressDetails,index }) => {
             <span className="font-semibold">Contact Number: </span>
             <span>{addressDetails.mobileNumber || 'N/A'}</span>
           </div>
+          
         </div>
       </div>
     </div>

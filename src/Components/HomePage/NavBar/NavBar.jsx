@@ -7,7 +7,6 @@ import CartContext from "../../Shop/store/CartContext";
 import { useDispatch, useSelector } from "react-redux";
 import { login } from "../../../features/User";
 import Topbar from "./Topbar";
-import axios from "axios";
 import axiosInstance from "../../../config/AxiosConfig";
 import { toast } from "react-toastify";
 
@@ -122,7 +121,7 @@ const NavBar = () => {
 
   return (
     <header
-      className={`shadow-md fixed min-h-[20vh] max-h-[70vh] top-0 w-full z-30 transition-transform duration-500 ${
+      className={`shadow-md fixed h-[20vh] top-0 w-full z-30 transition-transform duration-500 ${
         isVisible && scrolling ? "-translate-y-full" : "translate-y-0"
       }`}
     >

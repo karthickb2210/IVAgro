@@ -11,13 +11,15 @@ import axiosInstance from "../../config/AxiosConfig";
 import NavBar from "../HomePage/NavBar/NavBar";
 import LeavesLoader from "../Loader/PlantLoader";
 import { Box, Button, Drawer } from "@mui/material";
-import Address from "./Address";
-import AddressCard from "./AddressCard";
+
+import { Addresses } from "./Addresses";
+
 import { toast } from "react-toastify";
 import Settings from "./Settings";
 import Profile from "./Profile";
 import Subscriptions from "./Subscriptions";
 import { Orders } from "./Orders";
+
 
 
 function Dashboard() {
@@ -30,6 +32,7 @@ function Dashboard() {
   const [isMobileScreen, setIsMobileScreen] = useState(false);
   const [showForm, setShowForm] = useState(false);
   const [addressDetails, setAddressDetails] = useState();
+  const [edit,setEdit] = useState(false)
 
   useEffect(() => {
     if (sessionStorage.getItem("tab")) {
@@ -225,6 +228,8 @@ function Dashboard() {
               {activeTab === "profile" && <Profile data={profileDetails} />}
               {activeTab === "addresses" && (
                 <Addresses
+                edit = {edit}
+                setEdit = {setEdit}
                   form={showForm}
                   formfunction={setShowForm}
                   addressDetails={addressDetails}
@@ -260,45 +265,6 @@ function Dashboard() {
 
 
 
-const Addresses = ({ form, formfunction, addressDetails }) => (
-  <div className="bg-white p-6 shadow-md rounded-lg">
-    <div className=" flex relative">
-      <h2 className="text-3xl font-semibold mb-6 text-green-700">
-        📍 Addresses
-      </h2>
-
-      {!form ? (
-        <button
-          onClick={() => formfunction(true)}
-          className="absolute right-2 bg-green-500 rounded-md px-4 py-2"
-        >
-          Add Address
-        </button>
-      ) : (
-        <button
-          onClick={() => formfunction(false)}
-          className="absolute right-2 bg-red-500 rounded-md px-4 py-2"
-        >
-          Cancel
-        </button>
-      )}
-    </div>
-    {!form && (
-      <div>
-        {addressDetails.map((address, index) => (
-          <div
-            key={address.addressId}
-            className=" space-x-8 flex flex-col items-center justify-center"
-          >
-            <AddressCard addressDetails={address} index={index} />
-          </div>
-        ))}
-      </div>
-    )}
-
-    {form && <Address />}
-  </div>
-);
 
 
 

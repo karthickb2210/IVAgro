@@ -3,25 +3,31 @@ import axios from "axios";
 import axiosInstance from "../../config/AxiosConfig";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
-function Address() {
+import LeavesLoader from "../Loader/PlantLoader";
+function EditAddress({editAddress,setIsEdit}) {
+    console.log(editAddress)
   const [userDetails, setUserDetails] = useState({
-    name: "",
-    mobileNumber: "",
-    house: "",
-    street: "",
-    address: "",
-    city: "",
-    state: "",
-    zip: "",
+    id : editAddress.addressId,
+    name: editAddress.name,
+      email: localStorage.getItem("name"),
+      mobileNumber: editAddress.mobileNumber,
+      house: editAddress.house,
+      street: editAddress.street,
+      address: editAddress.address,
+      city: editAddress.city,
+      state: editAddress.state,
+      zip: editAddress.zip,
   });
   const [loading, setLoading] = useState(false);
   const [addressSuggestions, setAddressSuggestions] = useState([]);
   const [error, setError] = useState("");
   const navigate = useNavigate();
+  const [isLoading,setIsLoading] = useState(false)
 
   const handleSubmit = (e) => {
     e.preventDefault();
     const addressDto = {
+        id : userDetails.id,
       name: userDetails.name,
       email: localStorage.getItem("name"),
       mobileNumber: userDetails.mobileNumber,
@@ -32,12 +38,13 @@ function Address() {
       state: userDetails.state,
       zip: userDetails.zip,
     };
+    setIsLoading(true)
     axiosInstance
-      .post("/addAddress", addressDto)
+      .post(`/updateAddress/${addressDto.id}`, addressDto)
       .then((res) => {
         console.log(res.data);
         if (res.data.data) {
-          toast.success("Address added successfully");
+          toast.success("Address updated successfully");
           if (
             !sessionStorage.getItem("fromOrderCheckout") &&
             !sessionStorage.getItem("fromSubCheckout")
@@ -50,10 +57,12 @@ function Address() {
             sessionStorage.removeItem("fromOrderCheckout")
             navigate("/cart/checkout")
           }
+          setIsLoading(false)
         }
       })
       .catch((err) => {
         console.log(err);
+        setIsLoading(false)
       });
   };
 
@@ -113,6 +122,7 @@ function Address() {
   };
 
   return (
+    <> { isLoading ? <LeavesLoader /> :
     <form
       onSubmit={handleSubmit}
       className="space-y-4 flex flex-grow flex-col items-start justify-start"
@@ -274,6 +284,7 @@ function Address() {
             </div>
           </>
         )}
+        { userDetails.city && <>
         <div className="w-2/4 my-2">
           <label
             className="block text-sm font-medium text-gray-700"
@@ -310,15 +321,24 @@ function Address() {
             readOnly
           />
         </div>
+        </>}
       </div>
+    
       <button
         type="submit"
-        className="w-full bg-green-600 px-2 text-white py-2 rounded-lg font-semibold hover:bg-green-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition duration-200"
+        className="w-1/2 bg-green-600 px-2 text-white py-2 rounded-lg font-semibold hover:bg-green-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition duration-200"
       >
-        Add Address
+        Update Address
+      </button>
+      <button
+        onClick={()=>setIsEdit(false)}
+        className="w-1/2 bg-red-600 px-2 text-white py-2 rounded-lg font-semibold hover:bg-red-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition duration-200"
+      >
+        Cancel
       </button>
     </form>
+}</>
   );
 }
 
-export default Address;
+export default EditAddress;

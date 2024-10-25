@@ -137,11 +137,11 @@ const SubscriptionPage = () => {
         {/* Hero Section */}
         <section className="bg-teal-950 text-white p-10 mb-10 rounded-lg text-center">
           <h1 className="text-5xl font-bold mb-4">
-            Fresh Herbs Delivered to Your Doorstep
+            Fresh Leafy Greens Delivered to Your Doorstep
           </h1>
           <p className="text-lg mb-4">
-            Explore the finest herbs, grown naturally and delivered fresh. Start
-            your subscription today and enjoy the goodness of fresh herbs in
+            Explore the finest Leafy greens, grown naturally and delivered fresh. Start
+            your subscription today and enjoy the goodness of fresh greens in
             your kitchen!
           </p>
           <button

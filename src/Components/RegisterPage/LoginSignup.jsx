@@ -101,7 +101,17 @@ const LoginSignup = () => {
           );
           localStorage.setItem("name", data.name);
           localStorage.setItem("pass", data.pass);
-          navigate("/dash");
+          if(sessionStorage.getItem("fromOrdersLogin")){
+            sessionStorage.removeItem("fromOrdersLogin")
+            navigate("/cart/checkout")
+            }
+            else if(sessionStorage.getItem("fromSubLogin")){
+              sessionStorage.removeItem("fromSubLogin")
+              navigate("/subscription-checkout")
+            }
+            else {
+            navigate("/dash");
+            }
           setIsLoading(false);
         } else {
           toast.warn("Incorrect Username or password");
@@ -130,7 +140,13 @@ const LoginSignup = () => {
           );
           localStorage.setItem("name", loginData.name);
           localStorage.setItem("pass", loginData.pass);
+          if(sessionStorage.getItem("fromCheckoutToLogin")){
+          sessionStorage.removeItem("fromCheckoutToLogin")
+          navigate("/cart/checkout")
+          }
+          else{
           navigate("/dash");
+          }
           setIsLoading(false);
         } else {
           toast.warn("Incorrect Username or password");
@@ -237,7 +253,7 @@ const LoginSignup = () => {
                   transition={{ duration: 0.5 }}
                 >
                   <h2 className="text-3xl font-semibold text-center mb-6 text-green-700">
-                    Login to Your Garden
+                    Login to IronValley Agronomy
                   </h2>
                   <form onSubmit={handleLoginSubmit}>
                     <div className="mb-4">
@@ -304,7 +320,7 @@ const LoginSignup = () => {
                   transition={{ duration: 0.5 }}
                 >
                   <h2 className="text-3xl font-semibold text-center mb-6 text-green-700">
-                    Join Our Plant Community
+                    Join Our IronValley Community
                   </h2>
                   <form onSubmit={handleSignupSubmit}>
                     <div className="mb-4">
