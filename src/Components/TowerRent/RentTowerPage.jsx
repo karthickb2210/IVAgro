@@ -147,13 +147,7 @@ const RentTowerPage = () => {
           </div>
         </div>
       </section>
-
-      
-
-      {/* Footer Section */}
-      
     </div>
-    <Footer />
     </>
   );
 };

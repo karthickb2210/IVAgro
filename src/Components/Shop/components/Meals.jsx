@@ -50,7 +50,7 @@ export default function Meals() {
       id: "m8",
       name: "Kale",
       available : stock.kaleQuantity>0,
-      price: [24, Baseprices.Kale,2*Baseprices.Kale,4*Baseprices.Kale,10*Baseprices.Kale],
+      price: [15, Baseprices.Kale,2*Baseprices.Kale,4*Baseprices.Kale,10*Baseprices.Kale],
       description:
         "It is a nutrition superstar due to the amounts of vitamin A, B6, C, K, folate, fiber, carotenoids and manganese it contains.",
       image:

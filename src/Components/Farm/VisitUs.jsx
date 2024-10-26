@@ -91,7 +91,6 @@ KK Nagar,
         </div>
       </div>
     </div>
-    <Footer />
     </>
   );
 };

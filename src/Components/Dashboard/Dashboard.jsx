@@ -33,6 +33,8 @@ function Dashboard() {
   const [showForm, setShowForm] = useState(false);
   const [addressDetails, setAddressDetails] = useState();
   const [edit,setEdit] = useState(false)
+  const [editAddress, setEditAddress] = useState({});
+
 
   useEffect(() => {
     if (sessionStorage.getItem("tab")) {
@@ -40,6 +42,11 @@ function Dashboard() {
         sessionStorage.removeItem("tab");
       }, 1000);
     }
+    if(sessionStorage.getItem("addForm")){
+      setShowForm(true)
+      sessionStorage.removeItem("addForm")
+    }
+
     const name = localStorage.getItem("name");
     axiosInstance
       .get(`/getDashDetails/${name}`)
@@ -233,6 +240,8 @@ function Dashboard() {
                   form={showForm}
                   formfunction={setShowForm}
                   addressDetails={addressDetails}
+                  editAddress={editAddress}
+                  setEditAddress={setEditAddress}
                 />
               )}
               {activeTab === "subscriptions" && (

@@ -15,7 +15,7 @@ const Carousel = () => {
     {
       id: 2,
       image: car2, // Replace with actual image URL
-      title: "We own the chennai's first-ever commercial hydroponic farm with Aeroponic tower technology",
+      title: "We own Chennai's first-ever commercial hydroponic farm with Aeroponic tower technology",
       description: "The product undergoes a minimum of 10+ points before it reaches your plate",
       buttonText: "View Process",
       buttonLink: "#",
@@ -51,7 +51,7 @@ const Carousel = () => {
 
   return (
     <div
-      className="relative min-h-screen mb-6 mt-[25vh] rounded-xl mx-4 overflow-hidden"
+      className="relative mb-6 mt-32 rounded-xl mx-4 overflow-hidden"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
@@ -67,8 +67,8 @@ const Carousel = () => {
             style={{ backgroundImage: `url(${slide.image})` }}
           >
             {/* Text and Button */}
-            <div className="absolute py-10 bottom-0 w-full text-center inline-block bg-black bg-opacity-40 rounded-3xl text-white px-4">
-              <h2 className="text-4xl font-semibold">" {slide.title} "</h2>
+            <div className="absolute py-10 bottom-0 w-full text-center inline-block bg-black bg-opacity-60 rounded-3xl text-white px-4">
+              <h2 className="text-4xl text-gray-200 font-semibold"> {slide.title} </h2>
               {/* <p className="text-lg mt-2">{slide.description}</p> */}
               {/* <a
                 href={slide.buttonLink}

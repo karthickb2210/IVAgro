@@ -6,6 +6,8 @@ import { toast } from "react-toastify";
 import CartContext from "../Shop/store/CartContext";
 import LeavesLoader from "../Loader/PlantLoader";
 import AddressRadioCard from "./AddressRadioCard";
+import UserProgressContext from "../Shop/store/UserProgressContext";
+import { CheckCircleIcon } from '@heroicons/react/outline'; 
 
 const CheckOut = () => {
   const cartCtx = useContext(CartContext);
@@ -15,6 +17,8 @@ const CheckOut = () => {
   const [showAddress, setShowAddress] = useState();
   const navigate = useNavigate();
   const [guest, setGuest] = useState(true);
+  const [showAnimation, setShowAnimation] = useState(false);
+  const userProgressCtx = useContext(UserProgressContext);
   useEffect(() => {
     const cart = JSON.parse(localStorage.getItem("cart"));
     console.log(cart);
@@ -31,7 +35,12 @@ const CheckOut = () => {
         console.log(err);
       });
     setCartItems(cart || []);
-  }, []);
+
+    if (showAnimation) {
+      const timer = setTimeout(() => setShowAnimation(false), 4000); // Display duration
+      return () => clearTimeout(timer);
+  }
+  }, [showAnimation]);
 
   const [selectedAddressIndex, setSelectedAddressIndex] = useState(-1);
 
@@ -45,7 +54,7 @@ const CheckOut = () => {
   );
 
   // Calculate shipping charge
-  const shippingCharge = totalAmount < 500 ? 120 : 0;
+  const shippingCharge = totalAmount < 499 ? 120 : 0;
   const finalAmount = totalAmount + shippingCharge;
 
   const handleSubmit = async (e) => {
@@ -146,7 +155,12 @@ const CheckOut = () => {
                       toast.success("Order placed successfully");
                       cartCtx.clearCart();
                       localStorage.removeItem("cart");
-                      navigate("/");
+                      setShowAnimation(true);
+                      setTimeout(()=>{
+                        navigate("/");
+                      },3000)
+                      
+                      
                     } else {
                       toast.warn("Problem occured while placing order");
                     }
@@ -175,13 +189,42 @@ const CheckOut = () => {
     }
   };
 
+  const handleEditCart =()=>{
+    userProgressCtx.showCart();
+  }
+
   return (
     <>
       <NavBar />
       {isLoading ? (
         <LeavesLoader />
       ) : (
-        <div className="min-h-screen mt-16 bg-gradient-to-r from-blue-50 to-blue-200 flex items-center justify-center p-6">
+        <div className="relative min-h-screen mt-32 bg-gradient-to-r from-blue-50 to-blue-200 flex items-center justify-center p-6">
+        {showAnimation && (
+                <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-30 z-50 backdrop-blur-sm">
+                    {/* Main Container */}
+                    <div className="relative bg-white p-6 rounded-lg shadow-2xl transform transition duration-500 ease-out animate-slide-in-up">
+                        
+                        {/* Ribbon Animation */}
+                        <div className="absolute -top-6 -left-8 w-36 h-10 bg-yellow-400 rounded-full animate-ribbon-fly" />
+
+                        {/* Check Icon and Text */}
+                        <div className="flex flex-col items-center">
+                            <CheckCircleIcon className="w-12 h-12 text-green-500 animate-pop" />
+                            <h2 className="mt-4 text-xl font-semibold text-gray-800 animate-fade-in">
+                                Order Placed Successfully!
+                            </h2>
+                            <p className="text-gray-500 animate-fade-in">Thank you for your purchase.</p>
+                        </div>
+
+                        {/* Confetti */}
+                        <div className="absolute -top-10 left-2 w-2 h-2 bg-red-500 rounded-full animate-confetti-burst" />
+                        <div className="absolute -top-10 right-2 w-2 h-2 bg-blue-500 rounded-full animate-confetti-burst delay-100" />
+                        <div className="absolute -bottom-10 left-8 w-2 h-2 bg-green-500 rounded-full animate-confetti-burst delay-200" />
+                        <div className="absolute -bottom-10 right-8 w-2 h-2 bg-yellow-500 rounded-full animate-confetti-burst delay-300" />
+                    </div>
+                </div>
+            )}
           <div className="w-full max-w-4xl bg-white rounded-lg shadow-lg p-6">
             <h2 className="text-3xl font-bold text-center mb-6 text-blue-600">
               Checkout Your Cart
@@ -190,9 +233,12 @@ const CheckOut = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {/* Cart Details */}
               <div className="bg-gray-100 p-4 rounded-lg shadow-md">
+              <div className=" flex items-center justify-between">
                 <h3 className="text-xl font-semibold mb-4 text-gray-700">
                   Your Cart
                 </h3>
+                <button onClick={handleEditCart} className=" bg-teal-700 px-4 py-1 mb-4 text-white rounded-md">Edit Cart</button>
+                </div>
                 <div className="space-y-3">
                   {cartItems.length > 0 ? (
                     cartItems.map((item) => (
@@ -228,6 +274,8 @@ const CheckOut = () => {
                       Your cart is empty.
                     </p>
                   )}
+                
+
                 </div>
               </div>
 
@@ -244,21 +292,27 @@ const CheckOut = () => {
                       <span>₹ {totalAmount.toFixed(2)}</span>
                     </div>
                     <div
-                      className={`flex justify-between text-lg font-semibold ${
-                        totalAmount >= 399 ? "text-green-600" : "text-gray-700"
+                      className={`flex justify-between flex-col text-lg font-semibold ${
+                        totalAmount >= 499 ? "text-green-600" : "text-gray-700"
                       }`}
                     >
+                    <div className="flex justify-between">
                       <span>Shipping Charge</span>
                       <span>₹ {shippingCharge.toFixed(2)}</span>
                     </div>
-                    {totalAmount < 399 && (
-                      <div className="text-sm text-gray-600 mt-2">
-                        <p>
-                          Note: Shipping charge of ₹120 applies for orders below
-                          ₹399.
-                        </p>
-                      </div>
-                    )}
+                    {shippingCharge===0 && 
+                      <div className=" flex justify-between" >
+                      <span>You saved</span>
+                      <span>₹ 120</span>
+                      </div>}
+                    </div>
+
+                    <div className="text-sm text-gray-600 mt-2">
+                      <p>
+                        Note: Shipping charge of ₹120 applies for orders below
+                        ₹499.
+                      </p>
+                    </div>
                     <hr className="my-4" />
                     <div className="flex justify-between text-xl font-bold text-gray-800">
                       <span>Total</span>
@@ -286,43 +340,47 @@ const CheckOut = () => {
                   ) : (
                     <Link to={`/register`}>
                       <button
-                      onClick={()=>sessionStorage.setItem("fromOrdersLogin",true)}
-                       className="w-full bg-blue-500 text-white py-2 px-2 rounded-lg font-semibold hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition duration-200">
+                        onClick={() =>
+                          sessionStorage.setItem("fromOrdersLogin", true)
+                        }
+                        className="w-full bg-blue-500 text-white py-2 px-2 rounded-lg font-semibold hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition duration-200"
+                      >
                         Login to proceed
                       </button>
                     </Link>
                   )}
                 </div>
-                {
-                showAddress &&
-                <>
-                  <Link to={`/dash`}>
-                    <button
-                      onClick={() => {
-                        sessionStorage.setItem("fromOrderCheckout",true);
-                        sessionStorage.setItem("tab", "addresses")}}
-                      className="w-full bg-blue-500 text-white py-2 rounded-lg font-semibold hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition duration-200"
-                    >
-                      Add new Address
-                    </button>
-                  </Link>
-                
+                {showAddress && (
                   <>
-                    {showAddress && (
-                      <div className="max-w-md mx-auto mt-8">
-                        {addressDetails.map((address, index) => (
-                          <AddressRadioCard
-                            key={index}
-                            address={address}
-                            selected={selectedAddressIndex === index}
-                            onSelect={() => handleSelect(index)}
-                          />
-                        ))}
-                      </div>
-                    )}
+                    <Link to={`/dash`}>
+                      <button
+                        onClick={() => {
+                          sessionStorage.setItem("fromOrderCheckout", true);
+                          sessionStorage.setItem("tab", "addresses");
+                          sessionStorage.setItem("addForm",true)
+                        }}
+                        className="w-full bg-blue-500 text-white py-2 rounded-lg font-semibold hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition duration-200"
+                      >
+                        Add new Address
+                      </button>
+                    </Link>
+
+                    <>
+                      {showAddress && (
+                        <div className="max-w-md mx-auto mt-8">
+                          {addressDetails.map((address, index) => (
+                            <AddressRadioCard
+                              key={index}
+                              address={address}
+                              selected={selectedAddressIndex === index}
+                              onSelect={() => handleSelect(index)}
+                            />
+                          ))}
+                        </div>
+                      )}
+                    </>
                   </>
-                  </>
-                }
+                )}
                 {showAddress &&
                   !addressDetails.length == 0 &&
                   !(selectedAddressIndex === -1) && (

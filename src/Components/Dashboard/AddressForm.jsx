@@ -3,7 +3,7 @@ import axios from "axios";
 import axiosInstance from "../../config/AxiosConfig";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
-function Address() {
+function AddressForm() {
   const [userDetails, setUserDetails] = useState({
     name: "",
     mobileNumber: "",
@@ -42,7 +42,8 @@ function Address() {
             !sessionStorage.getItem("fromOrderCheckout") &&
             !sessionStorage.getItem("fromSubCheckout")
           ){
-            window.location.reload();
+            sessionStorage.setItem("tab", "addresses");
+          window.location.reload();
           }else if (sessionStorage.getItem("fromSubCheckout")) {
             sessionStorage.removeItem("fromSubCheckout");
             navigate("/subscription-checkout");
@@ -321,4 +322,4 @@ function Address() {
   );
 }
 
-export default Address;
+export default AddressForm;

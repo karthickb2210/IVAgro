@@ -129,7 +129,7 @@ function EditAddress({editAddress,setIsEdit}) {
     >
       <div>
         <h1 className=" text-xl font-semibold">
-          Fill out the form to add address :
+          Fill out the changes in address :
         </h1>
       </div>
       <div className=" w-full">

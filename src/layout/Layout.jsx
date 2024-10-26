@@ -30,7 +30,7 @@ import PakChoiRecipePage from "../Components/OurProducts/Recipes/PakChoiRecipePa
 export default function Layout() {
   return (
     <>
-      <BrowserRouter>
+      
       <ScrollToTop />
         <Routes>
           <Route path="/" element={<MainPage />}></Route>
@@ -65,7 +65,7 @@ export default function Layout() {
           <Route path="/divine-cotyledons" element={<DivineCot />}></Route>
           <Route path="*" element={<NotFoundPage />}></Route>
         </Routes>
-      </BrowserRouter>
+    
       <Footer />
       <footer className="py-1 bg-gray-800 text-white text-center">
         <p>© 2024 IronValley Agronomy - All rights reserved</p>
