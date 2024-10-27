@@ -1,15 +1,24 @@
-import React, { useState } from "react";
+import React, { useDebugValue, useEffect, useState } from "react";
 import axiosInstance from "../../config/AxiosConfig";
 import { toast } from "react-toastify";
 
 const AddressCard = ({ addressDetails, index, setEditAddress, setIsEdit }) => {
   const [loading, setLoading] = useState();
-
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleModal = () => {
     setIsOpen(!isOpen);
   };
+
+    if(sessionStorage.getItem("addressId")){
+      console.log("adrrss",addressDetails)
+      if(sessionStorage.getItem("addressId")==addressDetails.addressId){
+      console.log("inside")
+      setIsEdit(true)
+      setEditAddress(addressDetails)
+      sessionStorage.removeItem("addressId")
+      }
+    }
 
   const handleDelete = () => {
     setLoading(true);

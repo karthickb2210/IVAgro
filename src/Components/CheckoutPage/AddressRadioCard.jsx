@@ -6,6 +6,7 @@ const AddressRadioCard = ({ address, selected, onSelect }) => {
   const handleEdit =()=>{
     sessionStorage.setItem("tab","addresses")
     sessionStorage.setItem("addressId",address.addressId)
+    sessionStorage.setItem("fromEdit",true)
     navigate("/dash")
   }
   return (

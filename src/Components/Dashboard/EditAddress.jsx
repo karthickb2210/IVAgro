@@ -5,7 +5,6 @@ import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import LeavesLoader from "../Loader/PlantLoader";
 function EditAddress({editAddress,setIsEdit}) {
-    console.log(editAddress)
   const [userDetails, setUserDetails] = useState({
     id : editAddress.addressId,
     name: editAddress.name,
@@ -47,13 +46,17 @@ function EditAddress({editAddress,setIsEdit}) {
           toast.success("Address updated successfully");
           if (
             !sessionStorage.getItem("fromOrderCheckout") &&
-            !sessionStorage.getItem("fromSubCheckout")
+            !sessionStorage.getItem("fromSubCheckout") && !sessionStorage.getItem("fromEdit")
           ){
             window.location.reload();
           }else if (sessionStorage.getItem("fromSubCheckout")) {
             sessionStorage.removeItem("fromSubCheckout");
             navigate("/subscription-checkout");
-          }else{
+          }else if(sessionStorage.getItem("fromEdit")){
+            sessionStorage.removeItem("fromEdit")
+            navigate("/cart/checkout")
+          }
+          else{
             sessionStorage.removeItem("fromOrderCheckout")
             navigate("/cart/checkout")
           }
@@ -120,6 +123,14 @@ function EditAddress({editAddress,setIsEdit}) {
     }));
     setAddressSuggestions([]);
   };
+
+  const handleCancel = () =>{
+    setIsEdit(false)
+    if(sessionStorage.getItem("fromEdit")){
+      sessionStorage.removeItem("fromEdit")
+      navigate("/cart/checkout")
+  }
+}
 
   return (
     <> { isLoading ? <LeavesLoader /> :
@@ -331,7 +342,7 @@ function EditAddress({editAddress,setIsEdit}) {
         Update Address
       </button>
       <button
-        onClick={()=>setIsEdit(false)}
+        onClick={handleCancel}
         className="w-1/2 bg-red-600 px-2 text-white py-2 rounded-lg font-semibold hover:bg-red-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition duration-200"
       >
         Cancel

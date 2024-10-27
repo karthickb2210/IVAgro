@@ -25,7 +25,7 @@ export default function MealItem({ meal }) {
     <>
     <div className="relative">
   {!meal.available && (
-    <div className="z-20 absolute top-5 left-1/3 rounded-xl flex items-center justify-center bg-red-500 text-white px-4 py-2">
+    <div className="z-20 absolute top-1/3 left-1/3 rounded-xl flex items-center justify-center bg-red-500 text-white px-4 py-2">
       Out Of Stock
     </div>
   )}
