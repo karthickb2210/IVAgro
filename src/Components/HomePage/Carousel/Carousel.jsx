@@ -11,7 +11,7 @@ const Carousel = () => {
       title:
         "Farm Fresh Leafy Greens to your door steps on the same-day of the harvest",
       description:
-        "We promise to deliver the products from farm to your fork on the same day",
+        "If Ordered before 3.00 pm on working days",
       buttonText: "Visit Our Farm",
       buttonLink: "/farm",
     },
@@ -89,8 +89,9 @@ const Carousel = () => {
                 {" "}
                 {slide.title}{" "}
               </h2>
-             
-              {/* <p className="text-lg mt-2">{slide.description}</p> */}
+             {slide.id===1 && 
+              <p className="text-sm">{slide.description}</p>
+            }
               {/* <a
                 href={slide.buttonLink}
                 className="mt-4 mb-4 inline-block bg-teal-950 hover:bg-blue-900 text-white font-semibold py-2 px-6 rounded-full transition-colors duration-300"

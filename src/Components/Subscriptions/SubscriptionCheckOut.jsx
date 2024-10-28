@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from "react";
-import NavBar from "../HomePage/NavBar/NavBar";
 import axiosInstance from "../../config/AxiosConfig";
 import { toast } from "react-toastify";
 import { useNavigate, Link } from "react-router-dom";
 import LeavesLoader from "../Loader/PlantLoader";
-import AddressRadioCard from "../CheckoutPage/AddressRadioCard";
+import AddressRadioCardForSub from "./AddressRadioCardForSub";
 
 const SubscriptionCheckOut = () => {
   const [cartItems, setCartItems] = useState([]);
@@ -51,7 +50,7 @@ const SubscriptionCheckOut = () => {
   }
 
   // Calculate shipping charge
-  const shippingCharge = totalAmount < 399 ? 120 : 0;
+  const shippingCharge = totalAmount < 499 ? 120 : 0;
   const finalAmount = totalAmount + shippingCharge;
 
  
@@ -230,15 +229,15 @@ const SubscriptionCheckOut = () => {
                     </div>
                     <div
                       className={`flex justify-between text-lg font-semibold ${
-                        totalAmount >= 399 ? "text-green-600" : "text-gray-700"
+                        totalAmount >= 499 ? "text-green-600" : "text-gray-700"
                       }`}
                     >
                       <span>Shipping Charge</span>
                   <span>₹ {shippingCharge.toFixed(2)}</span>
                     </div>
-                    {totalAmount < 399 && (
+                    {totalAmount < 499 && (
                   <div className="text-sm text-gray-600 mt-2">
-                    <p>Note: Shipping charge of ₹120 applies for orders below ₹399.</p>
+                    <p>Note: Shipping charge of ₹120 applies for orders below ₹499.</p>
                   </div>
                 )}
                     <hr className="my-4" />
@@ -285,6 +284,7 @@ const SubscriptionCheckOut = () => {
                         onClick={() => {
                           sessionStorage.setItem("fromSubCheckout", true);
                           sessionStorage.setItem("tab", "addresses");
+                          sessionStorage.setItem("addForm",true)
                         }}
                         className="w-full bg-blue-500 text-white py-2 rounded-lg font-semibold hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition duration-200"
                       >
@@ -296,7 +296,7 @@ const SubscriptionCheckOut = () => {
                       {showAddress && (
                         <div className="max-w-md mx-auto mt-8">
                           {addressDetails.map((address, index) => (
-                            <AddressRadioCard
+                            <AddressRadioCardForSub
                               key={index}
                               address={address}
                               selected={selectedAddressIndex === index}

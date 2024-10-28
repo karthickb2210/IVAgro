@@ -1,11 +1,13 @@
 import React from "react";
 import { CheckCircleIcon } from "@heroicons/react/outline";
 
+
 function OrderAnimation() {
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-30 z-50 backdrop-blur-sm">
       {/* Main Container */}
       <div className="relative bg-white p-6 rounded-lg shadow-2xl transform transition duration-500 ease-out animate-slide-in-up">
+      
         {/* Ribbon Animation */}
         <div className="absolute -top-6 -left-8 w-36 h-10 bg-yellow-400 rounded-full animate-ribbon-fly" />
 

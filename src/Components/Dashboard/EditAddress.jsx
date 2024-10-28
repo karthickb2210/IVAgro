@@ -46,15 +46,19 @@ function EditAddress({editAddress,setIsEdit}) {
           toast.success("Address updated successfully");
           if (
             !sessionStorage.getItem("fromOrderCheckout") &&
-            !sessionStorage.getItem("fromSubCheckout") && !sessionStorage.getItem("fromEdit")
+            !sessionStorage.getItem("fromSubCheckout") && !sessionStorage.getItem("fromEditOrders")
+            && !sessionStorage.getItem("fromEditSub")
           ){
             window.location.reload();
           }else if (sessionStorage.getItem("fromSubCheckout")) {
             sessionStorage.removeItem("fromSubCheckout");
             navigate("/subscription-checkout");
-          }else if(sessionStorage.getItem("fromEdit")){
-            sessionStorage.removeItem("fromEdit")
+          }else if(sessionStorage.getItem("fromEditOrders")){
+            sessionStorage.removeItem("fromEditOrders")
             navigate("/cart/checkout")
+          }else if(sessionStorage.getItem("fromEditSub")){
+            sessionStorage.removeItem("fromEditSub")
+            navigate("/subscription-checkout")
           }
           else{
             sessionStorage.removeItem("fromOrderCheckout")

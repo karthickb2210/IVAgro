@@ -1,4 +1,5 @@
-const Profile = ({ data }) => (
+const Profile = ({ data }) =>
+  (
     <div className="bg-white p-6  shadow-md rounded-lg">
       <h2 className="sm:text-3xl text-2xl font-semibold mb-6 text-green-700">
         👤 User Profile
@@ -22,7 +23,7 @@ const Profile = ({ data }) => (
         </h4>
         <h4 className="text-green-700 font-medium sm:font-semibold mb-2">
           Mobile Number :{" "}
-          {!data.mobileNumber === " " ? data.mobileNumber : "Not Updated Yet.."}
+          {data.mobileNumber.length>4 ? data.mobileNumber : "Not Updated Yet.."}
         </h4>
       </div>
     </div>

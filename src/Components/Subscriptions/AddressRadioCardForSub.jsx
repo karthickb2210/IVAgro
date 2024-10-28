@@ -1,12 +1,13 @@
 import { useNavigate } from "react-router-dom";
 
-const AddressRadioCard = ({ address, selected, onSelect }) => {
+const AddressRadioCardForSub = ({ address, selected, onSelect }) => {
 
   const navigate = useNavigate()
   const handleEdit =()=>{
     sessionStorage.setItem("tab","addresses")
     sessionStorage.setItem("addressId",address.addressId)
     sessionStorage.setItem("fromEdit",true)
+    sessionStorage.setItem("editFromSub",true)
     navigate("/dash")
   }
   return (
@@ -42,4 +43,4 @@ const AddressRadioCard = ({ address, selected, onSelect }) => {
   );
 };
 
-export default AddressRadioCard;
+export default AddressRadioCardForSub;

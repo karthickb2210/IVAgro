@@ -52,7 +52,7 @@ export const Orders = ({ orderDetails }) => (
           </div>
             <div className="sm:mt-4 mt-2 border-t border-green-200 sm:pt-4 pt-2 justify-start">
             <p className="text-gray-700 mb-1">
-              <strong>Porter Tracking Id:</strong> {(order.porterTrackerId==="0"|| order.porterTrackerId==null) ? "Not Shipped Yet..." : `${order.porterTrackerId}`}
+              <strong>Delivery Tracking Id:</strong> {(order.porterTrackerId==="0"|| order.porterTrackerId==null) ? "Not Shipped Yet..." : `${order.porterTrackerId}`}
             </p>
               <p className="text-gray-700 mb-1">
                 <strong>Order on:</strong> {order.createdAt.substring(0, 10)}

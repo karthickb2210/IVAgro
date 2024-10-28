@@ -140,13 +140,17 @@ const LoginSignup = () => {
           );
           localStorage.setItem("name", loginData.name);
           localStorage.setItem("pass", loginData.pass);
-          if(sessionStorage.getItem("fromCheckoutToLogin")){
-          sessionStorage.removeItem("fromCheckoutToLogin")
-          navigate("/cart/checkout")
-          }
-          else{
-          navigate("/dash");
-          }
+          if(sessionStorage.getItem("fromOrdersLogin")){
+            sessionStorage.removeItem("fromOrdersLogin")
+            navigate("/cart/checkout")
+            }
+            else if(sessionStorage.getItem("fromSubLogin")){
+              sessionStorage.removeItem("fromSubLogin")
+              navigate("/subscription-checkout")
+            }
+            else {
+            navigate("/dash");
+            }
           setIsLoading(false);
         } else {
           toast.warn("Incorrect Username or password");

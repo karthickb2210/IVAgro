@@ -4,7 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import CartContext from "../Shop/store/CartContext";
 import LeavesLoader from "../Loader/PlantLoader";
-import AddressRadioCard from "./AddressRadioCard";
+import AddressRadioCardForOrders from "./AddressRadioCardForOrders";
 import UserProgressContext from "../Shop/store/UserProgressContext"; 
 import OrderAnimation from "./OrderAnimation";
 
@@ -346,7 +346,7 @@ const CheckOut = () => {
                       {showAddress && (
                         <div className="max-w-md mx-auto mt-8">
                           {addressDetails.map((address, index) => (
-                            <AddressRadioCard
+                            <AddressRadioCardForOrders
                               key={index}
                               address={address}
                               selected={selectedAddressIndex === index}

@@ -42,11 +42,11 @@ export default function Product({ onConfirm, onCancel, price }) {
           }}
           className="text-xs px-2 bg-teal-950 hover:bg-teal-900 hover:text-white text-white py-1"
         >
-          Show prices
+          { hover ? "Show prices" : "Show grams"}
         </Button>
         <div className="flex space-x-2">
           <Button
-            className="text-xs font-bold"
+            className="text-xs font-semibold"
             onClick={() =>
               onConfirm(selectedGram, price[gramOptions.indexOf(selectedGram)])
             }
