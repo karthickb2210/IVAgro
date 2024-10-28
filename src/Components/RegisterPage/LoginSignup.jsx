@@ -223,7 +223,6 @@ const LoginSignup = () => {
 
   return (
     <>
-      <NavBar />
       {isLoading ? (
         <>
           <LeavesLoader />

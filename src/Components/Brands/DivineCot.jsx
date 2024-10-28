@@ -4,7 +4,6 @@ import NavBar from '../HomePage/NavBar/NavBar'
 function DivineCot() {
   return (
     <>
-    <NavBar />
     <div className="flex mt-[40vh] flex-col items-center">
     <img
       src="/divi.png" // Replace with your logo path

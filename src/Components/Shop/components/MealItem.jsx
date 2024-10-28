@@ -33,7 +33,7 @@ export default function MealItem({ meal }) {
         meal.available ? "hover:scale-105" : "pointer-events-none disabled blur-sm"
       }`}>
         <article>
-          <div className='w-full'>
+          <div className='w-full min-h-1/2'>
           <img className='min-w-full' src={meal.image} alt={meal.name} />
           </div>
           

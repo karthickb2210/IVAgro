@@ -7,7 +7,6 @@ export default function KaleRecipePage() {
   const [selectedRecipe, setSelectedRecipe] = useState(recipes[0]);
   return (
     <>
-      <NavBar />
       <div className="mt-36 flex">
         {/* Left side: list of recipe names with new design */}
         <div className="flex flex-col mt-16 w-1/4 p-4 space-y-4 bg-gray-100 border-r-2 border-gray-300">

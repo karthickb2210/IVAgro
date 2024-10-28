@@ -8,7 +8,6 @@ const VisitUs = () => {
   const [showForm,setShowFarm] = useState(false)
   return (
     <>
-    <NavBar />
     { showForm && 
       <BookingForm 
       status = {showForm}

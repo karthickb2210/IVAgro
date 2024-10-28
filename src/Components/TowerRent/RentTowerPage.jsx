@@ -7,7 +7,6 @@ import rent2 from "/rent2.png"
 const RentTowerPage = () => {
   return (
     <>
-    <NavBar />
     <div className="bg-white text-black  mt-36">
       {/* Header Section */}
       <header className="py-10 text-center bg-green-600 text-white">

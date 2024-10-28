@@ -3,6 +3,7 @@ import axiosInstance from "../../../config/AxiosConfig.js";
 import { useState ,useEffect} from "react";
 import PlantLoader from "../../Loader/PlantLoader.jsx"
 import { toast } from "react-toastify";
+import spinach from "/store/spinach.jpg"
 
 export default function Meals() {
   const [isLoading,setIsLoading] = useState(false)
@@ -30,13 +31,6 @@ export default function Meals() {
       });
   }, []);
 
-
-
-  // const {
-  //   data: loadedMeals,
-  //   isLoading,
-  //   error,
-  // } = useHttp('http://localhost:3000/meals', requestConfig, []);
   const Baseprices = {
     BabySpinach : 25,
     Lettuce : 25,
@@ -155,20 +149,6 @@ export default function Meals() {
     },
   ];
 
-
-  // if (isLoading) {
-  //   return <p className="center">Fetching meals...</p>;
-  // }
-
-  // if (error) {
-  //   return <Error title="Failed to fetch meals" message={error} />;
-  // }
-
-  // if (!data) {
-  //   return <p>No meals found.</p>
-  // }
-
-  
 
   return (
     <>

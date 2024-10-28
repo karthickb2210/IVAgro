@@ -1,13 +1,12 @@
 import React, { useState, useEffect, useContext } from "react";
-import NavBar from "../HomePage/NavBar/NavBar";
 import axiosInstance from "../../config/AxiosConfig";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import CartContext from "../Shop/store/CartContext";
 import LeavesLoader from "../Loader/PlantLoader";
 import AddressRadioCard from "./AddressRadioCard";
-import UserProgressContext from "../Shop/store/UserProgressContext";
-import { CheckCircleIcon } from '@heroicons/react/outline'; 
+import UserProgressContext from "../Shop/store/UserProgressContext"; 
+import OrderAnimation from "./OrderAnimation";
 
 const CheckOut = () => {
   const cartCtx = useContext(CartContext);
@@ -172,6 +171,8 @@ const CheckOut = () => {
             })
             .catch((err) => {
               toast.error("Payment Failed", err);
+            }).finally(()=>{
+              setIsLoading(false)
             });
         },
         theme: {
@@ -184,8 +185,6 @@ const CheckOut = () => {
     } catch (error) {
       console.error("Payment Error: ", error);
       alert("Payment failed");
-    } finally {
-      setIsLoading(false);
     }
   };
 
@@ -195,36 +194,14 @@ const CheckOut = () => {
 
   return (
     <>
-      <NavBar />
+    {showAnimation && (
+                <OrderAnimation />
+            )}
       {isLoading ? (
         <LeavesLoader />
       ) : (
         <div className="relative min-h-screen mt-32 bg-gradient-to-r from-blue-50 to-blue-200 flex items-center justify-center p-6">
-        {showAnimation && (
-                <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-30 z-50 backdrop-blur-sm">
-                    {/* Main Container */}
-                    <div className="relative bg-white p-6 rounded-lg shadow-2xl transform transition duration-500 ease-out animate-slide-in-up">
-                        
-                        {/* Ribbon Animation */}
-                        <div className="absolute -top-6 -left-8 w-36 h-10 bg-yellow-400 rounded-full animate-ribbon-fly" />
-
-                        {/* Check Icon and Text */}
-                        <div className="flex flex-col items-center">
-                            <CheckCircleIcon className="w-12 h-12 text-green-500 animate-pop" />
-                            <h2 className="mt-4 text-xl font-semibold text-gray-800 animate-fade-in">
-                                Order Placed Successfully!
-                            </h2>
-                            <p className="text-gray-500 animate-fade-in">Thank you for your purchase.</p>
-                        </div>
-
-                        {/* Confetti */}
-                        <div className="absolute -top-10 left-2 w-2 h-2 bg-red-500 rounded-full animate-confetti-burst" />
-                        <div className="absolute -top-10 right-2 w-2 h-2 bg-blue-500 rounded-full animate-confetti-burst delay-100" />
-                        <div className="absolute -bottom-10 left-8 w-2 h-2 bg-green-500 rounded-full animate-confetti-burst delay-200" />
-                        <div className="absolute -bottom-10 right-8 w-2 h-2 bg-yellow-500 rounded-full animate-confetti-burst delay-300" />
-                    </div>
-                </div>
-            )}
+        
           <div className="w-full max-w-4xl bg-white rounded-lg shadow-lg p-6">
             <h2 className="text-3xl font-bold text-center mb-6 text-blue-600">
               Checkout Your Cart

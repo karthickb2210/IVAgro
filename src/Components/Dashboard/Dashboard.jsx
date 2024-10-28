@@ -155,7 +155,6 @@ function Dashboard() {
   );
   return (
     <>
-      <NavBar />
       {!profileDetails ? (
         <LeavesLoader />
       ) : (

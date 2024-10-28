@@ -1,10 +1,9 @@
-// src/App.js
 import React from 'react';
-import { FaLeaf, FaPhoneAlt, FaEnvelope } from 'react-icons/fa';
+import {  FaPhoneAlt, FaEnvelope } from 'react-icons/fa';
 
 const GreenMuscle = () => {
   return (
-    <div className="bg-teal-950 min-h-screen font-sans scroll-smooth">
+    <div className="bg-teal-950 min-h-screen font-sans scroll-smooth mt-32">
 
       {/* Hero Section */}
       <section className="bg-gradient-to-r from-primary to-secondary text-white py-16 text-center">

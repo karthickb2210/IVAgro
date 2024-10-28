@@ -165,7 +165,6 @@ const SubscriptionCheckOut = () => {
 
   return (
     <>
-      <NavBar />
       {isLoading ? (
         <LeavesLoader />
       ) : (
