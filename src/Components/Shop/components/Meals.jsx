@@ -3,7 +3,6 @@ import axiosInstance from "../../../config/AxiosConfig.js";
 import { useState ,useEffect} from "react";
 import PlantLoader from "../../Loader/PlantLoader.jsx"
 import { toast } from "react-toastify";
-import spinach from "/store/spinach.jpg"
 
 export default function Meals() {
   const [isLoading,setIsLoading] = useState(false)
