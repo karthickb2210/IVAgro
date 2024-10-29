@@ -92,6 +92,7 @@ const CheckOut = () => {
                   basilQuantityDetections: 0,
                   kaleQuantityDetections: 0,
                   lettuceQuantityDetections: 0,
+                  argulaQuantityDetections :0
                 };
                 console.log(cartItems);
                 cartItems.map((item) => {
@@ -99,7 +100,12 @@ const CheckOut = () => {
                     stockDeductions.babySpinachQuantityDetections =
                       item.grams * item.quantity +
                       stockDeductions.babySpinachQuantityDetections;
-                  } else if (item.id === "m7") {
+                  }else if (item.id === "m6") {
+                    stockDeductions.argulaQuantityDetections =
+                      item.grams * item.quantity +
+                      stockDeductions.argulaQuantityDetections;
+                  }
+                   else if (item.id === "m7") {
                     stockDeductions.pakChoiQuantityDetections =
                       item.grams * item.quantity +
                       stockDeductions.pakChoiQuantityDetections;
@@ -154,13 +160,14 @@ const CheckOut = () => {
                       toast.success("Order placed successfully");
                       cartCtx.clearCart();
                       localStorage.removeItem("cart");
+                      setIsLoading(false)
                       setShowAnimation(true);
                       setTimeout(()=>{
                         navigate("/");
                       },3000)
-                      
-                      
+                       
                     } else {
+                      setIsLoading(false)
                       toast.warn("Problem occured while placing order");
                     }
                   })
@@ -171,8 +178,6 @@ const CheckOut = () => {
             })
             .catch((err) => {
               toast.error("Payment Failed", err);
-            }).finally(()=>{
-              setIsLoading(false)
             });
         },
         theme: {

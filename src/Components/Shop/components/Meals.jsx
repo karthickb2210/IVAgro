@@ -11,7 +11,8 @@ export default function Meals() {
     lettuceQuantity : 0,
     kaleQuantity  :0,
     basilQuantity : 0,
-    pakChoiQuantity : 0
+    pakChoiQuantity : 0,
+    argulaQuantity: 0
   });
 
   useEffect(() => {
@@ -35,7 +36,8 @@ export default function Meals() {
     Lettuce : 25,
     PakChoi : 30,
     Kale : 24,
-    Basil : 30
+    Basil : 30,
+    Argula : 35
   }
 
   const loadedMeals = [
@@ -101,20 +103,14 @@ export default function Meals() {
       image:
         "https://t4.ftcdn.net/jpg/02/80/03/99/240_F_280039907_Ny5g14FK1JQU59POwyU5eJj8ZaQNjmQw.jpg",
     },
-    // {
-    //     "id": "m6",
-    //     "name": "Arugula",
-    //     "price": [
-    //        "8.99",
-    //     "16.99",
-    //      "24.99",
-    //      "36.99",
-    //      "54.99",
-    //      "80.99"
-    //   ],
-    //     "description": "It is high in beta-carotene vitamin C, folate, vitamin K and magnesium. Two cups of raw arugula will provide 20% of the body's daily vitamin A.",
-    //     "image": "https://t3.ftcdn.net/jpg/08/50/95/42/240_F_850954265_neGQj7N1GC75XnFSnSLu0dYLI3xneQW5.jpg"
-    // },
+    {
+        id: "m6",
+        name: "Arugula",
+        available : stock.argulaQuantity >0,
+        price: [25,Baseprices.Argula,2*Baseprices.Argula,4*Baseprices.Argula,10*Baseprices.Argula],
+        description: "It is high in beta-carotene vitamin C, folate, vitamin K and magnesium. Two cups of raw arugula will provide 20% of the body's daily vitamin A.",
+        image: "https://t3.ftcdn.net/jpg/08/50/95/42/240_F_850954265_neGQj7N1GC75XnFSnSLu0dYLI3xneQW5.jpg"
+    },
     {
       id: "m7",
       name: "Pak Choi",
