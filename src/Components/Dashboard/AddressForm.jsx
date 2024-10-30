@@ -123,8 +123,8 @@ function AddressForm() {
           Fill out the form to add address :
         </h1>
       </div>
-      <div className=" w-full">
-        <div className="w-2/4 my-2">
+      <div className="w-full">
+        <div className="w-2/3 my-2">
           <label
             className="block text-sm font-medium text-gray-700"
             htmlFor="name"
@@ -141,7 +141,7 @@ function AddressForm() {
             required
           />
         </div>
-        <div className="w-2/4 my-2">
+        <div className="w-2/3 my-2">
           <label
             className="block text-sm font-medium text-gray-700"
             htmlFor="mobileNumber"
@@ -158,7 +158,7 @@ function AddressForm() {
             required
           />
         </div>
-        <div className="w-2/4 my-2">
+        <div className="w-2/3 my-2">
           <label
             className="block text-sm font-medium text-gray-700"
             htmlFor="email"
@@ -175,7 +175,7 @@ function AddressForm() {
             required
           />
         </div>
-        <div className="w-2/4 my-2">
+        <div className="w-2/3 my-2">
           <label
             className="block text-sm font-medium text-gray-700"
             htmlFor="email"
@@ -192,7 +192,7 @@ function AddressForm() {
             required
           />
         </div>
-        <div className="w-2/4 my-2">
+        <div className="w-2/3 my-2">
           <label
             className="block text-sm font-medium text-gray-700"
             htmlFor="zip"
@@ -219,14 +219,14 @@ function AddressForm() {
 
         {/* Address Suggestions Dropdown */}
         {addressSuggestions.length > 1 && (
-          <div className="relative w-2/4 my-2">
+          <div className="relative w-2/3 my-2">
             <label
               className="block text-sm font-medium text-gray-700"
               htmlFor="address"
             >
               Select Locality
             </label>
-            <div className="mt-1 w-2/4 my-2">
+            <div className="mt-1 w-2/3 my-2">
               <select
                 id="address"
                 name="address"
@@ -256,7 +256,7 @@ function AddressForm() {
         {/* Address Fields */}
         {addressSuggestions.length <= 1 && (
           <>
-            <div className="w-2/4 my-2">
+            <div className="w-2/3 my-2">
               <label
                 className="block text-sm font-medium text-gray-700"
                 htmlFor="address"
@@ -275,7 +275,7 @@ function AddressForm() {
             </div>
           </>
         )}
-        <div className="w-2/4 my-2">
+        <div className="w-2/3 my-2">
           <label
             className="block text-sm font-medium text-gray-700"
             htmlFor="city"
@@ -293,7 +293,7 @@ function AddressForm() {
             readOnly
           />
         </div>
-        <div className="w-2/4 my-2">
+        <div className="w-2/3 my-2">
           <label
             className="block text-sm font-medium text-gray-700"
             htmlFor="state"
