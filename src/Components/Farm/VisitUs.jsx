@@ -1,6 +1,4 @@
 import React, { useState } from 'react';
-import NavBar from '../HomePage/NavBar/NavBar';
-import Footer from '../HomePage/Footer/Footer';
 import BookingForm from './BookingForm';
 
 const VisitUs = () => {

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axiosInstance from "../../config/AxiosConfig";
-import { toast } from "react-toastify";
+import { toast } from "sonner";
 import { useNavigate, Link } from "react-router-dom";
 import LeavesLoader from "../Loader/PlantLoader";
 import AddressRadioCardForSub from "./AddressRadioCardForSub";
@@ -52,8 +52,6 @@ const SubscriptionCheckOut = () => {
   // Calculate shipping charge
   const shippingCharge = totalAmount < 499 ? 120 : 0;
   const finalAmount = totalAmount + shippingCharge;
-
- 
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -233,13 +231,16 @@ const SubscriptionCheckOut = () => {
                       }`}
                     >
                       <span>Shipping Charge</span>
-                  <span>₹ {shippingCharge.toFixed(2)}</span>
+                      <span>₹ {shippingCharge.toFixed(2)}</span>
                     </div>
                     {totalAmount < 499 && (
-                  <div className="text-sm text-gray-600 mt-2">
-                    <p>Note: Shipping charge of ₹120 applies for orders below ₹499.</p>
-                  </div>
-                )}
+                      <div className="text-sm text-gray-600 mt-2">
+                        <p>
+                          Note: Shipping charge of ₹120 applies for orders below
+                          ₹499.
+                        </p>
+                      </div>
+                    )}
                     <hr className="my-4" />
                     <div className="flex justify-between text-xl font-bold text-gray-800">
                       <span>Total</span>
@@ -284,7 +285,7 @@ const SubscriptionCheckOut = () => {
                         onClick={() => {
                           sessionStorage.setItem("fromSubCheckout", true);
                           sessionStorage.setItem("tab", "addresses");
-                          sessionStorage.setItem("addForm",true)
+                          sessionStorage.setItem("addForm", true);
                         }}
                         className="w-full bg-blue-500 text-white py-2 rounded-lg font-semibold hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition duration-200"
                       >

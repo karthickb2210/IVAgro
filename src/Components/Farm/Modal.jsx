@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 
 const Modal = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -25,7 +25,9 @@ const Modal = () => {
             >
               &#x2715;
             </button>
-            <h2 className="text-2xl font-semibold text-gray-800 mb-6">Appointment Form</h2>
+            <h2 className="text-2xl font-semibold text-gray-800 mb-6">
+              Appointment Form
+            </h2>
             <form className="space-y-4">
               <div>
                 <label className="block text-gray-700 font-medium">Name</label>

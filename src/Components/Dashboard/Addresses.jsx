@@ -3,10 +3,14 @@ import AddressForm from "./AddressForm";
 import EditAddress from "./EditAddress";
 import { useEffect, useState } from "react";
 
-export const Addresses = ({ form, formfunction, addressDetails,setEditAddress,editAddress }) => {
+export const Addresses = ({
+  form,
+  formfunction,
+  addressDetails,
+  setEditAddress,
+  editAddress,
+}) => {
   const [isEdit, setIsEdit] = useState(false);
-  
-  
 
   return (
     <div className="bg-white p-6 shadow-md rounded-lg">
@@ -38,25 +42,27 @@ export const Addresses = ({ form, formfunction, addressDetails,setEditAddress,ed
       </div>
       {!form && !isEdit && (
         <div className="flex flex-col space-y-6">
-        { addressDetails.length>0 ?  <>
-          {addressDetails.map((address, index) => (
-            <div
-              key={address.addressId}
-              className=" space-x-8 flex  flex-col items-center justify-center"
-            >
-              <AddressCard
-                addressDetails={address}
-                setIsEdit={setIsEdit}
-                index={index}
-                setEditAddress={setEditAddress}
-              />
-            </div>
-          ))}
-          </>
-         : (<h2 className="text-3xl mt-12 font-semibold mb-8 text-green-700 text-center">
-          🌱 You have no saved addresses....
-        </h2>)
-        }
+          {addressDetails.length > 0 ? (
+            <>
+              {addressDetails.map((address, index) => (
+                <div
+                  key={address.addressId}
+                  className=" space-x-8 flex  flex-col items-center justify-center"
+                >
+                  <AddressCard
+                    addressDetails={address}
+                    setIsEdit={setIsEdit}
+                    index={index}
+                    setEditAddress={setEditAddress}
+                  />
+                </div>
+              ))}
+            </>
+          ) : (
+            <h2 className="text-3xl mt-12 font-semibold mb-8 text-green-700 text-center">
+              🌱 You have no saved addresses....
+            </h2>
+          )}
         </div>
       )}
       {isEdit && (

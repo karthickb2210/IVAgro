@@ -1,7 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
-import NavBar from "../HomePage/NavBar/NavBar";
 import { Link } from "react-router-dom";
-import { toast } from "react-toastify";
+import { toast } from "sonner";
 import products from "./Products";
 import { MdDeleteForever } from "react-icons/md";
 

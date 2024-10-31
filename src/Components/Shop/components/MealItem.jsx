@@ -2,7 +2,7 @@ import { useContext, useState } from 'react';
 import Button from './UI/Button.jsx';
 import CartContext from '../store/CartContext.jsx';
 import GramSelector from './GramSelector.jsx';
-import { toast } from 'react-toastify';
+import { toast } from 'sonner';
 
 export default function MealItem({ meal }) {
   const cartCtx = useContext(CartContext);
@@ -11,15 +11,7 @@ export default function MealItem({ meal }) {
   function handleAddMealToCart(grams,price) {
     cartCtx.addItem({ ...meal, grams,price });
     setShowGramSelector(false);
-    toast.success("Item added to cart", {
-      position: "top-right",
-      autoClose: 1000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: false,
-      draggable: true,
-      progress: undefined,
-    })
+    toast.success("Item added to cart")
   }
   return (
     <>

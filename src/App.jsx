@@ -1,11 +1,10 @@
 import './App.css'
-import { ToastContainer,toast } from 'react-toastify'
 import Layout from './layout/Layout'
-import 'react-toastify/dist/ReactToastify.css';
 import { BrowserRouter } from 'react-router-dom';
 import Cart from './Components/Shop/components/Cart';
 import { UserProgressContextProvider } from './Components/Shop/store/UserProgressContext';
 import { CartContextProvider } from './Components/Shop/store/CartContext';
+import { Toaster } from 'sonner';
 
 function App() {
   
@@ -16,7 +15,7 @@ function App() {
     <CartContextProvider>
       <Layout />
       <Cart />
-      <ToastContainer />
+      <Toaster position='top-center' className='w-1/4 mt-12' richColors />
       </CartContextProvider>
       </UserProgressContextProvider>
       </BrowserRouter>

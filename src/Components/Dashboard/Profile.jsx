@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { toast } from "react-toastify";
+import { toast } from "sonner";
 import axiosInstance from "../../config/AxiosConfig";
 const Profile = ({ data }) =>{
 
@@ -13,7 +13,7 @@ const Profile = ({ data }) =>{
     const handleSave = () => {
         // Logic to save the mobile number goes here
         if (mobileNumber.length !== 10 || isNaN(mobileNumber)) {
-          toast.warn('Mobile number must be exactly 10 digits.');
+          toast.warning('Mobile number must be exactly 10 digits.');
           return;
         }else{
           axiosInstance.get(`/changeMobileNumber/${localStorage.getItem("name")}/${mobileNumber}`).then((res)=>{

@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import NavBar from "../HomePage/NavBar/NavBar";
 import { login } from "../../features/User";
-import { toast } from "react-toastify";
+import { toast } from "sonner";
 import { useDispatch, useSelector } from "react-redux";
 import axiosInstance from "../../config/AxiosConfig";
 import { useNavigate } from "react-router-dom";
@@ -27,23 +26,29 @@ const LoginSignup = () => {
   const handleGoogleSignIn = async () => {
     try {
       var result;
-      signInWithPopup(auth, provider).then((res)=>{
+      signInWithPopup(auth, provider).then((res) => {
         result = res;
-        axiosInstance.get(`/existsByMail/${res.user.email}`).then((response)=>{
-          if(response.data.flag){
-            const user = { name: response.data.data.mail, 
-              pass: response.data.data.password ? response.data.data.password : res.data.data.username }
-              googleLogin(user)
-          }else{
-            const data = {
-              username : res.user.displayName,
-              mail : res.user.email,
-              mobileNumber : res.user.phoneNumber ? res.user.phoneNumber : " ",
-              password : res.user.displayName
+        axiosInstance
+          .get(`/existsByMail/${res.user.email}`)
+          .then((response) => {
+            if (response.data.flag) {
+              const user = {
+                name: response.data.data.mail,
+                pass: response.data.data.password
+                  ? response.data.data.password
+                  : res.data.data.username,
+              };
+              googleLogin(user);
+            } else {
+              const data = {
+                username: res.user.displayName,
+                mail: res.user.email,
+                mobileNumber: res.user.phoneNumber ? res.user.phoneNumber : " ",
+                password: res.user.displayName,
+              };
+              newAccountWithGoogle(data);
             }
-            newAccountWithGoogle(data)
-          }
-        })
+          });
       });
       // const credential = GoogleAuthProvider.credentialFromResult(result);
       // const token = credential.accessToken;
@@ -53,7 +58,6 @@ const LoginSignup = () => {
       console.error("Error signing in:", error);
     }
   };
-  
 
   const [isLogin, setIsLogin] = useState(true);
   const [loginData, setLoginData] = useState({ name: "", pass: "" });
@@ -63,8 +67,6 @@ const LoginSignup = () => {
     mobileNumber: "",
     password: "",
   });
-
-  
 
   const user = useSelector((state) => state.user.value);
   const [isLoading, setIsLoading] = useState(false);
@@ -101,20 +103,18 @@ const LoginSignup = () => {
           );
           localStorage.setItem("name", data.name);
           localStorage.setItem("pass", data.pass);
-          if(sessionStorage.getItem("fromOrdersLogin")){
-            sessionStorage.removeItem("fromOrdersLogin")
-            navigate("/cart/checkout")
-            }
-            else if(sessionStorage.getItem("fromSubLogin")){
-              sessionStorage.removeItem("fromSubLogin")
-              navigate("/subscription-checkout")
-            }
-            else {
+          if (sessionStorage.getItem("fromOrdersLogin")) {
+            sessionStorage.removeItem("fromOrdersLogin");
+            navigate("/cart/checkout");
+          } else if (sessionStorage.getItem("fromSubLogin")) {
+            sessionStorage.removeItem("fromSubLogin");
+            navigate("/subscription-checkout");
+          } else {
             navigate("/dash");
-            }
+          }
           setIsLoading(false);
         } else {
-          toast.warn("Incorrect Username or password");
+          toast.warning("Incorrect Username or password");
           setIsLoading(false);
         }
       })
@@ -140,20 +140,18 @@ const LoginSignup = () => {
           );
           localStorage.setItem("name", loginData.name);
           localStorage.setItem("pass", loginData.pass);
-          if(sessionStorage.getItem("fromOrdersLogin")){
-            sessionStorage.removeItem("fromOrdersLogin")
-            navigate("/cart/checkout")
-            }
-            else if(sessionStorage.getItem("fromSubLogin")){
-              sessionStorage.removeItem("fromSubLogin")
-              navigate("/subscription-checkout")
-            }
-            else {
+          if (sessionStorage.getItem("fromOrdersLogin")) {
+            sessionStorage.removeItem("fromOrdersLogin");
+            navigate("/cart/checkout");
+          } else if (sessionStorage.getItem("fromSubLogin")) {
+            sessionStorage.removeItem("fromSubLogin");
+            navigate("/subscription-checkout");
+          } else {
             navigate("/dash");
-            }
+          }
           setIsLoading(false);
         } else {
-          toast.warn("Incorrect Username or password");
+          toast.warning("Incorrect Username or password");
           setIsLoading(false);
         }
       })
@@ -162,7 +160,6 @@ const LoginSignup = () => {
         setIsLoading(false);
       });
   };
-  
 
   const handleSignupSubmit = (e) => {
     setIsLoading(true);
@@ -171,12 +168,12 @@ const LoginSignup = () => {
       .post("/register", signupData)
       .then((res) => {
         if (res.data.statusCode === 99) {
-          toast.warn("Email already registered");
+          toast.warning("Email already registered");
           setIsLoading(false);
           return;
         }
         if (res.data.statusCode === 11) {
-          toast.warn("Mobile Number already registered");
+          toast.warning("Mobile Number already registered");
           setIsLoading(false);
           return;
         }
@@ -192,30 +189,29 @@ const LoginSignup = () => {
       });
   };
 
-
   const newAccountWithGoogle = (data) => {
     setIsLoading(true);
     axiosInstance
       .post("/register", data)
       .then((res) => {
         if (res.data.statusCode === 99) {
-          toast.warn("Email already registered");
+          toast.warning("Email already registered");
           setIsLoading(false);
           return;
         }
         if (res.data.statusCode === 11) {
-          toast.warn("Mobile Number already registered");
+          toast.warning("Mobile Number already registered");
           setIsLoading(false);
           return;
         }
-        
+
         toast.success("Account created Succesfully");
         console.log(res.data.data);
         const user = {
-          name : res.data.data.mail,
-          pass : res.data.data.password
-        }
-        googleLogin(user)
+          name: res.data.data.mail,
+          pass: res.data.data.password,
+        };
+        googleLogin(user);
         setIsLoading(false);
       })
       .catch((err) => {

@@ -8,19 +8,16 @@ import {
 } from "react-icons/fa";
 import { BsArrowRightSquareFill } from "react-icons/bs";
 import axiosInstance from "../../config/AxiosConfig";
-import NavBar from "../HomePage/NavBar/NavBar";
 import LeavesLoader from "../Loader/PlantLoader";
 import { Box, Button, Drawer } from "@mui/material";
 
 import { Addresses } from "./Addresses";
 
-import { toast } from "react-toastify";
+import { toast } from "sonner";
 import Settings from "./Settings";
 import Profile from "./Profile";
 import Subscriptions from "./Subscriptions";
 import { Orders } from "./Orders";
-
-
 
 function Dashboard() {
   const [activeTab, setActiveTab] = useState(
@@ -32,9 +29,8 @@ function Dashboard() {
   const [isMobileScreen, setIsMobileScreen] = useState(false);
   const [showForm, setShowForm] = useState(false);
   const [addressDetails, setAddressDetails] = useState();
-  const [edit,setEdit] = useState(false)
+  const [edit, setEdit] = useState(false);
   const [editAddress, setEditAddress] = useState({});
-
 
   useEffect(() => {
     if (sessionStorage.getItem("tab")) {
@@ -42,16 +38,16 @@ function Dashboard() {
         sessionStorage.removeItem("tab");
       }, 1000);
     }
-    if(sessionStorage.getItem("addForm")){
-      setShowForm(true)
-      sessionStorage.removeItem("addForm")
+    if (sessionStorage.getItem("addForm")) {
+      setShowForm(true);
+      sessionStorage.removeItem("addForm");
     }
 
     const name = localStorage.getItem("name");
     axiosInstance
       .get(`/getDashDetails/${name}`)
       .then((res) => {
-        console.log(res.data)
+        console.log(res.data);
         setAddressDetails(res.data.data.addressDetails);
         setprofileDetails(res.data.data.profileDetails);
         setSubscriptionDetails(res.data.data.subscriptionDetails);
@@ -146,7 +142,6 @@ function Dashboard() {
                 <FaCog className="text-xl" />
                 <span>Settings</span>
               </li>
-              
             </ul>
           </nav>
         </div>
@@ -200,7 +195,7 @@ function Dashboard() {
                     <FaLeaf className="text-xl" />
                     <span>Subscriptions</span>
                   </li>
-                  
+
                   <li
                     onClick={() => setActiveTab("addresses")}
                     className={`p-4 mb-4 cursor-pointer rounded-lg flex items-center space-x-3 transition ${
@@ -234,8 +229,8 @@ function Dashboard() {
               {activeTab === "profile" && <Profile data={profileDetails} />}
               {activeTab === "addresses" && (
                 <Addresses
-                edit = {edit}
-                setEdit = {setEdit}
+                  edit={edit}
+                  setEdit={setEdit}
                   form={showForm}
                   formfunction={setShowForm}
                   addressDetails={addressDetails}
@@ -270,12 +265,5 @@ function Dashboard() {
     </>
   );
 }
-
-
-
-
-
-
-
 
 export default Dashboard;

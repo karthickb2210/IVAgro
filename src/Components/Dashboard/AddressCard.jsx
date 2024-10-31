@@ -1,6 +1,6 @@
 import React, { useDebugValue, useEffect, useState } from "react";
 import axiosInstance from "../../config/AxiosConfig";
-import { toast } from "react-toastify";
+import { toast } from "sonner";
 
 const AddressCard = ({ addressDetails, index, setEditAddress, setIsEdit }) => {
   const [loading, setLoading] = useState();
@@ -11,9 +11,7 @@ const AddressCard = ({ addressDetails, index, setEditAddress, setIsEdit }) => {
   };
 
     if(sessionStorage.getItem("addressId")){
-      console.log("adrrss",addressDetails)
       if(sessionStorage.getItem("addressId")==addressDetails.addressId){
-      console.log("inside")
       setIsEdit(true)
       setEditAddress(addressDetails)
       sessionStorage.removeItem("addressId")

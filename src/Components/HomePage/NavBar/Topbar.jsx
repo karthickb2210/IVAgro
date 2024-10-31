@@ -1,5 +1,5 @@
-import React from 'react'
-import {FaInstagram,FaWhatsapp,FaFacebook} from "react-icons/fa"
+import React from "react";
+import { FaInstagram, FaWhatsapp, FaFacebook } from "react-icons/fa";
 export default function Topbar() {
   return (
     <>
@@ -20,5 +20,5 @@ export default function Topbar() {
         </div>
       </div>
     </>
-  )
+  );
 }

@@ -2,7 +2,7 @@ import MealItem from "./MealItem.jsx";
 import axiosInstance from "../../../config/AxiosConfig.js";
 import { useState ,useEffect} from "react";
 import PlantLoader from "../../Loader/PlantLoader.jsx"
-import { toast } from "react-toastify";
+import { toast } from "sonner";
 
 export default function Meals() {
   const [isLoading,setIsLoading] = useState(false)

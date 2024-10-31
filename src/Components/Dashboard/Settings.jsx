@@ -1,6 +1,6 @@
 import { useState } from "react";
 import axiosInstance from "../../config/AxiosConfig";
-import { toast } from "react-toastify";
+import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { login } from "../../features/User";

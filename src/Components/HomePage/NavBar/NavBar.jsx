@@ -8,7 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { login } from "../../../features/User";
 import Topbar from "./Topbar";
 import axiosInstance from "../../../config/AxiosConfig";
-import { toast } from "react-toastify";
+import { toast } from "sonner";
 
 const NavBar = () => {
   const user = useSelector((state) => state.user.value);
@@ -99,7 +99,7 @@ const NavBar = () => {
           localStorage.setItem("pass", pass);
           navigate("/dash");
         } else {
-          toast.warn("Incorrect Username or password");
+          toast.warning("Incorrect Username or password");
         }
       })
       .catch((err) => {
@@ -358,132 +358,110 @@ const NavBar = () => {
         </div>
 
         {/* Mobile menu items */}
-         {isMobileMenuOpen && (
-        <div className="lg:hidden mt-4 space-y-4">
-          {/* Home */}
-          <Link to="/" className="block text-center text-gray-600">
-            Home
-          </Link>
+        {isMobileMenuOpen && (
+          <div className="lg:hidden mt-4 space-y-4">
+            {/* Home */}
+            <Link to="/" className="block text-center text-gray-600">
+              Home
+            </Link>
 
-          {/* Store Menu */}
-          <div className="block text-center text-gray-600">
-            <p
-              className="cursor-pointer"
-              onClick={() => setIsStoreOpen(!isStoreOpen)}
-            >
-              Store
-            </p>
-            {isStoreOpen && (
-              <div className="space-y-2 pl-4 bg-gray-100">
-                <Link
-                  to="/store"
-                  className="block text-gray-500 py-2"
-                >
-                  Leafy Greens
-                </Link>
-                <Link
-                  to="/macro-greens"
-                  className="block text-gray-500 py-2"
-                >
-                  Micro Greens
-                </Link>
-              </div>
-            )}
+            {/* Store Menu */}
+            <div className="block text-center text-gray-600">
+              <p
+                className="cursor-pointer"
+                onClick={() => setIsStoreOpen(!isStoreOpen)}
+              >
+                Store
+              </p>
+              {isStoreOpen && (
+                <div className="space-y-2 pl-4 bg-gray-100">
+                  <Link to="/store" className="block text-gray-500 py-2">
+                    Leafy Greens
+                  </Link>
+                  <Link to="/macro-greens" className="block text-gray-500 py-2">
+                    Micro Greens
+                  </Link>
+                </div>
+              )}
+            </div>
+
+            {/* Services Menu */}
+            <div className="block text-center text-gray-600">
+              <p
+                className="cursor-pointer"
+                onClick={() => setIsServicesOpen(!isServicesOpen)}
+              >
+                Services
+              </p>
+              {isServicesOpen && (
+                <div className="space-y-2 pl-4 bg-gray-100">
+                  <Link to="/towerRent" className="block text-gray-500 py-2">
+                    Tower Lease
+                  </Link>
+                  <Link to="/edu-work" className="block text-gray-500 py-2">
+                    Educational Workshops
+                  </Link>
+                  <Link to="/farm" className="block text-gray-500 py-2">
+                    Farm House
+                  </Link>
+                  <Link to="/subscription" className="block text-gray-500 py-2">
+                    Subscription
+                  </Link>
+                </div>
+              )}
+            </div>
+
+            {/* Our Brands Menu */}
+            <div className="block text-center text-gray-600">
+              <p
+                className="cursor-pointer"
+                onClick={() => setIsBrandsOpen(!isBrandsOpen)}
+              >
+                Our Brands
+              </p>
+              {isBrandsOpen && (
+                <div className="space-y-2 pl-4 bg-gray-100">
+                  <Link to="/green-muscle" className="block text-gray-500 py-2">
+                    Green Muscle
+                  </Link>
+                  <Link
+                    to="/divine-cotyledons"
+                    className="block text-gray-500 py-2"
+                  >
+                    Divine Cotyledons
+                  </Link>
+                </div>
+              )}
+            </div>
+
+            {/* About Us Menu */}
+            <div className="block text-center text-gray-600">
+              <p
+                className="cursor-pointer"
+                onClick={() => setIsAboutOpen(!isAboutOpen)}
+              >
+                About Us
+              </p>
+              {isAboutOpen && (
+                <div className="space-y-2 pl-4 bg-gray-100">
+                  <Link to="/our-story" className="block text-gray-500 py-2">
+                    Our Story
+                  </Link>
+                  <Link
+                    to="/product"
+                    className="block text-center text-gray-600"
+                  >
+                    Products
+                  </Link>
+                </div>
+              )}
+            </div>
+
+            {/* Products */}
+
+            {/* Subscription */}
           </div>
-
-          {/* Services Menu */}
-          <div className="block text-center text-gray-600">
-            <p
-              className="cursor-pointer"
-              onClick={() => setIsServicesOpen(!isServicesOpen)}
-            >
-              Services
-            </p>
-            {isServicesOpen && (
-              <div className="space-y-2 pl-4 bg-gray-100">
-                <Link
-                  to="/towerRent"
-                  className="block text-gray-500 py-2"
-                >
-                  Tower Lease
-                </Link>
-                <Link
-                  to="/edu-work"
-                  className="block text-gray-500 py-2"
-                >
-                  Educational Workshops
-                </Link>
-                <Link
-                  to="/farm"
-                  className="block text-gray-500 py-2"
-                >
-                  Farm House
-                </Link>
-                <Link
-                  to="/subscription"
-                  className="block text-gray-500 py-2"
-                >
-                  Subscription
-                </Link>
-              </div>
-            )}
-          </div>
-
-          {/* Our Brands Menu */}
-          <div className="block text-center text-gray-600">
-            <p
-              className="cursor-pointer"
-              onClick={() => setIsBrandsOpen(!isBrandsOpen)}
-            >
-              Our Brands
-            </p>
-            {isBrandsOpen && (
-              <div className="space-y-2 pl-4 bg-gray-100">
-                <Link
-                  to="/green-muscle"
-                  className="block text-gray-500 py-2"
-                >
-                  Green Muscle
-                </Link>
-                <Link
-                  to="/divine-cotyledons"
-                  className="block text-gray-500 py-2"
-                >
-                  Divine Cotyledons
-                </Link>
-              </div>
-            )}
-          </div>
-
-          {/* About Us Menu */}
-          <div className="block text-center text-gray-600">
-            <p
-              className="cursor-pointer"
-              onClick={() => setIsAboutOpen(!isAboutOpen)}
-            >
-              About Us
-            </p>
-            {isAboutOpen && (
-              <div className="space-y-2 pl-4 bg-gray-100">
-                <Link to="/our-story" className="block text-gray-500 py-2">
-                  Our Story
-                </Link>
-                <Link to="/product" className="block text-center text-gray-600">
-            Products
-          </Link>
-              </div>
-            )}
-          </div>
-
-          {/* Products */}
-         
-
-          {/* Subscription */}
-         
-        </div>
-      )}
-
-
+        )}
       </nav>
     </header>
   );

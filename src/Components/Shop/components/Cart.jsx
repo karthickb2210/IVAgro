@@ -7,7 +7,7 @@ import CartItem from "./CartItem.jsx";
 import { useNavigate } from "react-router-dom";
 
 export default function Cart() {
-  // const navigate =useNavigate()
+
   const cartCtx = useContext(CartContext);
   const userProgressCtx = useContext(UserProgressContext);
   const navigate = useNavigate();

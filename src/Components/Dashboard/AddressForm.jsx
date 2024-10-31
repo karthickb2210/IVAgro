@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import axiosInstance from "../../config/AxiosConfig";
-import { toast } from "react-toastify";
+import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
 function AddressForm() {
   const [userDetails, setUserDetails] = useState({
@@ -41,15 +41,15 @@ function AddressForm() {
           if (
             !sessionStorage.getItem("fromOrderCheckout") &&
             !sessionStorage.getItem("fromSubCheckout")
-          ){
+          ) {
             sessionStorage.setItem("tab", "addresses");
-          window.location.reload();
-          }else if (sessionStorage.getItem("fromSubCheckout")) {
+            window.location.reload();
+          } else if (sessionStorage.getItem("fromSubCheckout")) {
             sessionStorage.removeItem("fromSubCheckout");
             navigate("/subscription-checkout");
-          }else{
-            sessionStorage.removeItem("fromOrderCheckout")
-            navigate("/cart/checkout")
+          } else {
+            sessionStorage.removeItem("fromOrderCheckout");
+            navigate("/cart/checkout");
           }
         }
       })
