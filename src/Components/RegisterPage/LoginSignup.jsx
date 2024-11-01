@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import LeavesLoader from "../Loader/PlantLoader";
 import { initializeApp } from "firebase/app";
 import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+import PasswordResetModal from "./PasswordResetModal";
 
 const firebaseConfig = {
   apiKey: "AIzaSyDziw2P9FawldfGCTQs0XQ7Uj3-MJWPFPs",
@@ -19,7 +20,7 @@ const firebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
+export const auth = getAuth(app);
 const provider = new GoogleAuthProvider();
 
 const LoginSignup = () => {
@@ -58,6 +59,11 @@ const LoginSignup = () => {
       console.error("Error signing in:", error);
     }
   };
+  
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const openModal = () => setIsModalOpen(true);
+  const closeModal = () => setIsModalOpen(false);
 
   const [isLogin, setIsLogin] = useState(true);
   const [loginData, setLoginData] = useState({ name: "", pass: "" });
@@ -124,9 +130,9 @@ const LoginSignup = () => {
       });
   };
 
-  const handleLoginSubmit = (e) => {
+  const handleLoginSubmit = () => {
     setIsLoading(true);
-    e.preventDefault();
+    console.log(loginData)
     axiosInstance
       .post("/checkUser", loginData)
       .then((res) => {
@@ -140,6 +146,43 @@ const LoginSignup = () => {
           );
           localStorage.setItem("name", loginData.name);
           localStorage.setItem("pass", loginData.pass);
+          if (sessionStorage.getItem("fromOrdersLogin")) {
+            sessionStorage.removeItem("fromOrdersLogin");
+            navigate("/cart/checkout");
+          } else if (sessionStorage.getItem("fromSubLogin")) {
+            sessionStorage.removeItem("fromSubLogin");
+            navigate("/subscription-checkout");
+          } else {
+            navigate("/dash");
+          }
+          setIsLoading(false);
+        } else {
+          toast.warning("Incorrect Username or password");
+          setIsLoading(false);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        setIsLoading(false);
+      });
+  };
+
+  const handleLoginSubmitOnOtp = (data) => {
+    setIsLoading(true);
+    console.log(data)
+    axiosInstance
+      .post("/checkUser", data)
+      .then((res) => {
+        if (res.data.flag) {
+          toast.success("Login succesfull");
+          dispatch(
+            login({
+              name: data.name,
+              pass: data.pass,
+            })
+          );
+          localStorage.setItem("name", data.name);
+          localStorage.setItem("pass", data.pass);
           if (sessionStorage.getItem("fromOrdersLogin")) {
             sessionStorage.removeItem("fromOrdersLogin");
             navigate("/cart/checkout");
@@ -280,7 +323,10 @@ const LoginSignup = () => {
                         className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-green-400"
                         placeholder="Enter your password"
                       />
+                    <p onClick={openModal} className="text-sm mt-1 mx-1 hover:underline cursor-pointer text-green-500">Forgot password?</p>  
                     </div>
+                    <PasswordResetModal handleLoginSubmitOnOtp={handleLoginSubmitOnOtp} setLoginData={setLoginData} isOpen={isModalOpen} onClose={closeModal} />
+                    
                     <button className="w-full bg-green-600 text-white py-2 rounded-md hover:bg-green-700 transition duration-200">
                       Login
                     </button>
