@@ -29,9 +29,11 @@ const RepeatedOrderCheckout = () => {
   const userProgressCtx = useContext(UserProgressContext);
   const weights = [30, 50, 100, 200, 500];
   useEffect(() => {
-    if (hasFetched.current) {
-      return; // Exit if effect has already run
-    }
+    setIsLoading(true)
+    // if (hasFetched.current) {
+    //   setIsLoading(false)
+    //   return; // Exit if effect has already run
+    // }
     cartCtx.clearCart();
     hasFetched.current = true;
     if (localStorage.getItem("name")) {
