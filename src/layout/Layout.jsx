@@ -1,9 +1,10 @@
 import React from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import MainPage from "../Components/HomePage/MainPage";
 import Shop from "../Components/Shop/Shop.jsx";
 import Farm from "../Components/Farm/Farm.jsx";
 import CheckOut from "../Components/CheckoutPage/CheckOut.jsx";
+import RepeatedOrderCheckout from "../Components/CheckoutPage/RepeatedOrderCheckout.jsx";
 import RentTowerPage from "../Components/TowerRent/RentTowerPage.jsx";
 import SubscriptionPage from "../Components/Subscriptions/SubscriptionPage.jsx";
 import OurProductsPage from "../Components/OurProducts/OurProductsPage.jsx";
@@ -39,7 +40,7 @@ export default function Layout() {
           <Route path="/cart/checkout" element={<CheckOut />}></Route>
           <Route path="/towerRent" element={<RentTowerPage />}></Route>
           <Route path="/subscription" element={<SubscriptionPage />}></Route>
-         
+         <Route path="/repeated-order-checkout" element={<RepeatedOrderCheckout />}></Route>
           <Route path="/dash" element={<Dashboard />}></Route>
           <Route path="/product" element={<OurProductsPage />}></Route>
           <Route path="/Arugula" element={<ArugulaPage />}></Route>

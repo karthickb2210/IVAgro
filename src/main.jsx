@@ -13,11 +13,11 @@ const store = configureStore({
   },
 });
 createRoot(document.getElementById("root")).render(
-  <StrictMode>
+   <StrictMode>
     <GoogleOAuthProvider clientId="625995143189-2q1uo772der8ppmenot17ij5e08m0385.apps.googleusercontent.com">
       <Provider store={store}>
         <App />
       </Provider>
     </GoogleOAuthProvider>
-  </StrictMode>
+   </StrictMode>
 );
