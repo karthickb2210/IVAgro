@@ -19,26 +19,18 @@ const RepeatedOrderCheckout = () => {
   const id = searchParams.get("id");
   const cartCtx = useContext(CartContext);
   const [cartItems, setCartItems] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [addressDetails, setAddressDetails] = useState([]);
   const [showAddress, setShowAddress] = useState();
   const navigate = useNavigate();
-  const hasFetched = useRef(false);
+  const [loaded,setLoaded] = useState(false)
   const [guest, setGuest] = useState(true);
   const [showAnimation, setShowAnimation] = useState(false);
   const userProgressCtx = useContext(UserProgressContext);
   const weights = [30, 50, 100, 200, 500];
+
   useEffect(() => {
-    setIsLoading(true)
-    // if (hasFetched.current) {
-    //   setIsLoading(false)
-    //   return; // Exit if effect has already run
-    // }
-    cartCtx.clearCart();
-    hasFetched.current = true;
-    if (localStorage.getItem("name")) {
-      setGuest(false);
-    }
+    cartCtx.clearCart()
     axiosInstance
       .get(`/getAllAddress/${localStorage.getItem("name")}`)
       .then((res) => {
@@ -58,23 +50,34 @@ const RepeatedOrderCheckout = () => {
         for(let i =0;i<arr.itemQuantity;i++){
         cartCtx.addItem({ ...meal, grams, price });
         }  
-    });
+        setLoaded(true)
+    })
       const data = {
         name: res.data.data.user.mail,
         pass: res.data.data.user.password,
       };
       
       handleLoginSubmitOnOtp(data);
+      if (localStorage.getItem("name")) {
+          setGuest(false);
+      }
       
-    });
-    setCartItems(cartCtx.items || []);
+      
+    }).finally(()=>{ 
+      setIsLoading(false)
+    })
     console.log("cartCTx", cartCtx.items);
-
     if (showAnimation) {
       const timer = setTimeout(() => setShowAnimation(false), 4000); // Display duration
       return () => clearTimeout(timer);
     }
-  },[id]);
+  },[]);
+  if(loaded){
+    setCartItems(cartCtx.items)
+    setLoaded(false)
+  }
+
+  
 
   const [selectedAddressIndex, setSelectedAddressIndex] = useState(-1);
 
@@ -114,6 +117,7 @@ const RepeatedOrderCheckout = () => {
         setIsLoading(false);
       });
   };
+  
 
   // Calculate shipping charge
   const shippingCharge = totalAmount < 499 ? 120 : 0;
