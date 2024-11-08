@@ -31,14 +31,7 @@ const RepeatedOrderCheckout = () => {
 
   useEffect(() => {
     cartCtx.clearCart()
-    axiosInstance
-      .get(`/getAllAddress/${localStorage.getItem("name")}`)
-      .then((res) => {
-        setAddressDetails(res.data.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    
     axiosInstance.get(`/getLastOrderDetails/${id}`).then((res) => {
       res.data.data.order.orderDetails.map((arr) => {
         const name = arr.itemName;
@@ -61,6 +54,14 @@ const RepeatedOrderCheckout = () => {
       if (localStorage.getItem("name")) {
           setGuest(false);
       }
+      axiosInstance
+      .get(`/getAllAddress/${localStorage.getItem("name")}`)
+      .then((res) => {
+        setAddressDetails(res.data.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
       
       
     }).finally(()=>{ 
@@ -71,7 +72,7 @@ const RepeatedOrderCheckout = () => {
       const timer = setTimeout(() => setShowAnimation(false), 4000); // Display duration
       return () => clearTimeout(timer);
     }
-  },[]);
+  },[id]);
   if(loaded){
     setCartItems(cartCtx.items)
     setLoaded(false)
