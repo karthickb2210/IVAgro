@@ -15,7 +15,7 @@ function App() {
     <CartContextProvider>
       <Layout />
       <Cart />
-      <Toaster position='bottom-right' className='w-1/4 mt-12' richColors />
+      <Toaster position='top-center' className='w-1/4 mt-12' richColors />
       </CartContextProvider>
       </UserProgressContextProvider>
       </BrowserRouter>
