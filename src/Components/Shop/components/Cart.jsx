@@ -5,6 +5,7 @@ import Button from "./UI/Button.jsx";
 import UserProgressContext from "../store/UserProgressContext.jsx";
 import CartItem from "./CartItem.jsx";
 import { useNavigate } from "react-router-dom";
+import FreeShippingProgress from "./FreeShippingProgress.jsx";
 
 export default function Cart() {
 
@@ -37,7 +38,8 @@ export default function Cart() {
       open={userProgressCtx.progress === "cart"}
       onClose={userProgressCtx.progress === "cart" ? handleCloseCart : null}
     >
-      <h2 className="mb-8 text-3xl">Your Cart</h2>
+      <h2 className="mb-3 text-3xl">Your Cart</h2>
+      <FreeShippingProgress amountLeft={500-cartTotal} />
       <ul className="flex flex-col space-y-4 mt-6">
         {cartCtx.items.map((item) => (
           <CartItem
