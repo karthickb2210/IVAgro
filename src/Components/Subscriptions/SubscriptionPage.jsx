@@ -3,6 +3,9 @@ import { Link } from "react-router-dom";
 import { toast } from "sonner";
 import products from "./Products";
 import { MdDeleteForever } from "react-icons/md";
+import DeliveryScheduler from "./DeliveryScheduler";
+import BiWeeklyDeliveryScheduler from "./BiWeeklyDeliveryScheduler";
+import MonthlyDeliverySelector from "./MonthlyDeliverySelector";
 
 const SubscriptionPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -16,7 +19,7 @@ const SubscriptionPage = () => {
   const [currBoxSize, setCurrBoxSize] = useState(0);
 
   const [subscriptionType, setSubscriptionType] = useState("");
-  const subscriptiontypes = ["Weekly", "Bi-Weekly", "Fort-Nightly", "Monthly"];
+  const subscriptiontypes = ["Bi-Weekly", "Weekly","Fort-Nightly", "Monthly"];
 
   const [boxSize, setBoxSize] = useState("");
   const boxSizes = [100, 250, 500];
@@ -361,7 +364,7 @@ const SubscriptionPage = () => {
         )}
 
         {subtype && (
-          <div className="fixed z-40 inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+          <div className="fixed z-40 inset-0 bg-black bg-opacity-50 overflow-auto flex items-center justify-center">
             <div className="bg-white flex flex-col p-3 rounded-lg">
               <h3 className="text-xl font-semibold mb-4">
                 Select the subscription type
@@ -381,9 +384,20 @@ const SubscriptionPage = () => {
                   </div>
                 ))}
               </div>
-
-              <div className="my-6">
-                <h3 className="text-xl font-semibold mb-4">
+              { subscriptionType===subscriptiontypes[0] && 
+              <DeliveryScheduler />
+              }
+              { subscriptionType===subscriptiontypes[2] &&
+              <DeliveryScheduler />
+            }
+            {subscriptionType===subscriptiontypes[1]
+            && <BiWeeklyDeliveryScheduler />
+            }
+            {subscriptionType===subscriptiontypes[3] &&
+            <MonthlyDeliverySelector />
+            }
+            <div className="my-4">
+                <h3 className="text-xl font-semibold mb-2">
                   Select the Size of the Box
                 </h3>
                 <div className="flex justify-around space-x-8">
@@ -401,10 +415,11 @@ const SubscriptionPage = () => {
                     </div>
                   ))}
                 </div>
+                
               </div>
               {boxSize && subscriptionType && (
                 <button
-                  className="mt-4 justify-center items-center bg-teal-950 text-white py-2 px-4 rounded"
+                  className="mt-2 justify-center items-center bg-teal-950 text-white py-2 px-4 rounded"
                   onClick={() => {
                     setSubtype(false);
                     setIsModalOpen(true);
