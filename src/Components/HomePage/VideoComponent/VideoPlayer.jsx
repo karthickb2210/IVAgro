@@ -1,5 +1,4 @@
 import React from "react";
-import vid from "/vid.mp4"
 const VideoPlayer = () => {
   return (
     <div className="flex justify-center mx-[5vw] mt-12 items-center ">
@@ -9,7 +8,7 @@ const VideoPlayer = () => {
         muted
         loop
       >
-        <source src={vid} type="video/mp4" />
+        <source src="https://res.cloudinary.com/dinfhdady/video/upload/v1732196707/ianpkkv7w6e28qrwehpc.mp4" type="video/mp4" />
         Your browser does not support the video tag.
       </video>
     </div>

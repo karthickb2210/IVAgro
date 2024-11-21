@@ -36,7 +36,15 @@ const manifestForPlugin = {
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  
+    build: {
+    minify: 'terser',
+    terserOptions: {
+      compress: {
+        drop_console: true, // Remove console logs
+        drop_debugger: true, // Remove debugger statements
+      },
+    },
+  },
   plugins: [react(), VitePWA(manifestForPlugin)],
   server: {
     host: '0.0.0.0', // Listen to all network interfaces

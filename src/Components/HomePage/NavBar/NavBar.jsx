@@ -2,8 +2,8 @@ import React, { useContext, useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { FaUser, FaShoppingCart, FaBars } from "react-icons/fa"; // FaBars for mobile menu
 import logo from "/logo.png";
-import UserProgressContext from "../../Shop/store/UserProgressContext";
-import CartContext from "../../Shop/store/CartContext";
+import UserProgressContext from "../../../store/UserProgressContext";
+import CartContext from "../../../store/CartContext";
 import { useDispatch, useSelector } from "react-redux";
 import { login } from "../../../features/User";
 import Topbar from "./Topbar";
@@ -177,7 +177,7 @@ const NavBar = () => {
                       Leafy Greens
                     </Link>
                     <Link
-                      to="/store"
+                      to="/store/micro-greens"
                       className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                     >
                       Micro Greens
@@ -378,7 +378,10 @@ const NavBar = () => {
                   <Link to="/store" className="block text-gray-500 py-2">
                     Leafy Greens
                   </Link>
-                  <Link to="/macro-greens" className="block text-gray-500 py-2">
+                  <Link
+                    to="/store/micro-greens"
+                    className="block text-gray-500 py-2"
+                  >
                     Micro Greens
                   </Link>
                 </div>
@@ -456,10 +459,6 @@ const NavBar = () => {
                 </div>
               )}
             </div>
-
-            {/* Products */}
-
-            {/* Subscription */}
           </div>
         )}
       </nav>

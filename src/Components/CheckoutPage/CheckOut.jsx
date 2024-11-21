@@ -2,10 +2,10 @@ import React, { useState, useEffect, useContext } from "react";
 import axiosInstance from "../../config/AxiosConfig";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
-import CartContext from "../Shop/store/CartContext";
+import CartContext from "../../store/CartContext";
 import LeavesLoader from "../Loader/PlantLoader";
 import AddressRadioCardForOrders from "./AddressRadioCardForOrders";
-import UserProgressContext from "../Shop/store/UserProgressContext";
+import UserProgressContext from "../../store/UserProgressContext";
 import OrderAnimation from "./OrderAnimation";
 
 const CheckOut = () => {
@@ -55,97 +55,140 @@ const CheckOut = () => {
   const shippingCharge = totalAmount < 499 ? 120 : 0;
   const finalAmount = totalAmount + shippingCharge;
 
-  const handlePOPS = ()=>{
+  const handlePOPS = () => {
     setIsLoading(true);
-      var stockDeductions = {
-        babySpinachQuantityDetections: 0,
-        pakChoiQuantityDetections: 0,
-        basilQuantityDetections: 0,
-        kaleQuantityDetections: 0,
-        lettuceQuantityDetections: 0,
-        argulaQuantityDetections: 0,
-      };
-      console.log(cartItems);
-      cartItems.map((item) => {
-        if (item.id === "m1") {
-          stockDeductions.babySpinachQuantityDetections =
-            item.grams * item.quantity +
-            stockDeductions.babySpinachQuantityDetections;
-        } else if (item.id === "m6") {
-          stockDeductions.argulaQuantityDetections =
-            item.grams * item.quantity +
-            stockDeductions.argulaQuantityDetections;
-        } else if (item.id === "m7") {
-          stockDeductions.pakChoiQuantityDetections =
-            item.grams * item.quantity +
-            stockDeductions.pakChoiQuantityDetections;
-        } else if (item.id === "m8") {
-          stockDeductions.kaleQuantityDetections =
-            item.grams * item.quantity +
-            stockDeductions.kaleQuantityDetections;
-        } else if (item.id === "m5") {
-          stockDeductions.lettuceQuantityDetections =
-            item.grams * item.quantity +
-            stockDeductions.lettuceQuantityDetections;
-        } else {
-          stockDeductions.basilQuantityDetections =
-            item.grams * item.quantity +
-            stockDeductions.basilQuantityDetections;
-        }
+    var stockDeductions = {
+      babySpinachQuantityDetections: 0,
+      pakChoiQuantityDetections: 0,
+      basilQuantityDetections: 0,
+      kaleQuantityDetections: 0,
+      lettuceQuantityDetections: 0,
+      argulaQuantityDetections: 0,
+      beetRootQuantityDetections: 0,
+      radishPurpleQuantityDetections: 0,
+      radishWhiteQuantityDetections: 0,
+      radishPinkQuantityDetections: 0,
+      mustardQuantityDetections: 0,
+      sunflowerQuantityDetections: 0,
+      peaShootQuantityDetections: 0,
+      broccoliQuantityDetections: 0,
+      redCabbageQuantityDetections: 0,
+    };
+    console.log(cartItems);
+    cartItems.map((item) => {
+      if (item.id === "m1") {
+        stockDeductions.babySpinachQuantityDetections =
+          item.grams * item.quantity +
+          stockDeductions.babySpinachQuantityDetections;
+      } else if (item.id === "m6") {
+        stockDeductions.argulaQuantityDetections =
+          item.grams * item.quantity + stockDeductions.argulaQuantityDetections;
+      } else if (item.id === "m7") {
+        stockDeductions.pakChoiQuantityDetections =
+          item.grams * item.quantity +
+          stockDeductions.pakChoiQuantityDetections;
+      } else if (item.id === "m8") {
+        stockDeductions.kaleQuantityDetections =
+          item.grams * item.quantity + stockDeductions.kaleQuantityDetections;
+      } else if (item.id === "m5") {
+        stockDeductions.lettuceQuantityDetections =
+          item.grams * item.quantity +
+          stockDeductions.lettuceQuantityDetections;
+      } else if (item.id === "mg1") {
+        stockDeductions.beetRootQuantityDetections =
+          item.grams * item.quantity +
+          stockDeductions.beetRootQuantityDetections;
+      } else if (item.id === "mg2") {
+        stockDeductions.radishPurpleQuantityDetections =
+          item.grams * item.quantity +
+          stockDeductions.radishPurpleQuantityDetections;
+      } else if (item.id === "mg4") {
+        stockDeductions.radishPinkQuantityDetections =
+          item.grams * item.quantity +
+          stockDeductions.radishPinkQuantityDetections;
+      } else if (item.id === "mg3") {
+        stockDeductions.radishWhiteQuantityDetections =
+          item.grams * item.quantity +
+          stockDeductions.radishWhiteQuantityDetections;
+      } else if (item.id === "mg5") {
+        stockDeductions.mustardQuantityDetections =
+          item.grams * item.quantity +
+          stockDeductions.mustardQuantityDetections;
+      } else if (item.id === "mg6") {
+        stockDeductions.sunflowerQuantityDetections =
+          item.grams * item.quantity +
+          stockDeductions.sunflowerQuantityDetections;
+      } else if (item.id === "mg7") {
+        stockDeductions.peaShootQuantityDetections =
+          item.grams * item.quantity +
+          stockDeductions.peaShootQuantityDetections;
+      } else if (item.id === "mg8") {
+        stockDeductions.broccoliQuantityDetections =
+          item.grams * item.quantity +
+          stockDeductions.broccoliQuantityDetections;
+      } else if (item.id === "mg9") {
+        stockDeductions.redCabbageQuantityDetections =
+          item.grams * item.quantity +
+          stockDeductions.redCabbageQuantityDetections;
+      } else {
+        stockDeductions.basilQuantityDetections =
+          item.grams * item.quantity + stockDeductions.basilQuantityDetections;
+      }
+    });
+    console.log(stockDeductions);
+    axiosInstance
+      .post("/updateStocks", stockDeductions)
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err);
       });
-      console.log(stockDeductions);
-      axiosInstance
-        .post("/updateStocks", stockDeductions)
-        .then((res) => {
-          console.log(res);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
 
-      var orderDetails = [];
-      cartItems.map((item) => {
-        const tempOrder = {
-          itemName: item.name,
-          itemQuantity: item.quantity,
-          itemGrams: item.grams,
-        };
-        orderDetails.push(tempOrder);
-      });
-      console.log("Order Details", orderDetails);
-      console.log("Address");
-      const order = {
-        email: localStorage.getItem("name"),
-        orderDetails: orderDetails,
-        addressDetails: addressDetails[selectedAddressIndex],
-        paymentId: " ",
-        amountPaid: 0,
+    var orderDetails = [];
+    cartItems.map((item) => {
+      const tempOrder = {
+        itemName: item.name,
+        itemQuantity: item.quantity,
+        itemGrams: item.grams,
       };
-      console.log("Order", order);
-      axiosInstance
-        .post("/addOrder", order)
-        .then((res) => {
-          console.log(res.data.statusCode);
-          if (res.data.statusCode === 200) {
-            toast.success("Order placed successfully");
-            cartCtx.clearCart();
-            localStorage.removeItem("cart");
-            setIsLoading(false);
-            setShowAnimation(true);
-            setTimeout(() => {
-              navigate("/");
-            }, 3000);
-          } else {
-            setIsLoading(false);
-            toast.warning("Problem occured while placing order");
-          }
-        })
-        .catch((err) => {
-          console.log(err);
-        }).finally(()=>{
+      orderDetails.push(tempOrder);
+    });
+    console.log("Order Details", orderDetails);
+    console.log("Address");
+    const order = {
+      email: localStorage.getItem("name"),
+      orderDetails: orderDetails,
+      addressDetails: addressDetails[selectedAddressIndex],
+      paymentId: " ",
+      amountPaid: 0,
+    };
+    console.log("Order", order);
+    axiosInstance
+      .post("/addOrder", order)
+      .then((res) => {
+        console.log(res.data.statusCode);
+        if (res.data.statusCode === 200) {
+          toast.success("Order placed successfully");
+          cartCtx.clearCart();
+          localStorage.removeItem("cart");
           setIsLoading(false);
-        })
-  }
+          setShowAnimation(true);
+          setTimeout(() => {
+            navigate("/");
+          }, 3000);
+        } else {
+          setIsLoading(false);
+          toast.warning("Problem occured while placing order");
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -466,8 +509,9 @@ const CheckOut = () => {
                       <div className="relative">
                         {/* Button with text and icon */}
                         <button
-                        onClick={handlePOPS}
-                         className="w-full bg-blue-500 flex items-center justify-center text-white py-2 rounded-lg font-semibold hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition duration-200">
+                          onClick={handlePOPS}
+                          className="w-full bg-blue-500 flex items-center justify-center text-white py-2 rounded-lg font-semibold hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition duration-200"
+                        >
                           <span className="">Place Order (POPS)</span>
                           <span className="text-lg relative group ml-1">
                             {/* Info icon */}

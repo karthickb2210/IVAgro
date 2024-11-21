@@ -1,7 +1,7 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
 import MainPage from "../Components/HomePage/MainPage";
-import Shop from "../Components/Shop/Shop.jsx";
+import Shop from "../Components/Shop/LeafyGreenStore/Shop.jsx";
 import Farm from "../Components/Farm/Farm.jsx";
 import CheckOut from "../Components/CheckoutPage/CheckOut.jsx";
 import RepeatedOrderCheckout from "../Components/CheckoutPage/RepeatedOrderCheckout.jsx";
@@ -26,6 +26,7 @@ import ScrollToTop from "./ScrollToTop.jsx";
 import BasilRecipePage from "../Components/OurProducts/Recipes/BasilRecipePage.jsx";
 import PakChoiRecipePage from "../Components/OurProducts/Recipes/PakChoiRecipePage.jsx";
 import NavBar from "../Components/HomePage/NavBar/NavBar.jsx";
+import MicroGreenShop from "../Components/Shop/MicroGreenStore/MicroGreenShop.jsx";
 
 export default function Layout() {
   return (
@@ -36,11 +37,12 @@ export default function Layout() {
         <Routes>
           <Route path="/" element={<MainPage />}></Route>
           <Route path="/store" element={<Shop />}></Route>
+          <Route path="/store/micro-greens" element={<MicroGreenShop />} ></Route>
           <Route path="/farm" element={<Farm />}></Route>
           <Route path="/cart/checkout" element={<CheckOut />}></Route>
           <Route path="/towerRent" element={<RentTowerPage />}></Route>
           <Route path="/subscription" element={<SubscriptionPage />}></Route>
-         <Route path="/repeated-order-checkout" element={<RepeatedOrderCheckout />}></Route>
+          <Route path="/repeated-order-checkout" element={<RepeatedOrderCheckout />}></Route>
           <Route path="/dash" element={<Dashboard />}></Route>
           <Route path="/product" element={<OurProductsPage />}></Route>
           <Route path="/Arugula" element={<ArugulaPage />}></Route>
@@ -55,7 +57,6 @@ export default function Layout() {
           <Route path="/recipe/Basil" element={<BasilRecipePage />}></Route>
           <Route path="/recipe/Kale" element={<KaleRecipePage />}></Route>
           <Route path="/Baby_Spinach" element={<BabySpinachPage />}></Route>
-
           <Route
             path="/subscription-checkout"
             element={<SubscriptionCheckOut />}
