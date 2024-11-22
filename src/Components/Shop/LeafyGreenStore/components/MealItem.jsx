@@ -38,9 +38,9 @@ export default function MealItem({ meal }) {
             </p>
             
             {!showGramSelector && 
-            <p className="meal-item-description">{meal.description}</p>
+            <div className="meal-item-description">{meal.description}</div>
             }</div>
-          <p className=" mb-4">
+          <div className=" mb-4">
             {showGramSelector ? (
               <GramSelector
                 price ={meal.price}
@@ -57,7 +57,7 @@ export default function MealItem({ meal }) {
               </Button> */}
               </div>
             )}
-          </p>
+          </div>
         </article>
       </li>
       </div>

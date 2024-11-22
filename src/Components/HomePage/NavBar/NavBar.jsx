@@ -16,8 +16,6 @@ const NavBar = () => {
   const [isServicesOpen, setIsServicesOpen] = useState(false);
   const [isBrandsOpen, setIsBrandsOpen] = useState(false);
   const [isAboutOpen, setIsAboutOpen] = useState(false);
-
-  const [store, SetStore] = useState(false);
   const [service, setService] = useState(false);
   const [brands, setBrands] = useState(false);
   const [about, setAbout] = useState(false);
@@ -160,31 +158,14 @@ const NavBar = () => {
               <Link to="/" className="hover:text-black transition duration-300">
                 Home
               </Link>
-              <div
-                className="relative"
-                onMouseEnter={() => SetStore(true)}
-                onMouseLeave={() => SetStore(false)}
-              >
-                <div className="hover:text-black transition duration-300">
-                  Store
-                </div>
-                {store && (
-                  <div className="absolute bg-white shadow-lg rounded-md w-40">
+              
                     <Link
                       to="/store"
-                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-zinc-200"
+                      className="hover:text-black transition duration-300"
                     >
-                      Leafy Greens
+                      Store
                     </Link>
-                    <Link
-                      to="/store/micro-greens"
-                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                    >
-                      Micro Greens
-                    </Link>
-                  </div>
-                )}
-              </div>
+            
               <div
                 className="relative"
                 onMouseEnter={() => setService(true)}
@@ -262,12 +243,6 @@ const NavBar = () => {
                 </Link>
                 {about && (
                   <div className="absolute bg-white shadow-lg rounded-md w-40">
-                    {/* <Link
-                      to="/ourStory"
-                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                    >
-                      Our Story
-                    </Link> */}
                     <Link
                       to="/product"
                       className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
@@ -361,32 +336,14 @@ const NavBar = () => {
         {isMobileMenuOpen && (
           <div className="lg:hidden mt-4 space-y-4">
             {/* Home */}
-            <Link to="/" className="block text-center text-gray-600">
+            <Link to="/" onClick={()=>setShowOptions(false)} className="block text-center text-gray-600">
               Home
             </Link>
 
             {/* Store Menu */}
-            <div className="block text-center text-gray-600">
-              <p
-                className="cursor-pointer"
-                onClick={() => setIsStoreOpen(!isStoreOpen)}
-              >
-                Store
-              </p>
-              {isStoreOpen && (
-                <div className="space-y-2 pl-4 bg-gray-100">
-                  <Link to="/store" className="block text-gray-500 py-2">
-                    Leafy Greens
-                  </Link>
-                  <Link
-                    to="/store/micro-greens"
-                    className="block text-gray-500 py-2"
-                  >
-                    Micro Greens
-                  </Link>
-                </div>
-              )}
-            </div>
+            <Link to="/store" onClick={()=>setShowOptions(false)}  className="block text-center text-gray-600">
+              Store
+            </Link>
 
             {/* Services Menu */}
             <div className="block text-center text-gray-600">
@@ -398,16 +355,16 @@ const NavBar = () => {
               </p>
               {isServicesOpen && (
                 <div className="space-y-2 pl-4 bg-gray-100">
-                  <Link to="/towerRent" className="block text-gray-500 py-2">
+                  <Link onClick={() => setIsServicesOpen(!isServicesOpen)} to="/towerRent" className="block text-gray-500 py-2" >
                     Tower Lease
                   </Link>
-                  <Link to="/edu-work" className="block text-gray-500 py-2">
+                  <Link onClick={() => setIsServicesOpen(!isServicesOpen)} to="/edu-work" className="block text-gray-500 py-2">
                     Educational Workshops
                   </Link>
-                  <Link to="/farm" className="block text-gray-500 py-2">
+                  <Link onClick={() => setIsServicesOpen(!isServicesOpen)} to="/farm" className="block text-gray-500 py-2">
                     Farm House
                   </Link>
-                  <Link to="/subscription" className="block text-gray-500 py-2">
+                  <Link onClick={() => setIsServicesOpen(!isServicesOpen)} to="/subscription" className="block text-gray-500 py-2">
                     Subscription
                   </Link>
                 </div>
