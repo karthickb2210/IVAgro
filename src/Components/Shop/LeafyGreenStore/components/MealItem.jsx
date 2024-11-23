@@ -15,9 +15,9 @@ export default function MealItem({ meal }) {
   }
   return (
     <>
-    <div className="relative">
+    <div className="relative first:p-1 first:my-4 first:w-[96%] first:flex-nowrap">
   {!meal.available && (
-    <div className="z-20 absolute top-1/3 left-1/3 rounded-xl flex items-center justify-center bg-red-500 text-white px-4 py-2">
+    <div className="z-20 absolute top-1/3 right-1/3 rounded-xl flex items-center justify-center bg-red-500 text-white px-4 py-2">
       Out Of Stock
     </div>
   )}
@@ -26,7 +26,7 @@ export default function MealItem({ meal }) {
       }`}>
         <article>
           <div className='w-full min-h-1/2'>
-          <img className='min-w-full' src={meal.image} alt={meal.name} />
+          <img className='w-full h-1/3' src={meal.image} alt={meal.name} />
           </div>
           
           <div>
@@ -38,7 +38,7 @@ export default function MealItem({ meal }) {
             </p>
             
             {!showGramSelector && 
-            <div className="meal-item-description">{meal.description}</div>
+            <div className="meal-item-description text-sm">{meal.description}</div>
             }</div>
           <div className=" mb-4">
             {showGramSelector ? (

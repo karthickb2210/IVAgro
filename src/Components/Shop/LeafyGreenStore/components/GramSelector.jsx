@@ -13,19 +13,19 @@ export default function Product({ onConfirm, onCancel, price }) {
   };
 
   return (
-    <div className="product-container flex flex-col items-center space-y-4 p-2">
+    <div className="flex flex-col first:flex-nowrap items-center space-y-4 p-2">
       {/* Product Image */}
 
       {/* Gram Selector positioned above the Add to Cart button */}
-      <div className="gram-selector relative z-20 flex flex-col items-center bg-white shadow-lg p-3 rounded-md space-y-2 max-w-xs">
-        <div className="flex text-nowrap justify-center gap-2">
+      <div className="relative z-20 flex flex-col items-center bg-white shadow-lg p-3 rounded-md space-y-2">
+        <div className="flex flex-wrap justify-center gap-2">
           {gramOptions.map((gram, index) => (
             <div
-              onMouseOver={() => setHover(false)}
-              onMouseLeave={() => setHover(true)}
+              // onMouseOver={() => setHover(false)}
+              // onMouseLeave={() => setHover(true)}
               key={gram}
               onClick={() => handleSelect(gram)}
-              className={`cursor-pointer transition-colors duration-200 ease-in-out rounded-full px-3 py-1 text-xs border-2 ${
+              className={`cursor-pointer text-nowrap transition-colors duration-200 ease-in-out rounded-full px-3 py-1 text-xs border-2 ${
                 selectedGram === gram
                   ? "bg-green-500 text-white border-green-500"
                   : "bg-gray-200 border-gray-300 text-gray-700"
