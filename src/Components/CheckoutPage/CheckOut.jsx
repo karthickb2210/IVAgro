@@ -63,21 +63,11 @@ const CheckOut = () => {
         };
 
         handleLoginSubmitOnOtp(data);
-        if (localStorage.getItem("name")) {
-          setGuest(false);
-        }
-        axiosInstance
-          .get(`/getAllAddress/${localStorage.getItem("name")}`)
-          .then((res) => {
-            setAddressDetails(res.data.data);
-          })
-          .catch((err) => {
-            console.log(err);
-          });
+        
       })
-      .finally(() => {
-        setIsLoading(false);
-      });
+      // .finally(() => {
+      //   setIsLoading(false);
+      // });
       console.log("repeated-order");
       localStorage.setItem("cart",JSON.stringify(cartCtx.items))
       if(editOrder==="true"){
@@ -95,7 +85,7 @@ const CheckOut = () => {
   
   const [selectedAddressIndex, setSelectedAddressIndex] = useState(-1);
 
-  const handleLoginSubmitOnOtp = (data) => {
+  const handleLoginSubmitOnOtp = async (data) => {
     setIsLoading(true);
     console.log(data);
     axiosInstance
@@ -111,7 +101,15 @@ const CheckOut = () => {
           );
           localStorage.setItem("name", data.name);
           localStorage.setItem("pass", data.pass);
-          setIsLoading(false);
+          axiosInstance
+          .get(`/getAllAddress/${localStorage.getItem("name")}`)
+          .then((res) => {
+            setAddressDetails(res.data.data);
+            setIsLoading(false)
+          })
+          .catch((err) => {
+            console.log(err);
+          });
         } else {
           toast.warning("Incorrect Username or password");
           setIsLoading(false);
