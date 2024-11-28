@@ -1,6 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-
+import sunflower from "/store/sunflowermg.jpg"
+import mustard from "/store/mustardmg.jpg"
+import brocolli from "/store/brocollimg.jpg"
 const products1 = [
   {
     id: 1,
@@ -22,22 +24,27 @@ const products1 = [
   },
   {
     id: 4,
-    name: 'Arugula',
-    imageUrl: 'https://t3.ftcdn.net/jpg/05/61/80/16/240_F_561801605_BXZylBtM4OSmbIRuVZRX32aQdn7guWV2.jpg', // Replace with actual image URL
-    altText: 'Arugula',
+    name: 'Sunflower',
+    imageUrl: sunflower, // Replace with actual image URL
+    altText: 'sunflower',
   },
   {
     id: 5,
-    name: 'Pak Choi',
-    imageUrl: 'https://t3.ftcdn.net/jpg/01/30/06/18/240_F_130061886_qchDVRKIl40W4c8V6ePygqcgqOPF4Lpl.jpg', // Replace with actual image URL
-    altText: 'Pak Choi',
+    name: 'Mustard',
+    imageUrl: mustard, // Replace with actual image URL
+    altText: 'Mustard',
   },
   {
     id: 6,
-    name: 'Lettuce',
-    imageUrl: 'https://t3.ftcdn.net/jpg/01/03/07/26/240_F_103072613_toV709NM95mGl0ZclCXX7tSPuGnRptkY.jpg', // Replace with actual image URL
-    altText: 'Lettuce',
+    name: 'Brocolli',
+    imageUrl: brocolli, // Replace with actual image URL
+    altText: 'Brocolli',
   },
+  {
+    id:7,
+    name: 'Explore all products',
+    imageUrl : "https://t4.ftcdn.net/jpg/08/72/85/39/240_F_872853985_GfyvxTYRybnKKC0FDq5rCkckmxnR5Gep.jpg"
+  }
 ];
 
 
@@ -57,9 +64,14 @@ const HighlightedProducts = () => {
               </div>
               <h3 className="text-xl font-semibold mt-3">{product.name}</h3>
               <Link to={`/store`}>
+              {product.id!==7 ?  
               <button className="bg-black hover:text-white text-white px-8 py-2 mt-4 rounded-3xl hover:bg-gray-800">
                 Shop Now
+              </button> : 
+              <button className="bg-black hover:text-white text-white px-8 py-2 mt-4 rounded-3xl hover:bg-gray-800">
+                Visit Store
               </button>
+            }
               </Link>
         </div>
 

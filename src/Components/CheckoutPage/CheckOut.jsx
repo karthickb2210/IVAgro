@@ -1,16 +1,26 @@
 import React, { useState, useEffect, useContext } from "react";
 import axiosInstance from "../../config/AxiosConfig";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { toast } from "sonner";
 import CartContext from "../../store/CartContext";
 import LeavesLoader from "../Loader/PlantLoader";
 import AddressRadioCardForOrders from "./AddressRadioCardForOrders";
 import UserProgressContext from "../../store/UserProgressContext";
 import OrderAnimation from "./OrderAnimation";
-
+import getDeductions from "./utils/Deductions";
+import { loadedMeals } from "./ProductsForCheckout";
+import { useDispatch } from "react-redux";
+import { login } from "../../features/User";
 const CheckOut = () => {
+  const dispatch = useDispatch();
+
+  const [searchParams] = useSearchParams();
+  const id = searchParams.get("id");
+  const editOrder = searchParams.get("editOrder");
+  console.log(id, editOrder);
+
   const cartCtx = useContext(CartContext);
-  const [cartItems, setCartItems] = useState([]);
+  const cartItems = JSON.parse(localStorage.getItem("cart")) || []
   const [isLoading, setIsLoading] = useState(false);
   const [addressDetails, setAddressDetails] = useState([]);
   const [showAddress, setShowAddress] = useState();
@@ -18,29 +28,102 @@ const CheckOut = () => {
   const [guest, setGuest] = useState(true);
   const [showAnimation, setShowAnimation] = useState(false);
   const userProgressCtx = useContext(UserProgressContext);
+  const weights = [30, 50, 100, 200, 500];
   useEffect(() => {
-    const cart = JSON.parse(localStorage.getItem("cart"));
+    if (!id) {
+      axiosInstance
+        .get(`/getAllAddress/${localStorage.getItem("name")}`)
+        .then((res) => {
+          console.log(res.data);
+          setAddressDetails(res.data.data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } else {
+      cartCtx.clearCart();
+      axiosInstance
+      .get(`/getLastOrderDetails/${id}`)
+      .then((res) => {
+        console.log("last order details",res.data)
+        res?.data?.data?.order?.orderDetails.map((arr) => {
+          const name = arr.itemName;
+          const meal = loadedMeals.find(
+            (meal) => meal.name.toLowerCase() === name.toLowerCase()
+          );
+          const grams = arr.itemGrams;
+          const price = meal.price[weights.indexOf(arr.itemGrams)];
+          for (let i = 0; i < arr.itemQuantity; i++) {
+            cartCtx.addItem({ ...meal, grams, price });
+          }
+        });
+        const data = {
+          name: res.data.data.user.mail,
+          pass: res.data.data.user.password,
+        };
+
+        handleLoginSubmitOnOtp(data);
+        if (localStorage.getItem("name")) {
+          setGuest(false);
+        }
+        axiosInstance
+          .get(`/getAllAddress/${localStorage.getItem("name")}`)
+          .then((res) => {
+            setAddressDetails(res.data.data);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+      console.log("repeated-order");
+      localStorage.setItem("cart",JSON.stringify(cartCtx.items))
+      if(editOrder==="true"){
+      userProgressCtx.showCart();
+    }
+    }
     if (localStorage.getItem("name")) {
       setGuest(false);
     }
-    axiosInstance
-      .get(`/getAllAddress/${localStorage.getItem("name")}`)
-      .then((res) => {
-        console.log(res.data);
-        setAddressDetails(res.data.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-    setCartItems(cart || []);
 
     if (showAnimation) {
       const timer = setTimeout(() => setShowAnimation(false), 4000); // Display duration
       return () => clearTimeout(timer);
     }
-  }, [showAnimation]);
+  }, [showAnimation,id]);
 
+  
   const [selectedAddressIndex, setSelectedAddressIndex] = useState(-1);
+
+  const handleLoginSubmitOnOtp = (data) => {
+    setIsLoading(true);
+    console.log(data);
+    axiosInstance
+      .post("/checkUser", data)
+      .then((res) => {
+        if (res.data.flag) {
+          toast.success("Login succesfull");
+          dispatch(
+            login({
+              name: data.name,
+              pass: data.pass,
+            })
+          );
+          localStorage.setItem("name", data.name);
+          localStorage.setItem("pass", data.pass);
+          setIsLoading(false);
+        } else {
+          toast.warning("Incorrect Username or password");
+          setIsLoading(false);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        setIsLoading(false);
+      });
+  };
 
   const handleSelect = (index) => {
     setSelectedAddressIndex(index);
@@ -57,84 +140,7 @@ const CheckOut = () => {
 
   const handlePOPS = () => {
     setIsLoading(true);
-    var stockDeductions = {
-      babySpinachQuantityDetections: 0,
-      pakChoiQuantityDetections: 0,
-      basilQuantityDetections: 0,
-      kaleQuantityDetections: 0,
-      lettuceQuantityDetections: 0,
-      argulaQuantityDetections: 0,
-      beetRootQuantityDetections: 0,
-      radishPurpleQuantityDetections: 0,
-      radishWhiteQuantityDetections: 0,
-      radishPinkQuantityDetections: 0,
-      mustardQuantityDetections: 0,
-      sunflowerQuantityDetections: 0,
-      peaShootQuantityDetections: 0,
-      broccoliQuantityDetections: 0,
-      redCabbageQuantityDetections: 0,
-    };
-    console.log(cartItems);
-    cartItems.map((item) => {
-      if (item.id === "m1") {
-        stockDeductions.babySpinachQuantityDetections =
-          item.grams * item.quantity +
-          stockDeductions.babySpinachQuantityDetections;
-      } else if (item.id === "m6") {
-        stockDeductions.argulaQuantityDetections =
-          item.grams * item.quantity + stockDeductions.argulaQuantityDetections;
-      } else if (item.id === "m7") {
-        stockDeductions.pakChoiQuantityDetections =
-          item.grams * item.quantity +
-          stockDeductions.pakChoiQuantityDetections;
-      } else if (item.id === "m8") {
-        stockDeductions.kaleQuantityDetections =
-          item.grams * item.quantity + stockDeductions.kaleQuantityDetections;
-      } else if (item.id === "m5") {
-        stockDeductions.lettuceQuantityDetections =
-          item.grams * item.quantity +
-          stockDeductions.lettuceQuantityDetections;
-      } else if (item.id === "mg1") {
-        stockDeductions.beetRootQuantityDetections =
-          item.grams * item.quantity +
-          stockDeductions.beetRootQuantityDetections;
-      } else if (item.id === "mg2") {
-        stockDeductions.radishPurpleQuantityDetections =
-          item.grams * item.quantity +
-          stockDeductions.radishPurpleQuantityDetections;
-      } else if (item.id === "mg4") {
-        stockDeductions.radishPinkQuantityDetections =
-          item.grams * item.quantity +
-          stockDeductions.radishPinkQuantityDetections;
-      } else if (item.id === "mg3") {
-        stockDeductions.radishWhiteQuantityDetections =
-          item.grams * item.quantity +
-          stockDeductions.radishWhiteQuantityDetections;
-      } else if (item.id === "mg5") {
-        stockDeductions.mustardQuantityDetections =
-          item.grams * item.quantity +
-          stockDeductions.mustardQuantityDetections;
-      } else if (item.id === "mg6") {
-        stockDeductions.sunflowerQuantityDetections =
-          item.grams * item.quantity +
-          stockDeductions.sunflowerQuantityDetections;
-      } else if (item.id === "mg7") {
-        stockDeductions.peaShootQuantityDetections =
-          item.grams * item.quantity +
-          stockDeductions.peaShootQuantityDetections;
-      } else if (item.id === "mg8") {
-        stockDeductions.broccoliQuantityDetections =
-          item.grams * item.quantity +
-          stockDeductions.broccoliQuantityDetections;
-      } else if (item.id === "mg9") {
-        stockDeductions.redCabbageQuantityDetections =
-          item.grams * item.quantity +
-          stockDeductions.redCabbageQuantityDetections;
-      } else {
-        stockDeductions.basilQuantityDetections =
-          item.grams * item.quantity + stockDeductions.basilQuantityDetections;
-      }
-    });
+    const stockDeductions = getDeductions(cartItems);
     console.log(stockDeductions);
     axiosInstance
       .post("/updateStocks", stockDeductions)
@@ -220,42 +226,7 @@ const CheckOut = () => {
             .post("/verify-payment", razorpay_creds)
             .then((res) => {
               if (res.data) {
-                var stockDeductions = {
-                  babySpinachQuantityDetections: 0,
-                  pakChoiQuantityDetections: 0,
-                  basilQuantityDetections: 0,
-                  kaleQuantityDetections: 0,
-                  lettuceQuantityDetections: 0,
-                  argulaQuantityDetections: 0,
-                };
-                console.log(cartItems);
-                cartItems.map((item) => {
-                  if (item.id === "m1") {
-                    stockDeductions.babySpinachQuantityDetections =
-                      item.grams * item.quantity +
-                      stockDeductions.babySpinachQuantityDetections;
-                  } else if (item.id === "m6") {
-                    stockDeductions.argulaQuantityDetections =
-                      item.grams * item.quantity +
-                      stockDeductions.argulaQuantityDetections;
-                  } else if (item.id === "m7") {
-                    stockDeductions.pakChoiQuantityDetections =
-                      item.grams * item.quantity +
-                      stockDeductions.pakChoiQuantityDetections;
-                  } else if (item.id === "m8") {
-                    stockDeductions.kaleQuantityDetections =
-                      item.grams * item.quantity +
-                      stockDeductions.kaleQuantityDetections;
-                  } else if (item.id === "m5") {
-                    stockDeductions.lettuceQuantityDetections =
-                      item.grams * item.quantity +
-                      stockDeductions.lettuceQuantityDetections;
-                  } else {
-                    stockDeductions.basilQuantityDetections =
-                      item.grams * item.quantity +
-                      stockDeductions.basilQuantityDetections;
-                  }
-                });
+                const stockDeductions = getDeductions(cartItems);
                 console.log(stockDeductions);
                 axiosInstance
                   .post("/updateStocks", stockDeductions)
@@ -323,6 +294,7 @@ const CheckOut = () => {
       console.error("Payment Error: ", error);
       alert("Payment failed");
     }
+    setIsLoading(false)
   };
 
   const handleEditCart = () => {

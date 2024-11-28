@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext, useRef } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import axiosInstance from "../../config/AxiosConfig";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
@@ -23,154 +23,151 @@ const RepeatedOrderCheckout = () => {
   const [addressDetails, setAddressDetails] = useState([]);
   const [showAddress, setShowAddress] = useState();
   const navigate = useNavigate();
-  const [loaded,setLoaded] = useState(false)
+  const [loaded, setLoaded] = useState(false);
   const [guest, setGuest] = useState(true);
   const [showAnimation, setShowAnimation] = useState(false);
   const userProgressCtx = useContext(UserProgressContext);
   const weights = [30, 50, 100, 200, 500];
 
   useEffect(() => {
-    cartCtx.clearCart()
-    
-    axiosInstance.get(`/getLastOrderDetails/${id}`).then((res) => {
-      res.data.data.order.orderDetails.map((arr) => {
-        const name = arr.itemName;
-        const meal = loadedMeals.find(
-          (meal) => meal.name.toLowerCase() === name.toLowerCase()
-        );
-        const grams = arr.itemGrams;
-        const price = meal.price[weights.indexOf(arr.itemGrams)];
-        for(let i =0;i<arr.itemQuantity;i++){
-        cartCtx.addItem({ ...meal, grams, price });
-        }  
-        setLoaded(true)
-    })
-      const data = {
-        name: res.data.data.user.mail,
-        pass: res.data.data.user.password,
-      };
-      
-      handleLoginSubmitOnOtp(data);
-      if (localStorage.getItem("name")) {
-          setGuest(false);
-      }
-      axiosInstance
-      .get(`/getAllAddress/${localStorage.getItem("name")}`)
+    cartCtx.clearCart();
+
+    axiosInstance
+      .get(`/getLastOrderDetails/${id}`)
       .then((res) => {
-        setAddressDetails(res.data.data);
+        res.data.data.order.orderDetails.map((arr) => {
+          const name = arr.itemName;
+          const meal = loadedMeals.find(
+            (meal) => meal.name.toLowerCase() === name.toLowerCase()
+          );
+          const grams = arr.itemGrams;
+          const price = meal.price[weights.indexOf(arr.itemGrams)];
+          for (let i = 0; i < arr.itemQuantity; i++) {
+            cartCtx.addItem({ ...meal, grams, price });
+          }
+          setLoaded(true);
+        });
+        const data = {
+          name: res.data.data.user.mail,
+          pass: res.data.data.user.password,
+        };
+
+        handleLoginSubmitOnOtp(data);
+        if (localStorage.getItem("name")) {
+          setGuest(false);
+        }
+        axiosInstance
+          .get(`/getAllAddress/${localStorage.getItem("name")}`)
+          .then((res) => {
+            setAddressDetails(res.data.data);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
       })
-      .catch((err) => {
-        console.log(err);
+      .finally(() => {
+        setIsLoading(false);
       });
-      
-      
-    }).finally(()=>{ 
-      setIsLoading(false)
-    })
     console.log("cartCTx", cartCtx.items);
     if (showAnimation) {
       const timer = setTimeout(() => setShowAnimation(false), 4000); // Display duration
       return () => clearTimeout(timer);
     }
-  },[id]);
-  if(loaded){
-    setCartItems(cartCtx.items)
-    setLoaded(false)
+  }, [id]);
+  if (loaded) {
+    setCartItems(cartCtx.items);
+    setLoaded(false);
   }
 
-  const handlePOPS = ()=>{
+  const handlePOPS = () => {
     setIsLoading(true);
-      var stockDeductions = {
-        babySpinachQuantityDetections: 0,
-        pakChoiQuantityDetections: 0,
-        basilQuantityDetections: 0,
-        kaleQuantityDetections: 0,
-        lettuceQuantityDetections: 0,
-        argulaQuantityDetections: 0,
-      };
-      console.log(cartItems);
-      cartItems.map((item) => {
-        if (item.id === "m1") {
-          stockDeductions.babySpinachQuantityDetections =
-            item.grams * item.quantity +
-            stockDeductions.babySpinachQuantityDetections;
-        } else if (item.id === "m6") {
-          stockDeductions.argulaQuantityDetections =
-            item.grams * item.quantity +
-            stockDeductions.argulaQuantityDetections;
-        } else if (item.id === "m7") {
-          stockDeductions.pakChoiQuantityDetections =
-            item.grams * item.quantity +
-            stockDeductions.pakChoiQuantityDetections;
-        } else if (item.id === "m8") {
-          stockDeductions.kaleQuantityDetections =
-            item.grams * item.quantity +
-            stockDeductions.kaleQuantityDetections;
-        } else if (item.id === "m5") {
-          stockDeductions.lettuceQuantityDetections =
-            item.grams * item.quantity +
-            stockDeductions.lettuceQuantityDetections;
-        } else {
-          stockDeductions.basilQuantityDetections =
-            item.grams * item.quantity +
-            stockDeductions.basilQuantityDetections;
-        }
+    var stockDeductions = {
+      babySpinachQuantityDetections: 0,
+      pakChoiQuantityDetections: 0,
+      basilQuantityDetections: 0,
+      kaleQuantityDetections: 0,
+      lettuceQuantityDetections: 0,
+      argulaQuantityDetections: 0,
+    };
+    console.log(cartItems);
+    cartItems.map((item) => {
+      if (item.id === "m1") {
+        stockDeductions.babySpinachQuantityDetections =
+          item.grams * item.quantity +
+          stockDeductions.babySpinachQuantityDetections;
+      } else if (item.id === "m6") {
+        stockDeductions.argulaQuantityDetections =
+          item.grams * item.quantity + stockDeductions.argulaQuantityDetections;
+      } else if (item.id === "m7") {
+        stockDeductions.pakChoiQuantityDetections =
+          item.grams * item.quantity +
+          stockDeductions.pakChoiQuantityDetections;
+      } else if (item.id === "m8") {
+        stockDeductions.kaleQuantityDetections =
+          item.grams * item.quantity + stockDeductions.kaleQuantityDetections;
+      } else if (item.id === "m5") {
+        stockDeductions.lettuceQuantityDetections =
+          item.grams * item.quantity +
+          stockDeductions.lettuceQuantityDetections;
+      } else {
+        stockDeductions.basilQuantityDetections =
+          item.grams * item.quantity + stockDeductions.basilQuantityDetections;
+      }
+    });
+    console.log(stockDeductions);
+    axiosInstance
+      .post("/updateStocks", stockDeductions)
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err);
       });
-      console.log(stockDeductions);
-      axiosInstance
-        .post("/updateStocks", stockDeductions)
-        .then((res) => {
-          console.log(res);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
 
-      var orderDetails = [];
-      cartItems.map((item) => {
-        const tempOrder = {
-          itemName: item.name,
-          itemQuantity: item.quantity,
-          itemGrams: item.grams,
-        };
-        orderDetails.push(tempOrder);
-      });
-      console.log("Order Details", orderDetails);
-      console.log("Address");
-      const order = {
-        email: localStorage.getItem("name"),
-        orderDetails: orderDetails,
-        addressDetails: addressDetails[selectedAddressIndex],
-        paymentId: " ",
-        amountPaid: 0,
+    var orderDetails = [];
+    cartItems.map((item) => {
+      const tempOrder = {
+        itemName: item.name,
+        itemQuantity: item.quantity,
+        itemGrams: item.grams,
       };
-      console.log("Order", order);
-      axiosInstance
-        .post("/addOrder", order)
-        .then((res) => {
-          console.log(res.data.statusCode);
-          if (res.data.statusCode === 200) {
-            toast.success("Order placed successfully");
-            cartCtx.clearCart();
-            localStorage.removeItem("cart");
-            setIsLoading(false);
-            setShowAnimation(true);
-            setTimeout(() => {
-              navigate("/");
-            }, 3000);
-          } else {
-            setIsLoading(false);
-            toast.warning("Problem occured while placing order");
-          }
-        })
-        .catch((err) => {
-          console.log(err);
-        }).finally(()=>{
+      orderDetails.push(tempOrder);
+    });
+    console.log("Order Details", orderDetails);
+    console.log("Address");
+    const order = {
+      email: localStorage.getItem("name"),
+      orderDetails: orderDetails,
+      addressDetails: addressDetails[selectedAddressIndex],
+      paymentId: " ",
+      amountPaid: 0,
+    };
+    console.log("Order", order);
+    axiosInstance
+      .post("/addOrder", order)
+      .then((res) => {
+        console.log(res.data.statusCode);
+        if (res.data.statusCode === 200) {
+          toast.success("Order placed successfully");
+          cartCtx.clearCart();
+          localStorage.removeItem("cart");
           setIsLoading(false);
-        })
-  }
-
-  
+          setShowAnimation(true);
+          setTimeout(() => {
+            navigate("/");
+          }, 3000);
+        } else {
+          setIsLoading(false);
+          toast.warning("Problem occured while placing order");
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  };
 
   const [selectedAddressIndex, setSelectedAddressIndex] = useState(-1);
 
@@ -210,7 +207,6 @@ const RepeatedOrderCheckout = () => {
         setIsLoading(false);
       });
   };
-  
 
   // Calculate shipping charge
   const shippingCharge = totalAmount < 499 ? 120 : 0;
@@ -526,17 +522,18 @@ const RepeatedOrderCheckout = () => {
                   !addressDetails.length == 0 &&
                   !(selectedAddressIndex === -1) && (
                     <div className=" flex flex-col space-y-3">
-                    <button
-                      className="w-full bg-blue-500 text-white py-2 rounded-lg font-semibold hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition duration-200"
-                      onClick={handleSubmit}
-                    >
-                      Proceed to Pay
-                    </button>
-                    <div className="relative">
+                      <button
+                        className="w-full bg-blue-500 text-white py-2 rounded-lg font-semibold hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition duration-200"
+                        onClick={handleSubmit}
+                      >
+                        Proceed to Pay
+                      </button>
+                      <div className="relative">
                         {/* Button with text and icon */}
                         <button
-                        onClick={handlePOPS}
-                         className="w-full bg-blue-500 flex items-center justify-center text-white py-2 rounded-lg font-semibold hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition duration-200">
+                          onClick={handlePOPS}
+                          className="w-full bg-blue-500 flex items-center justify-center text-white py-2 rounded-lg font-semibold hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition duration-200"
+                        >
                           <span className="">Place Order (POPS)</span>
                           <span className="text-lg relative group ml-1">
                             {/* Info icon */}
@@ -567,7 +564,7 @@ const RepeatedOrderCheckout = () => {
                           </span>
                         </button>
                       </div>
-                      </div>
+                    </div>
                   )}
               </div>
             </div>

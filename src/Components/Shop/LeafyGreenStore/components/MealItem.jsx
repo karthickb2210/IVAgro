@@ -3,6 +3,7 @@ import Button from './UI/Button.jsx';
 import CartContext from '../../../../store/CartContext.jsx';
 import GramSelector from './GramSelector.jsx';
 import { toast } from 'sonner';
+import { Image, Shimmer } from 'react-shimmer'
 
 export default function MealItem({ meal }) {
   const cartCtx = useContext(CartContext);
@@ -26,7 +27,9 @@ export default function MealItem({ meal }) {
       }`}>
         <article>
           <div className='w-full min-h-1/2'>
-          <img className='w-full h-1/3' src={meal.image} alt={meal.name} />
+          <Image className='w-full h-1/3' src={meal.image} alt={meal.name} 
+            fallback={<Shimmer width={360} height={240} />}
+          />
           </div>
           
           <div>
