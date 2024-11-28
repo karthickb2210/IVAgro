@@ -84,9 +84,7 @@ const CheckOut = () => {
       userProgressCtx.showCart();
     }
     }
-    if (localStorage.getItem("name")) {
-      setGuest(false);
-    }
+    
 
     if (showAnimation) {
       const timer = setTimeout(() => setShowAnimation(false), 4000); // Display duration
@@ -123,6 +121,9 @@ const CheckOut = () => {
         console.log(err);
         setIsLoading(false);
       });
+      if (localStorage.getItem("name")) {
+        setGuest(false);
+      }
   };
 
   const handleSelect = (index) => {
