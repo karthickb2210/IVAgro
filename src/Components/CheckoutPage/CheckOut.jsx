@@ -31,7 +31,9 @@ const CheckOut = () => {
   const weights = [30, 50, 100, 200, 500];
   useEffect(() => {
     if (!id) {
-      axiosInstance
+      if(localStorage.getItem("name")){
+        setGuest(false)
+        axiosInstance
         .get(`/getAllAddress/${localStorage.getItem("name")}`)
         .then((res) => {
           console.log(res.data);
@@ -40,6 +42,8 @@ const CheckOut = () => {
         .catch((err) => {
           console.log(err);
         });
+      }
+      
     } else {
       cartCtx.clearCart();
       axiosInstance
