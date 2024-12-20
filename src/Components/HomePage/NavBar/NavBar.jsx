@@ -235,12 +235,11 @@ const NavBar = () => {
                 onMouseEnter={() => setAbout(true)}
                 onMouseLeave={() => setAbout(false)}
               >
-                <Link
-                  to="/about-us"
+                <div
                   className="hover:text-black transition duration-300"
                 >
                   About us
-                </Link>
+                </div>
                 {about && (
                   <div className="absolute bg-white shadow-lg rounded-md w-40">
                     <Link

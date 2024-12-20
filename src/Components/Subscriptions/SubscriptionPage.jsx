@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import products from "./Products";
 import { MdDeleteForever } from "react-icons/md";
@@ -19,8 +19,9 @@ const SubscriptionPage = () => {
   const [currBoxSize, setCurrBoxSize] = useState(0);
 
   const [subscriptionType, setSubscriptionType] = useState("");
-  const subscriptiontypes = ["Bi-Weekly", "Weekly","Fort-Nightly", "Monthly"];
+  const subscriptiontypes = ["Weekly","Fort-Nightly", "Monthly"];
 
+  const navigate = useNavigate();
   const [boxSize, setBoxSize] = useState("");
   const boxSizes = [100, 250, 500];
 
@@ -47,9 +48,16 @@ const SubscriptionPage = () => {
   };
 
   const handleCheckout = () => {
+    if(currBoxSize!=0){
+      console.log("Curr box size",currBoxSize)
+      console.log("boxSize",boxSize)
+      toast.warning("Fill your box to checkout");
+      return;
+    }
     sessionStorage.setItem("boxsize", boxSize);
     sessionStorage.setItem("subscriptionType", subscriptionType);
     sessionStorage.setItem("subbox", JSON.stringify(subscriptionBox));
+    navigate("/subscription-checkout")
   };
 
   const openModal = (product) => {
@@ -109,7 +117,7 @@ const SubscriptionPage = () => {
 
   const handleAddToSubscriptionBox = (quantity) => {
     if (currBoxSize - quantity < 0) {
-      toast.warn("Oops!! Your box has no empty space");
+      toast.warning("Oops!! Your box has no empty space");
       return;
     }
     setCurrBoxSize(currBoxSize - quantity);
@@ -277,14 +285,14 @@ const SubscriptionPage = () => {
               <div className=" flex justify-center items-center mt-2">
                 {subscriptionBox.length > 0 && (
                   <div className="mt-4">
-                    <Link to={`/subscription-checkout`}>
+                    {/* <Link to={`/subscription-checkout`}> */}
                       <button
                         onClick={handleCheckout}
                         className="bg-teal-950 text-white py-2 px-6 rounded hover:bg-teal-600 transition"
                       >
                         Checkout
                       </button>
-                    </Link>
+                    {/* </Link> */}
                   </div>
                 )}
               </div>
@@ -384,7 +392,7 @@ const SubscriptionPage = () => {
                   </div>
                 ))}
               </div>
-              { subscriptionType===subscriptiontypes[0] && 
+              {/* { subscriptionType===subscriptiontypes[0] && 
               <DeliveryScheduler />
               }
               { subscriptionType===subscriptiontypes[2] &&
@@ -395,7 +403,7 @@ const SubscriptionPage = () => {
             }
             {subscriptionType===subscriptiontypes[3] &&
             <MonthlyDeliverySelector />
-            }
+            } */}
             <div className="my-4">
                 <h3 className="text-xl font-semibold mb-2">
                   Select the Size of the Box
