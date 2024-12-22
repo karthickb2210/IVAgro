@@ -1,11 +1,12 @@
-import React, { useState, useRef, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import React, { useState , useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import products from "./Products";
 import { MdDeleteForever } from "react-icons/md";
 import DeliveryScheduler from "./DeliveryScheduler";
 import BiWeeklyDeliveryScheduler from "./BiWeeklyDeliveryScheduler";
 import MonthlyDeliverySelector from "./MonthlyDeliverySelector";
+import QuantityModal from "./QuantityModal";
 
 const SubscriptionPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -15,11 +16,13 @@ const SubscriptionPage = () => {
   const [subtype, setSubtype] = useState(false);
 
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+  const [pickedItem, setPickeditem] = useState(null);
 
   const [currBoxSize, setCurrBoxSize] = useState(0);
 
+  console.log("Selected Item", selectedProduct);
   const [subscriptionType, setSubscriptionType] = useState("");
-  const subscriptiontypes = ["Weekly","Fort-Nightly", "Monthly"];
+  const subscriptiontypes = ["Weekly", "Fort-Nightly", "Monthly"];
 
   const navigate = useNavigate();
   const [boxSize, setBoxSize] = useState("");
@@ -48,16 +51,14 @@ const SubscriptionPage = () => {
   };
 
   const handleCheckout = () => {
-    if(currBoxSize!=0){
-      console.log("Curr box size",currBoxSize)
-      console.log("boxSize",boxSize)
+    if (currBoxSize != 0) {
       toast.warning("Fill your box to checkout");
       return;
     }
     sessionStorage.setItem("boxsize", boxSize);
     sessionStorage.setItem("subscriptionType", subscriptionType);
     sessionStorage.setItem("subbox", JSON.stringify(subscriptionBox));
-    navigate("/subscription-checkout")
+    navigate("/subscription-checkout");
   };
 
   const openModal = (product) => {
@@ -76,7 +77,6 @@ const SubscriptionPage = () => {
   const closeQuantityModal = () => {
     setQuantityModalOpen(false);
   };
-  console.log(isMobile);
 
   const handleDragStart = (event, product) => {
     event.dataTransfer.setData("productId", product.id);
@@ -127,6 +127,10 @@ const SubscriptionPage = () => {
     ]);
     closeQuantityModal();
   };
+  const handleSubscribeNow = (item) => {
+    setSubtype(true);
+    setPickeditem(item);
+  };
 
   const handleRemoveFromSubscriptionBox = (productId, quantity) => {
     const value = subscriptionBox.find(
@@ -149,9 +153,9 @@ const SubscriptionPage = () => {
             Fresh Leafy Greens Delivered to Your Doorstep
           </h1>
           <p className="text-lg mb-4">
-            Explore the finest Leafy greens, grown naturally and delivered fresh. Start
-            your subscription today and enjoy the goodness of fresh greens in
-            your kitchen!
+            Explore the finest Leafy greens, grown naturally and delivered
+            fresh. Start your subscription today and enjoy the goodness of fresh
+            greens in your kitchen!
           </p>
           <button
             onClick={() => setSubtype(true)}
@@ -170,19 +174,20 @@ const SubscriptionPage = () => {
                 alt={product.name}
                 className="w-full h-48  object-cover rounded-md mb-4"
               />
-              <h2 className="flex  items-center justify-center text-2xl font-semibold mb-2">{product.name}</h2>
+              <h2 className="flex  items-center justify-center text-2xl font-semibold mb-2">
+                {product.name}
+              </h2>
               <p className="mb-4 text-center">{product.description}</p>
               <div className=" flex items-center justify-center">
-              <button
-                className="bg-amber-500 text-white py-2 px-4 rounded hover:bg-amber-700 transition"
-                onClick={
-                  () => setSubtype(true)
-                  // () => openModal(product)
-                }
-              >
-              
-                Subscribe Now
-              </button>
+                <button
+                  className="bg-amber-500 text-white py-2 px-4 rounded hover:bg-amber-700 transition"
+                  onClick={
+                    () => handleSubscribeNow(product)
+                    // () => openModal(product)
+                  }
+                >
+                  Subscribe Now
+                </button>
               </div>
             </div>
           ))}
@@ -229,7 +234,7 @@ const SubscriptionPage = () => {
                             <img
                               src={item.product.image}
                               alt={item.product.name}
-                              className="object-cover  rounded-md"
+                              className="object-cover rounded-md"
                             />
                             <p className="text-xs mt-1 text-center">
                               {item.product.name} ({item.quantity}g)
@@ -255,43 +260,39 @@ const SubscriptionPage = () => {
 
                 {/* Right Side: Product Icons */}
 
-                {/* filter option for right box */}
-                {/* .filter(
-                      (product) =>
-                        !subscriptionBox.some(
-                          (item) => item.product.id === product.id
-                        )
-                    ) */}
-
                 <div className="w-1/2 p-1 touch-none bg-white grid grid-cols-2 xl:grid-cols-3 gap-4">
-                  {products.map((product, index) => (
-                    <div
-                      key={index}
-                      className="cursor-pointer flex-grow p-1 flex flex-col border rounded-md"
-                      draggable
-                      onDragStart={(event) => handleDragStart(event, product)}
-                      onClick={() => handleProductClick(product)}
-                    >
-                      <img
-                        src={product.image}
-                        alt={product.name}
-                        className="w-full object-cover rounded-xl"
-                      />
-                      <p className="text-center mt-2 text-sm">{product.name}</p>
-                    </div>
-                  ))}
+                  {products
+                    .filter((res) => res?.id?.length === pickedItem?.id?.length)
+                    .map((product, index) => (
+                      <div
+                        key={index}
+                        className="cursor-pointer flex-grow p-1 flex flex-col border rounded-md"
+                        draggable
+                        onDragStart={(event) => handleDragStart(event, product)}
+                        onClick={() => handleProductClick(product)}
+                      >
+                        <img
+                          src={product.image}
+                          alt={product.name}
+                          className="w-full object-cover rounded-xl"
+                        />
+                        <p className="text-center mt-2 text-sm">
+                          {product.name}
+                        </p>
+                      </div>
+                    ))}
                 </div>
               </div>
               <div className=" flex justify-center items-center mt-2">
                 {subscriptionBox.length > 0 && (
                   <div className="mt-4">
                     {/* <Link to={`/subscription-checkout`}> */}
-                      <button
-                        onClick={handleCheckout}
-                        className="bg-teal-950 text-white py-2 px-6 rounded hover:bg-teal-600 transition"
-                      >
-                        Checkout
-                      </button>
+                    <button
+                      onClick={handleCheckout}
+                      className="bg-teal-950 text-white py-2 px-6 rounded hover:bg-teal-600 transition"
+                    >
+                      Checkout
+                    </button>
                     {/* </Link> */}
                   </div>
                 )}
@@ -302,73 +303,11 @@ const SubscriptionPage = () => {
 
         {/* Quantity Modal */}
         {quantityModalOpen && (
-          <div className="fixed z-40 inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-            <div className="bg-white flex flex-col p-6 rounded-lg">
-              <h3 className="text-xl font-semibold mb-4">
-                Select Quantity for {selectedProduct.name}
-              </h3>
-              <div className="flex justify-around">
-                <div className="flex flex-col space-y-4">
-                  <button
-                    className="bg-teal-950 hover:bg-teal-700 text-white py-2 px-4 rounded"
-                    onClick={() => handleAddToSubscriptionBox(30)}
-                  >
-                    30g
-                  </button>
-                  <button
-                    className="bg-teal-950 hover:bg-teal-700 text-white py-2 px-4 rounded"
-                    onClick={() => handleAddToSubscriptionBox(40)}
-                  >
-                    40g
-                  </button>
-                  <button
-                    className="bg-teal-950 hover:bg-teal-700 text-white py-2 px-4 rounded"
-                    onClick={() => handleAddToSubscriptionBox(50)}
-                  >
-                    50g
-                  </button>
-                  <button
-                    className="bg-teal-950 hover:bg-teal-700 text-white py-2 px-4 rounded"
-                    onClick={() => handleAddToSubscriptionBox(60)}
-                  >
-                    60g
-                  </button>
-                </div>
-                <div className="flex flex-col space-y-4">
-                  <button
-                    className="bg-teal-950 hover:bg-teal-700 text-white py-2 px-4 rounded"
-                    onClick={() => handleAddToSubscriptionBox(70)}
-                  >
-                    70g
-                  </button>
-                  <button
-                    className="bg-teal-950 hover:bg-teal-700 text-white py-2 px-4 rounded"
-                    onClick={() => handleAddToSubscriptionBox(80)}
-                  >
-                    80g
-                  </button>
-                  <button
-                    className="bg-teal-950 hover:bg-teal-700 text-white py-2 px-4 rounded"
-                    onClick={() => handleAddToSubscriptionBox(90)}
-                  >
-                    90g
-                  </button>
-                  <button
-                    className="bg-teal-950 hover:bg-teal-700 text-white py-2 px-4 rounded"
-                    onClick={() => handleAddToSubscriptionBox(100)}
-                  >
-                    100g
-                  </button>
-                </div>
-              </div>
-              <button
-                className="mt-4 justify-center items-center bg-red-500 text-white py-2 px-4 rounded"
-                onClick={closeQuantityModal}
-              >
-                Cancel
-              </button>
-            </div>
-          </div>
+          <QuantityModal
+            selectedProduct={selectedProduct}
+            closeQuantityModal={closeQuantityModal}
+            handleAddToSubscriptionBox={handleAddToSubscriptionBox}
+          />
         )}
 
         {subtype && (
@@ -404,7 +343,7 @@ const SubscriptionPage = () => {
             {subscriptionType===subscriptiontypes[3] &&
             <MonthlyDeliverySelector />
             } */}
-            <div className="my-4">
+              <div className="my-4">
                 <h3 className="text-xl font-semibold mb-2">
                   Select the Size of the Box
                 </h3>
@@ -423,7 +362,6 @@ const SubscriptionPage = () => {
                     </div>
                   ))}
                 </div>
-                
               </div>
               {boxSize && subscriptionType && (
                 <button

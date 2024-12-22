@@ -20,6 +20,7 @@ import pakchoilg from "/store/pakchoilg.jpg"
 import axiosInstance from "../../../config/AxiosConfig.js";
 import Menu from "./components/Menu.jsx";
 import LeavesLoader from "../../Loader/PlantLoader.jsx";
+import { Helmet } from "react-helmet";
 let greens = [];
 export default function Shop() {
   const [isLoading, setIsLoading] = useState(false);
@@ -306,6 +307,9 @@ export default function Shop() {
         <LeavesLoader />
       ) : (
         <div className="bod mt-40 bg-gray-100">
+        <Helmet>
+        <title>IronValley | Store</title>
+        </Helmet>
           <Menu setShow={setShow} show={show} filter={filter} searchByName={searchByName} />
           <Meals greens={filteredGreens} />
         </div>
