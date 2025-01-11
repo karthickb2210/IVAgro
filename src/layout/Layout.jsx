@@ -69,7 +69,7 @@ export default function Layout() {
     
       <Footer />
       <footer className="py-1 bg-gray-800 text-white text-center">
-        <p>© 2024 IronValley Agronomy - All rights reserved</p>
+        <p>© {new Date().getFullYear()} IronValley Agronomy - All rights reserved</p>
       </footer>
     </>
   );
