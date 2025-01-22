@@ -210,7 +210,7 @@ const CheckOut = () => {
 
       // Open Razorpay checkout
       const options = {
-        key: "rzp_test_VIg1NaXkrCS4Lx",
+        key: "rzp_live_xjHKKj55LDpxuX",
         amount: data.amount,
         currency: "INR",
         name: "IronValley Agronomy",
