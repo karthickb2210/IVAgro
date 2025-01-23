@@ -21,14 +21,17 @@ import axiosInstance from "../../../config/AxiosConfig.js";
 import Menu from "./components/Menu.jsx";
 import LeavesLoader from "../../Loader/PlantLoader.jsx";
 import { Helmet } from "react-helmet";
+import StoreModal from "./components/StoreModal.jsx";
 let greens = [];
 export default function Shop() {
-  const MIN_STOCK_VALUE = 500;
+  const MIN_STOCK_VALUE = 200;
   const [isLoading, setIsLoading] = useState(false);
   const [show, setShow] = useState({
     leafyGreens: false,
     microGreens: false,
   });
+
+  const [storeModal,setStoreModal] = useState(true);
 
   const [filteredGreens, setFilteredGreens] = useState(greens);
 
@@ -305,7 +308,7 @@ export default function Shop() {
     <>
       {isLoading ? (
         <LeavesLoader />
-      ) : (
+      ) : (storeModal ?  <StoreModal storeModal={storeModal} setStoreModal={setStoreModal} /> : 
         <div className="bod mt-40 bg-gray-100">
         <Helmet>
         <title>IronValley | Store</title>
