@@ -23,6 +23,7 @@ import LeavesLoader from "../../Loader/PlantLoader.jsx";
 import { Helmet } from "react-helmet";
 let greens = [];
 export default function Shop() {
+  const MIN_STOCK_VALUE = 500;
   const [isLoading, setIsLoading] = useState(false);
   const [show, setShow] = useState({
     leafyGreens: false,
@@ -66,7 +67,7 @@ export default function Shop() {
           {
             id: "m8",
             name: "Kale",
-            available: stock.kaleQuantity > 0,
+            available: stock.kaleQuantity > MIN_STOCK_VALUE,
             price: [
               15,
               Baseprices.Kale,
@@ -81,7 +82,7 @@ export default function Shop() {
           {
             id: "m5",
             name: "Lettuce",
-            available: stock.lettuceQuantity > 0,
+            available: stock.lettuceQuantity > MIN_STOCK_VALUE,
             price: [
               15,
               Baseprices.Lettuce,
@@ -96,7 +97,7 @@ export default function Shop() {
           {
             id: "m6",
             name: "Arugula",
-            available: stock.argulaQuantity > 0,
+            available: stock.argulaQuantity > MIN_STOCK_VALUE,
             price: [
               25,
               Baseprices.Argula,
@@ -111,7 +112,7 @@ export default function Shop() {
           {
             id: "m7",
             name: "Pak Choi",
-            available: stock.pakChoiQuantity > 0,
+            available: stock.pakChoiQuantity > MIN_STOCK_VALUE,
             price: [
               20,
               Baseprices.PakChoi,
@@ -126,7 +127,7 @@ export default function Shop() {
 
           {
             id: "m9",
-            available: stock.basilQuantity > 0,
+            available: stock.basilQuantity > MIN_STOCK_VALUE,
             name: "Basil",
             price: [
               20,
@@ -141,7 +142,7 @@ export default function Shop() {
           },
           {
             id: "m1",
-            available: stock.babySpinachQuantity > 0,
+            available: stock.babySpinachQuantity > MIN_STOCK_VALUE,
             name: "Spinach",
             price: [
               15,
@@ -157,7 +158,7 @@ export default function Shop() {
           {
             id: "mg1",
             name: "Beetroot",
-            available: stock.beetRootQuantity > 0,
+            available: stock.beetRootQuantity > MIN_STOCK_VALUE,
             price: [
               15,
               Baseprices.Kale,
@@ -172,7 +173,7 @@ export default function Shop() {
           {
             id: "mg2",
             name: "Radish Purple",
-            available: stock.radishPurpleQuantity > 0,
+            available: stock.radishPurpleQuantity > MIN_STOCK_VALUE,
             price: [
               15,
               Baseprices.Kale,
@@ -187,7 +188,7 @@ export default function Shop() {
           {
             id: "mg3",
             name: "Radish White",
-            available: stock.radishWhiteQuantity > 0,
+            available: stock.radishWhiteQuantity > MIN_STOCK_VALUE,
             price: [
               15,
               Baseprices.Kale,
@@ -202,7 +203,7 @@ export default function Shop() {
           {
             id: "mg4",
             name: "Radish Pink",
-            available: stock.radishPinkQuantity > 0,
+            available: stock.radishPinkQuantity > MIN_STOCK_VALUE,
             price: [
               15,
               Baseprices.Kale,
@@ -217,7 +218,7 @@ export default function Shop() {
           {
             id: "mg5",
             name: "Mustard",
-            available: stock.mustardQuantity > 0,
+            available: stock.mustardQuantity > MIN_STOCK_VALUE,
             price: [
               15,
               Baseprices.Kale,
@@ -232,7 +233,7 @@ export default function Shop() {
           {
             id: "mg6",
             name: "Sunflower",
-            available: stock.sunflowerQuantity > 0,
+            available: stock.sunflowerQuantity > MIN_STOCK_VALUE,
             price: [
               15,
               Baseprices.Kale,
@@ -247,7 +248,7 @@ export default function Shop() {
           {
             id: "mg7",
             name: "Pea Shoot",
-            available: stock.peaShootQuantity > 0,
+            available: stock.peaShootQuantity > MIN_STOCK_VALUE,
             price: [
               15,
               Baseprices.Kale,
@@ -262,7 +263,7 @@ export default function Shop() {
           {
             id: "mg8",
             name: "Broccoli",
-            available: stock.broccoliQuantity > 0,
+            available: stock.broccoliQuantity > MIN_STOCK_VALUE,
             price: [
               15,
               Baseprices.Kale,
@@ -277,7 +278,7 @@ export default function Shop() {
           {
             id: "mg9",
             name: "Red Cabbage",
-            available: stock.redCabbageQuantity > 0,
+            available: stock.redCabbageQuantity > MIN_STOCK_VALUE,
             price: [
               15,
               Baseprices.Kale,
@@ -290,7 +291,6 @@ export default function Shop() {
             image: cabbagered
           },
         ];
-        console.log(greens);
         setFilteredGreens(greens);
         setIsLoading(false);
       })
