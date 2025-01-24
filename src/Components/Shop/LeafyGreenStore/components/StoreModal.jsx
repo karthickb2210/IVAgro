@@ -10,7 +10,7 @@ const StoreModal = ({storeModal,setStoreModal}) => {
     if(id===1){
         navigate("/subscription")
     }else if(id===2){
-      navigate("/nav")
+      navigate("/subscription")
     }else{
       closeModal();
     }
