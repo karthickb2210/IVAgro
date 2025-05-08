@@ -200,6 +200,9 @@ const CheckOut = () => {
   };
 
   const handleSubmit = async (e) => {
+    if(true){
+        alert("Sorry for the inconvenience.We are not currently accepting orders !!")
+    }else{
     e.preventDefault();
     setIsLoading(true);
     try {
@@ -298,6 +301,7 @@ const CheckOut = () => {
       alert("Payment failed");
     }
     setIsLoading(false)
+  }
   };
 
   const handleEditCart = () => {
